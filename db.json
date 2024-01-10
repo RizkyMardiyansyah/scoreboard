@@ -1,0 +1,213 @@
+{
+  "home": [
+    {
+      "0": {
+        "name": "Persik Kediri",
+        "logo": "https://i.ibb.co/XXBfJp6/Persik-Kediri.png",
+        "id": 1
+      },
+      "id": 1
+    }
+  ],
+  "away": [
+    {
+      "0": {
+        "name": "Persib",
+        "logo": "https://i.ibb.co/kmK9dZ8/pngwing-com.png",
+        "id": 1
+      },
+      "id": 1
+    }
+  ],
+  "team": [
+    {
+      "name": "Persib",
+      "logo": "https://i.ibb.co/kmK9dZ8/pngwing-com.png",
+      "id": 2
+    },
+    {
+      "name": "Bali United",
+      "logo": "https://i.ibb.co/6tMZdhB/pngegg.png",
+      "id": 3
+    },
+    {
+      "name": "Borneo",
+      "logo": "https://i.ibb.co/ZffLCYr/Borneo-FC.png",
+      "id": 5
+    },
+    {
+      "name": "PSIS",
+      "logo": "https://i.ibb.co/jJRnqmv/PSIS-Semarang.png",
+      "id": 6
+    },
+    {
+      "name": "Madura United",
+      "logo": "https://i.ibb.co/chKN1LC/Madura-United.png",
+      "id": 7
+    },
+    {
+      "name": "Persik Kediri",
+      "logo": "https://i.ibb.co/XXBfJp6/Persik-Kediri.png",
+      "id": 8
+    },
+    {
+      "name": "Arema FC",
+      "logo": "https://i.ibb.co/bvHpR5v/Arema-FC.png",
+      "id": 9
+    },
+    {
+      "name": "Rans Nusantara",
+      "logo": "https://i.ibb.co/dcGgF7J/RANS-Nusantara-Football-Club.png",
+      "id": 10
+    },
+    {
+      "name": "Barito Putera",
+      "logo": "https://i.ibb.co/6mgzq60/PS-Barito-Putera.png",
+      "id": 11
+    },
+    {
+      "name": "Persija Jakarta",
+      "logo": "https://i.ibb.co/g7pkYVP/Persija-Jakarta.png",
+      "id": 12
+    },
+    {
+      "name": "Dewa United",
+      "logo": "https://i.ibb.co/xD0Cfyh/Dewa-United-FC.png",
+      "id": 13
+    },
+    {
+      "name": "PSM Makassar",
+      "logo": "https://i.ibb.co/xLBrgJX/PSM-Makassar.png",
+      "id": 14
+    },
+    {
+      "name": "PSS Sleman",
+      "logo": "https://i.ibb.co/vL2gJKG/PSS-Sleman.png",
+      "id": 15
+    },
+    {
+      "name": "Persebaya Surabaya",
+      "logo": "https://i.ibb.co/yYkR9rm/Persebaya-Surabaya-Logo.png",
+      "id": 16
+    },
+    {
+      "name": "Persita Tangerang",
+      "logo": "https://i.ibb.co/jgWmbbZ/Persita-Tangerang.png",
+      "id": 17
+    },
+    {
+      "name": "Persis Solo",
+      "logo": "https://i.ibb.co/tQJ0g2H/Persis-Solo.png",
+      "id": 18
+    },
+    {
+      "name": "Tira Persikabo",
+      "logo": "https://i.ibb.co/nP5tNPj/Tira-Persikabo.png",
+      "id": 19
+    },
+    {
+      "name": "Bhayangkara FC",
+      "logo": "https://i.ibb.co/sqQDxtQ/Bhayangkara-FC.png",
+      "id": 20
+    }
+  ],
+  "score": [
+    {
+      "home": "2",
+      "away": "2",
+      "id": 1
+    }
+  ],
+  "playerHome": [
+    {
+      "name": "Raya",
+      "id": 0
+    },
+    {
+      "name": "Timber",
+      "id": 1
+    },
+    {
+      "name": "Gabriel",
+      "id": 2
+    },
+    {
+      "name": "Saliba",
+      "id": 3
+    },
+    {
+      "name": "White",
+      "id": 4
+    },
+    {
+      "name": "Rice",
+      "id": 5
+    },
+    {
+      "name": "Havertz",
+      "id": 6
+    },
+    {
+      "name": "Odegaard",
+      "id": 7
+    },
+    {
+      "name": "Martinelli",
+      "id": 8
+    },
+    {
+      "name": "Saka",
+      "id": 9
+    },
+    {
+      "name": "Nketiah",
+      "id": 10
+    }
+  ],
+  "playerAway": [
+    {
+      "name": "A.Becker",
+      "id": 1
+    },
+    {
+      "name": "Robertson",
+      "id": 2
+    },
+    {
+      "name": "Konate",
+      "id": 3
+    },
+    {
+      "name": "Van Dijk",
+      "id": 4
+    },
+    {
+      "name": "Alexander-Arnold",
+      "id": 5
+    },
+    {
+      "name": "Jota",
+      "id": 6
+    },
+    {
+      "name": "Mac Allister",
+      "id": 7
+    },
+    {
+      "name": "Endo",
+      "id": 8
+    },
+    {
+      "name": "Salah",
+      "id": 9
+    },
+    {
+      "name": "Nunez",
+      "id": 10
+    },
+    {
+      "name": "Gakpo",
+      "id": 11
+    }
+  ]
+}

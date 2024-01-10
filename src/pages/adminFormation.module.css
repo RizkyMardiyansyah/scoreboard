@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+}
+
+.box1,
+.box2 {
+  display: inline-block;
+  width: 45%; /* Adjust width as needed */
+  margin: 5px; /* Add margin as needed */
+
+  box-sizing: border-box; /* Optional to include padding in width */
+}

@@ -1,0 +1,29 @@
+/* ButtonStyles.module.css */
+.dynamicStyle {
+  padding: 10px;
+  margin-top: 20px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Define styles for each button */
+.button-1 {
+  background-color: red;
+}
+
+.button-2 {
+  background-color: blue;
+}
+
+.button-3 {
+  background-color: green;
+}
+
+.button-4 {
+  background-color: yellow;
+}
+
+.button-5 {
+  background-color: purple;
+}

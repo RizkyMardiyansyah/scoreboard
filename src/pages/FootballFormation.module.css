@@ -1,0 +1,37 @@
+/* FootballFormation.module.css */
+
+.footballPitch {
+  position: relative;
+  width: 800px; /* Adjust size as needed */
+  height: 500px; /* Adjust size as needed */
+  margin: auto;
+  background-image: url("../assets/field.png"); /* Replace with your image */
+  background-size: cover;
+  background-position: center;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Adjust columns as needed */
+  gap: 10px;
+  padding: 20px;
+}
+
+.player {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  background-color: lightblue; /* Or any color representing the player */
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+/* Player positions (example styles) */
+.goalkeeper {
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Add similar styles for other player positions */
+/* Adjust top, left, and other positioning properties for each player */

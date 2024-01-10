@@ -1,0 +1,11 @@
+.hidden {
+  width: 100%; /* Adjust width as needed */
+  margin: 0 auto;
+  visibility: hidden;
+}
+.goal {
+  text-align: center;
+  /* background-color: #353638; */
+  /* padding: 2em; */
+  border-radius: 0.5em;
+}
