@@ -4,7 +4,7 @@ import axios from "axios";
 
 const FootballFormation = () => {
   const [playerHome, setPlayerHome] = useState([]);
-  const [playerAway, setPlayerAway] = useState([]);
+  const [teamHome, setTeamHome] = useState([]);
 
   useEffect(() => {
     const fetchPlayerHome = async () => {
@@ -22,23 +22,21 @@ const FootballFormation = () => {
   // console.log(team.home);
 
   useEffect(() => {
-    const fetchPlayerAway = async () => {
-      try {
-        const response = await axios.get("http://localhost:5500/playerAway");
-        setPlayerAway(response.data);
-      } catch (error) {
-        console.error("Error fetching player home:", error);
-      }
-    };
-
-    fetchPlayerAway();
+    axios
+      .get("http://localhost:5500/home")
+      .then((response) => {
+        setTeamHome(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching home data:", error);
+      });
   }, []);
-  // console.log(playerHome);
+
   return (
     <>
-      {playerHome.length > 0 ? (
+      {teamHome.length > 0 ? (
         <h1 className="text-white text-3xl text-center mt-8">
-          Arsenal Formation
+          {teamHome[0][0].name} Lineup
         </h1>
       ) : (
         <span>Loading...</span>

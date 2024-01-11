@@ -9,7 +9,7 @@ import Lineup442Home from "@/components/Formation/442Home";
 import Lineup433Away from "@/components/Formation/433Away";
 import Lineup4231Away from "@/components/Formation/4231Away";
 import Lineup442Away from "@/components/Formation/442Away";
-import Goal from "@/assets/futuboalhafoari.gif";
+import Goal from "@/components/Goal";
 import Image from "next/image";
 import YellowCard from "@/components/YellowCard";
 import RedCard from "@/components/RedCard";
@@ -217,19 +217,7 @@ const Component1 = () => {
 };
 
 const Component3 = () => {
-  return (
-    <div className={`scoreboard`}>
-      <div className={styles.hidden}>
-        <Image src={Goal} />
-      </div>
-      <div className={styles.goal}>
-        <Image src={Goal} />
-      </div>
-      <div className={styles.hidden}>
-        <Image src={Goal} />
-      </div>
-    </div>
-  );
+  return <Goal />;
 };
 
 const Component4 = () => {

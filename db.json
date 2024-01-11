@@ -2,8 +2,8 @@
   "home": [
     {
       "0": {
-        "name": "Persik Kediri",
-        "logo": "https://i.ibb.co/XXBfJp6/Persik-Kediri.png",
+        "name": "Arema FC",
+        "logo": "https://i.ibb.co/bvHpR5v/Arema-FC.png",
         "id": 1
       },
       "id": 1
@@ -12,8 +12,8 @@
   "away": [
     {
       "0": {
-        "name": "Persib",
-        "logo": "https://i.ibb.co/kmK9dZ8/pngwing-com.png",
+        "name": "Persik Kediri",
+        "logo": "https://i.ibb.co/XXBfJp6/Persik-Kediri.png",
         "id": 1
       },
       "id": 1
@@ -113,100 +113,100 @@
   ],
   "score": [
     {
-      "home": "2",
+      "home": "1",
       "away": "2",
       "id": 1
     }
   ],
   "playerHome": [
     {
-      "name": "Raya",
+      "name": "Adilson",
       "id": 0
     },
     {
-      "name": "Timber",
+      "name": "Ardi",
       "id": 1
     },
     {
-      "name": "Gabriel",
+      "name": "Elias",
       "id": 2
     },
     {
-      "name": "Saliba",
+      "name": "Haudi",
       "id": 3
     },
     {
-      "name": "White",
+      "name": "Sidiq",
       "id": 4
     },
     {
-      "name": "Rice",
+      "name": "Bessa",
       "id": 5
     },
     {
-      "name": "Havertz",
+      "name": "Novri",
       "id": 6
     },
     {
-      "name": "Odegaard",
+      "name": "Yabes",
       "id": 7
     },
     {
-      "name": "Martinelli",
+      "name": "Ryuji",
       "id": 8
     },
     {
-      "name": "Saka",
+      "name": "Abdul",
       "id": 9
     },
     {
-      "name": "Nketiah",
+      "name": "Beckham",
       "id": 10
     }
   ],
   "playerAway": [
     {
-      "name": "A.Becker",
+      "name": "Dwi Rustapa",
       "id": 1
     },
     {
-      "name": "Robertson",
+      "name": "Nick",
       "id": 2
     },
     {
-      "name": "Konate",
+      "name": "Kakang",
       "id": 3
     },
     {
-      "name": "Van Dijk",
+      "name": "Dedi",
       "id": 4
     },
     {
-      "name": "Alexander-Arnold",
+      "name": "Ezra Walian",
       "id": 5
     },
     {
-      "name": "Jota",
+      "name": "Teja",
       "id": 6
     },
     {
-      "name": "Mac Allister",
+      "name": "Achmad",
       "id": 7
     },
     {
-      "name": "Endo",
+      "name": "Sheva",
       "id": 8
     },
     {
-      "name": "Salah",
+      "name": "Ferdiansyah",
       "id": 9
     },
     {
-      "name": "Nunez",
+      "name": "Ricky",
       "id": 10
     },
     {
-      "name": "Gakpo",
+      "name": "Rizky",
       "id": 11
     }
   ]

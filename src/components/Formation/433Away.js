@@ -5,6 +5,7 @@ import axios from "axios";
 const FootballFormationAway = () => {
   // const [playerAway, setplayerAway] = useState([]);
   const [playerAway, setPlayerAway] = useState([]);
+  const [teamAway, setTeamAway] = useState([]);
 
   const [team, setTeam] = useState(null);
 
@@ -23,14 +24,24 @@ const FootballFormationAway = () => {
 
     fetchPlayerAway();
   }, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5500/away")
+      .then((response) => {
+        setTeamAway(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Away data:", error);
+      });
+  }, []);
 
   // console.log(team.home);
   // console.log(playerAway);
   return (
     <>
-      {playerAway.length > 0 ? (
+      {teamAway.length > 0 ? (
         <h1 className="text-white text-3xl text-center mt-8">
-          Liverpool Formation
+          {teamAway[0][0].name} Lineup
         </h1>
       ) : (
         <span>Loading...</span>

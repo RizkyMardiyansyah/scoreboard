@@ -72,14 +72,14 @@ const DropdownComponent = () => {
         ))}
       </select>
 
-      <h2>Away Data</h2>
+      {/* <h2>Away Data</h2>
       <ul>
         {homeData.map((home) => (
           <li key={home.id}>
             {home.name} - {home.logo}
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };

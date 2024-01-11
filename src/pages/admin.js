@@ -11,6 +11,7 @@ import SelectAwayTeam from "@/components/SelectAwayTeam";
 import styles from "@/pages/adminFormation.module.css";
 import YellowPlayer from "@/components/YellowPlayer";
 import { useEffect } from "react";
+import Swal from "sweetalert2";
 
 export default function Admin() {
   const [options, setOptions] = useState([]);
@@ -19,6 +20,8 @@ export default function Admin() {
   const [buttonsAway, setButtonsAway] = useState([]);
   const [playerHome, setPlayerHome] = useState([]);
   const [playerAway, setPlayerAway] = useState([]);
+  const [home, setHome] = useState([]);
+  const [away, setAway] = useState([]);
   const [showForm1, setShowForm1] = useState(false);
   const [showForm2, setShowForm2] = useState(false);
   const [showForm3, setShowForm3] = useState(false);
@@ -27,6 +30,7 @@ export default function Admin() {
   const [showForm3Away, setShowForm3Away] = useState(false);
   const [showYellowPlayer, setShowYellowPlayer] = useState(false);
   const [showRedPlayer, setShowRedPlayer] = useState(false);
+  const [showGoalPlayer, setShowGoalPlayer] = useState(false);
 
   useEffect(() => {
     const fetchPlayerHome = async () => {
@@ -55,6 +59,12 @@ export default function Admin() {
   }, []);
 
   React.useEffect(() => {
+    axios.get("http://localhost:5500/home").then((response) => {
+      setHome(response.data[0]);
+    });
+    axios.get("http://localhost:5500/away").then((response) => {
+      setAway(response.data[0]);
+    });
     axios.get("http://localhost:5500/team").then((response) => {
       setOptions(response.data);
     });
@@ -70,33 +80,19 @@ export default function Admin() {
   }, []);
   // if (!team) return null;
   if (!score) return null;
+  console.log(home[0].name);
 
-  function updateTeam() {
-    axios.put("http://localhost:5500/team/1", team).then((response) => {
-      alert("data update succesfully");
+  function updateScore() {
+    axios.put("http://localhost:5500/score/1", score).then((response) => {
+      Swal.fire({
+        title: `Score updated successfully!`,
+        icon: "success",
+      });
     });
   }
 
-  const handleSelectChange = (e) => {
-    const selectedId = e.target.value;
-    setSelectedOption(selectedId);
-
-    // Find the selected option's name
-    const selectedOption = options.find(
-      (option) => option.id === Number(selectedId)
-    );
-    if (selectedOption) {
-      setSelectedName(selectedOption.name);
-    } else {
-      setSelectedName("");
-    }
-  };
-
-  function updateScore() {
-    axios.put("http://localhost:5500/score/1", score).then((response) => {});
-  }
-
   const toggleComponent1Or3 = () => {
+    setShowGoalPlayer(!showGoalPlayer);
     localStorage.getItem("showComponent") === "1"
       ? localStorage.setItem("showComponent", "3")
       : localStorage.setItem("showComponent", "1");
@@ -147,171 +143,22 @@ export default function Admin() {
       : localStorage.setItem("showComponent", "10");
   };
 
-  const renderForms = () => {
-    return playerHome.map((player, index) => (
-      <div key={player.id}>
-        {index === 0 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            GK
-          </label>
-        ) : index === 1 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DL
-          </label>
-        ) : index >= 2 && index <= 3 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DC
-          </label>
-        ) : index === 4 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DR
-          </label>
-        ) : index === 5 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            ML
-          </label>
-        ) : index >= 6 && index <= 7 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            MC
-          </label>
-        ) : index === 8 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            MR
-          </label>
-        ) : index >= 9 && index <= 10 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            ST
-          </label>
-        ) : (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            Player {index + 1} Name
-          </label>
-        )}
-        <div className="relative mt-2 rounded-md shadow-sm">
-          <input
-            type="text"
-            value={player.name}
-            onChange={(e) => handleInputChange(e, index)}
-            className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-      </div>
-    ));
-  };
-  const renderForms2 = () => {
-    return playerAway.map((player, index) => (
-      <div key={player.id}>
-        {index === 0 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            GK
-          </label>
-        ) : index === 1 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DL
-          </label>
-        ) : index >= 2 && index <= 3 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DC
-          </label>
-        ) : index === 4 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DR
-          </label>
-        ) : index === 5 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            ML
-          </label>
-        ) : index >= 6 && index <= 7 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            MC
-          </label>
-        ) : index === 8 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            MR
-          </label>
-        ) : index >= 9 && index <= 10 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            ST
-          </label>
-        ) : (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            Player {index + 1} Name
-          </label>
-        )}
-        <div className="relative mt-2 rounded-md shadow-sm">
-          <input
-            type="text"
-            id={player.name}
-            value={player.name}
-            onChange={(e) => handleInputChange2(e, index)}
-            className={`rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6`}
-          />
-        </div>
-      </div>
-    ));
-  };
   const handleSubmit = async () => {
     try {
       const promises = playerHome.map((player) =>
         axios.put(`http://localhost:5500/playerHome/${player.id}`, player)
       );
       await Promise.all(promises);
+      Swal.fire({
+        title: "All players updated successfully!",
+        icon: "success",
+      });
       console.log("All players updated successfully!");
     } catch (error) {
+      Swal.fire({
+        title: `Error updating players ${error}`,
+        icon: "error",
+      });
       console.error("Error updating players:", error);
     }
   };
@@ -322,8 +169,16 @@ export default function Admin() {
         axios.put(`http://localhost:5500/playerAway/${player.id}`, player)
       );
       await Promise.all(promises);
-      console.log("All players updated successfully!");
+      // console.log("All players updated successfully!");
+      Swal.fire({
+        title: "All players updated successfully!",
+        icon: "success",
+      });
     } catch (error) {
+      Swal.fire({
+        title: error,
+        icon: "error",
+      });
       console.error("Error updating players:", error);
     }
   };
@@ -879,13 +734,13 @@ export default function Admin() {
             <Tab>Formation</Tab>
           </TabList>
 
-          <TabPanel>
+          <TabPanel className="controlPanel">
             <div>
               <button
                 onClick={toggleComponent1Or3}
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
               >
-                Goal
+                {showGoalPlayer ? "Hide Player" : "Show Goal Player"}
               </button>
 
               <button
@@ -945,6 +800,7 @@ export default function Admin() {
             </div>
 
             {/* <YellowPlayer /> */}
+            {showGoalPlayer && <YellowPlayer />}
             {showYellowPlayer && <YellowPlayer />}
             {showRedPlayer && <YellowPlayer />}
 
@@ -957,51 +813,14 @@ export default function Admin() {
               />
             </div>
           </TabPanel>
-          <TabPanel>
-            <div className="bg-gray-500 flex h-screen">
-              <SelectHomeTeam />
-              <SelectAwayTeam />
-              {/* <div className="flex-auto   bg-slate-300">
-                <h1 className="p-2 text-black">Input Team</h1>
-                <label
-                  htmlFor="price"
-                  className="block text-sm font-medium leading-6 text-black"
-                >
-                  Home Team
-                </label>
-                <div className="relative mt-2 rounded-md shadow-sm">
-                  <input
-                    type="text"
-                    name="price"
-                    id="price"
-                    value={team.home}
-                    className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setTeam({ ...team, home: e.target.value })}
-                  />
-                </div>
-                <label
-                  htmlFor="price"
-                  className="block text-sm font-medium leading-6 text-black"
-                >
-                  Away Team
-                </label>
-                <div className="relative mt-2 rounded-md shadow-sm">
-                  <input
-                    type="text"
-                    name="price"
-                    id="price"
-                    value={team.away}
-                    className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => setTeam({ ...team, away: e.target.value })}
-                  />
-                </div>
-                <button
-                  class="my-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  onClick={updateTeam}
-                >
-                  Update Team
-                </button>
-              </div> */}
+          <TabPanel className="updateTeamScore">
+            <div className="bg-slate-300 flex h-screen">
+              <div className="mr-3">
+                <SelectHomeTeam />
+              </div>
+              <div className="mr-3">
+                <SelectAwayTeam />
+              </div>
 
               <div className="flex-auto bg-slate-300 ">
                 <h1 className="p-2 text-black">Score</h1>
@@ -1009,7 +828,7 @@ export default function Admin() {
                   htmlFor="price"
                   className="block text-sm font-medium leading-6 text-black"
                 >
-                  {/* {team.home} */}
+                  {home[0].name}
                 </label>
                 <div className="relative mt-2 rounded-md shadow-sm">
                   <input
@@ -1027,7 +846,7 @@ export default function Admin() {
                   htmlFor="price"
                   className="block text-sm font-medium leading-6 text-black"
                 >
-                  {/* {team.away} */}
+                  {away[0].name}
                 </label>
                 <div className="relative mt-2 rounded-md shadow-sm">
                   <input
@@ -1037,7 +856,7 @@ export default function Admin() {
                     value={score.away}
                     className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     onChange={(e) =>
-                      setScore({ ...team, away: e.target.value })
+                      setScore({ ...score, away: e.target.value })
                     }
                   />
                 </div>
@@ -1050,7 +869,7 @@ export default function Admin() {
               </div>
             </div>
           </TabPanel>
-          <TabPanel>
+          <TabPanel className="Formation">
             <div className={`${styles.container}`}>
               <div className={`${styles.box1}`}>
                 <h2>Player Home</h2>
