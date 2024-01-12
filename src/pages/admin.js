@@ -31,6 +31,12 @@ export default function Admin() {
   const [showYellowPlayer, setShowYellowPlayer] = useState(false);
   const [showRedPlayer, setShowRedPlayer] = useState(false);
   const [showGoalPlayer, setShowGoalPlayer] = useState(false);
+  const [showFormation442Home, setShowFormation442Home] = useState(false);
+  const [showFormation4231Home, setShowFormation4231Home] = useState(false);
+  const [showFormation433Home, setShowFormation433Home] = useState(false);
+  const [showFormation442Away, setShowFormation442Away] = useState(false);
+  const [showFormation4231Away, setShowFormation4231Away] = useState(false);
+  const [showFormation433Away, setShowFormation433Away] = useState(false);
 
   useEffect(() => {
     const fetchPlayerHome = async () => {
@@ -693,14 +699,17 @@ export default function Admin() {
   const handleButtonClick = (formNumber) => {
     // Toggle the respective form visibility based on the button clicked
     if (formNumber === 1) {
+      setShowFormation442Home(!showFormation442Home);
       setShowForm1(true);
       setShowForm2(false);
       setShowForm3(false);
     } else if (formNumber === 2) {
+      setShowFormation4231Home(!showFormation4231Home);
       setShowForm1(false);
       setShowForm2(true);
       setShowForm3(false);
     } else if (formNumber === 3) {
+      setShowFormation433Home(!showFormation433Home);
       setShowForm1(false);
       setShowForm2(false);
       setShowForm3(true);
@@ -709,14 +718,17 @@ export default function Admin() {
   const handleButtonClickAway = (formNumber) => {
     // Toggle the respective form visibility based on the button clicked
     if (formNumber === 1) {
+      setShowFormation442Away(!showFormation442Away);
       setShowForm1Away(true);
       setShowForm2Away(false);
       setShowForm3Away(false);
     } else if (formNumber === 2) {
+      setShowFormation4231Away(!showFormation4231Away);
       setShowForm1Away(false);
       setShowForm2Away(true);
       setShowForm3Away(false);
     } else if (formNumber === 3) {
+      setShowFormation433Away(!showFormation433Away);
       setShowForm1Away(false);
       setShowForm2Away(false);
       setShowForm3Away(true);
@@ -735,80 +747,93 @@ export default function Admin() {
           </TabList>
 
           <TabPanel className="controlPanel">
-            <div>
-              <button
-                onClick={toggleComponent1Or3}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                {showGoalPlayer ? "Hide Player" : "Show Goal Player"}
-              </button>
+            <div className="container flex">
+              <div className="flex-auto w-64 ml-10">
+                <button
+                  onClick={toggleComponent1Or3}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                >
+                  {showGoalPlayer ? "Hide Player" : "Show Goal Player"}
+                </button>
 
-              <button
-                onClick={toggleComponent4}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                {showYellowPlayer ? "Hide Yellow Player" : "Show Yellow Player"}
-              </button>
+                <button
+                  onClick={toggleComponent4}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                >
+                  {showYellowPlayer
+                    ? "Hide Yellow Player"
+                    : "Show Yellow Player"}
+                </button>
 
-              <button
-                onClick={toggleComponent5}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                {showRedPlayer ? "Hide Red Player" : "Show Red Card"}
-              </button>
+                <button
+                  onClick={toggleComponent5}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                >
+                  {showRedPlayer ? "Hide Red Player" : "Show Red Card"}
+                </button>
+              </div>
+              <div className="flex-auto w-32">
+                {showFormation4231Home && (
+                  <button
+                    onClick={toggleComponent7}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  >
+                    Formation 4231 Home
+                  </button>
+                )}
+                {showFormation442Home && (
+                  <button
+                    onClick={toggleComponent8}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  >
+                    Formation 442 Home
+                  </button>
+                )}
+                {showFormation433Home && (
+                  <button
+                    onClick={toggleComponent2}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  >
+                    Formation 433 Home
+                  </button>
+                )}
 
-              <button
-                onClick={toggleComponent7}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                Formation 4231 Home
-              </button>
-
-              <button
-                onClick={toggleComponent8}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                Formation 442 Home
-              </button>
-              <button
-                onClick={toggleComponent2}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                Formation 433 Home
-              </button>
-
-              <button
-                onClick={toggleComponent9}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                Formation 4231 Away
-              </button>
-
-              <button
-                onClick={toggleComponent10}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                Formation 442 Away
-              </button>
-
-              <button
-                onClick={toggleComponent6}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                Formation 433 Away
-              </button>
+                {showFormation4231Away && (
+                  <button
+                    onClick={toggleComponent9}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  >
+                    Formation 4231 Away
+                  </button>
+                )}
+                {showFormation442Away && (
+                  <button
+                    onClick={toggleComponent10}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  >
+                    Formation 442 Away
+                  </button>
+                )}
+                {showFormation433Away && (
+                  <button
+                    onClick={toggleComponent6}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  >
+                    Formation 433 Away
+                  </button>
+                )}
+              </div>
             </div>
-
             {/* <YellowPlayer /> */}
             {showGoalPlayer && <YellowPlayer />}
             {showYellowPlayer && <YellowPlayer />}
             {showRedPlayer && <YellowPlayer />}
 
-            <div>
+            <div className="mt-5 flex items-center justify-center">
               <iframe
                 src="http://localhost:3000/"
                 title="Content from localhost:3000"
-                width="100%"
+                width="95%"
                 height="800"
               />
             </div>
@@ -869,13 +894,28 @@ export default function Admin() {
               </div>
             </div>
           </TabPanel>
-          <TabPanel className="Formation">
-            <div className={`${styles.container}`}>
+          <TabPanel className="formation">
+            <div className={`${styles.container} h-screen`}>
               <div className={`${styles.box1}`}>
                 <h2>Player Home</h2>
-                <button onClick={() => handleButtonClick(1)}>4-4-2</button>
-                <button onClick={() => handleButtonClick(2)}>4-2-3-1</button>
-                <button onClick={() => handleButtonClick(3)}>4-3-3</button>
+                <button
+                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  onClick={() => handleButtonClick(1)}
+                >
+                  4-4-2
+                </button>
+                <button
+                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  onClick={() => handleButtonClick(2)}
+                >
+                  4-2-3-1
+                </button>
+                <button
+                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  onClick={() => handleButtonClick(3)}
+                >
+                  4-3-3
+                </button>
 
                 {showForm1 && renderForms442()}
                 {showForm2 && renderForms4231()}
@@ -891,11 +931,24 @@ export default function Admin() {
 
               <div className={`${styles.box2}`}>
                 <h2>Player Away</h2>
-                <button onClick={() => handleButtonClickAway(1)}>4-4-2</button>
-                <button onClick={() => handleButtonClickAway(2)}>
+                <button
+                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  onClick={() => handleButtonClickAway(1)}
+                >
+                  4-4-2
+                </button>
+                <button
+                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  onClick={() => handleButtonClickAway(2)}
+                >
                   4-2-3-1
                 </button>
-                <button onClick={() => handleButtonClickAway(3)}>4-3-3</button>
+                <button
+                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  onClick={() => handleButtonClickAway(3)}
+                >
+                  4-3-3
+                </button>
 
                 {showForm1Away && renderForms442Away()}
                 {showForm2Away && renderForms4231Away()}

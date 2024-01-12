@@ -1,45 +1,40 @@
-// StopwatchContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+// context/StopwatchContext.js
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useStopwatch as useTimerHook } from "react-timer-hook";
 
 const StopwatchContext = createContext();
 
 export const StopwatchProvider = ({ children }) => {
-  const [isRunning, setIsRunning] = useState(false);
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const { seconds, minutes, isRunning, start, pause, reset } = useTimerHook({
+    autoStart: false,
+  });
+
+  const [timerState, setTimerState] = useState({
+    seconds,
+    minutes,
+    isRunning,
+  });
 
   useEffect(() => {
-    let intervalId;
+    setTimerState({ seconds, minutes, isRunning });
+  }, [seconds, minutes, isRunning]);
+
+  const toggleIsRunning = () => {
     if (isRunning) {
-      intervalId = setInterval(() => {
-        setElapsedTime((prevElapsedTime) => prevElapsedTime + 1);
-      }, 1000); // Increment elapsed time every 1 second
+      pause();
     } else {
-      clearInterval(intervalId);
+      start();
     }
-
-    return () => clearInterval(intervalId);
-  }, [isRunning]);
-
-  const toggleStopwatch = () => {
-    setIsRunning((prevState) => !prevState);
   };
 
-  const resetStopwatch = () => {
-    setElapsedTime(0);
-    setIsRunning(false);
-  };
-
-  const values = {
-    seconds: elapsedTime % 60,
-    minutes: Math.floor((elapsedTime / 60) % 60),
-    hours: Math.floor(elapsedTime / 3600),
-    isRunning,
-    toggleStopwatch,
-    resetStopwatch,
+  const resetTimer = () => {
+    reset();
   };
 
   return (
-    <StopwatchContext.Provider value={values}>
+    <StopwatchContext.Provider
+      value={{ timerState, toggleIsRunning, resetTimer }}
+    >
       {children}
     </StopwatchContext.Provider>
   );

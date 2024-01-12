@@ -79,13 +79,7 @@ const Formation4231 = ({ players }) => {
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.defender5}`}>d5</div> */}
-          {/* <div className={`${styles.player} ${styles.dm1}`}>dm1</div>
-      <div className={`${styles.player} ${styles.dm2}`}>dm2</div>
-      <div className={`${styles.player} ${styles.dm3}`}>dm3</div>
-      <div className={`${styles.player} ${styles.dm4}`}>dm4</div>
-      <div className={`${styles.player} ${styles.dm5}`}>dm5</div> */}
-          {/* <div className={`${styles.player} ${styles.mid1}`}>m1</div> */}
+
           <div className={`${styles.player} ${styles.mid2}`}>
             <div className={styles.playerCircle}>MC</div>{" "}
             {playerHome.length > 0 ? (
@@ -102,20 +96,18 @@ const Formation4231 = ({ players }) => {
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.mid4}`}>m4</div> */}
-          {/* <div className={`${styles.player} ${styles.mid5}`}>m5</div> */}
+
           <div className={`${styles.player} ${styles.mid4}`}>
-            <div className={styles.playerCircle}>AML</div>{" "}
+            <div className={styles.playerCircle}>ML</div>{" "}
             {playerHome.length > 0 ? (
               <span className={styles.playerName}>{playerHome[7]?.name}</span>
             ) : (
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.am2}`}>am2</div>
-      <div className={`${styles.player} ${styles.am3}`}>am3</div> */}
+
           <div className={`${styles.player} ${styles.mid1}`}>
-            <div className={styles.playerCircle}>AMC</div>{" "}
+            <div className={styles.playerCircle}>MR</div>{" "}
             {playerHome.length > 0 ? (
               <span className={styles.playerName}>{playerHome[8]?.name}</span>
             ) : (
@@ -123,19 +115,14 @@ const Formation4231 = ({ players }) => {
             )}
           </div>
           <div className={`${styles.player} ${styles.striker1}`}>
-            <div className={styles.playerCircle}>AMR</div>{" "}
+            <div className={styles.playerCircle}>ST</div>{" "}
             {playerHome.length > 0 ? (
               <span className={styles.playerName}>{playerHome[9]?.name}</span>
             ) : (
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.midfielder1}`}>mid1</div>
-      <div className={`${styles.player} ${styles.midfielder2}`}>mid2</div>
-      <div className={`${styles.player} ${styles.midfielder3}`}>mid2</div>
-      <div className={`${styles.player} ${styles.midfielder4}`}>mid2</div>
-      <div className={`${styles.player} ${styles.midfielder5}`}>mid2</div> */}
-          {/* <div className={`${styles.player} ${styles.striker1}`}>st1</div> */}
+
           <div className={`${styles.player} ${styles.striker3}`}>
             <div className={styles.playerCircle}>ST</div>{" "}
             {playerHome.length > 0 ? (
@@ -144,7 +131,6 @@ const Formation4231 = ({ players }) => {
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.striker3}`}>st3</div> */}
         </div>
       </div>
     </>

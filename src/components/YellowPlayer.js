@@ -4,6 +4,8 @@ import axios from "axios";
 const MyComponent = () => {
   const [buttons, setButtons] = useState([]);
   const [buttonsAway, setButtonsAway] = useState([]);
+  const [teamHome, setTeamHome] = useState([]);
+  const [teamAway, setTeamAway] = useState([]);
 
   useEffect(() => {
     // Fetch button names from the API
@@ -23,11 +25,39 @@ const MyComponent = () => {
     localStorage.setItem("clickedButton", buttonName);
   };
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:5500/home")
+      .then((response) => {
+        setTeamHome(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching home data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5500/away")
+      .then((response) => {
+        setTeamAway(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching Away data:", error);
+      });
+  }, []);
+
   return (
     <>
       <div className="container">
         <div className="box">
-          <h2>Buttons</h2>
+          {teamHome.length > 0 ? (
+            <h1 className="text-black text-xl text-center mt-8">
+              {teamHome[0][0].name}
+            </h1>
+          ) : (
+            <span>Loading...</span>
+          )}
           <div className="buttons">
             {buttons.map((button) => (
               <button
@@ -41,7 +71,13 @@ const MyComponent = () => {
         </div>
 
         <div className="box">
-          <h2>Buttons</h2>
+          {teamAway.length > 0 ? (
+            <h3 className="text-black text-xl text-center mt-8">
+              {teamAway[0][0].name}
+            </h3>
+          ) : (
+            <span>Loading...</span>
+          )}
           <div className="buttons">
             {buttonsAway.map((button) => (
               <button

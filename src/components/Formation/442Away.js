@@ -78,13 +78,7 @@ const Formation4231 = ({ players }) => {
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.defender5}`}>d5</div> */}
-          {/* <div className={`${styles.player} ${styles.dm1}`}>dm1</div>
-      <div className={`${styles.player} ${styles.dm2}`}>dm2</div>
-      <div className={`${styles.player} ${styles.dm3}`}>dm3</div>
-      <div className={`${styles.player} ${styles.dm4}`}>dm4</div>
-      <div className={`${styles.player} ${styles.dm5}`}>dm5</div> */}
-          {/* <div className={`${styles.player} ${styles.mid1}`}>m1</div> */}
+
           <div className={`${styles.player} ${styles.mid2}`}>
             <div className={styles.playerCircle}>MC</div>{" "}
             {playerAway.length > 0 ? (
@@ -101,8 +95,7 @@ const Formation4231 = ({ players }) => {
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.mid4}`}>m4</div> */}
-          {/* <div className={`${styles.player} ${styles.mid5}`}>m5</div> */}
+
           <div className={`${styles.player} ${styles.mid4}`}>
             <div className={styles.playerCircle}>MR</div>{" "}
             {playerAway.length > 0 ? (
