@@ -39,52 +39,76 @@ export default function Admin() {
   const [showGoalPlayer, setShowGoalPlayer] = useState(false);
 
   useEffect(() => {
-    const fetchPlayerHome = async () => {
-      try {
-        const response = await axios.get("http://localhost:5500/playerHome");
-        setPlayerHome(response.data);
-      } catch (error) {
-        console.error("Error fetching player home:", error);
-      }
-    };
+    // Retrieve the stored state from localStorage
+    const storedState =
+      JSON.parse(localStorage.getItem("formationState")) || {};
 
-    fetchPlayerHome();
+    // Set the state if it exists in localStorage
+    setShowFormation4231Home(
+      storedState.hasOwnProperty("showFormation4231Home")
+        ? storedState.showFormation4231Home
+        : false
+    );
+    setShowFormation442Home(
+      storedState.hasOwnProperty("showFormation442Home")
+        ? storedState.showFormation442Home
+        : false
+    );
+    setShowFormation433Home(
+      storedState.hasOwnProperty("showFormation433Home")
+        ? storedState.showFormation433Home
+        : false
+    );
+    setShowFormation4231Away(
+      storedState.hasOwnProperty("showFormation4231Away")
+        ? storedState.showFormation4231Away
+        : false
+    );
+    setShowFormation442Away(
+      storedState.hasOwnProperty("showFormation442Away")
+        ? storedState.showFormation442Away
+        : false
+    );
+    setShowFormation433Away(
+      storedState.hasOwnProperty("showFormation433Away")
+        ? storedState.showFormation433Away
+        : false
+    );
   }, []);
-
   useEffect(() => {
-    const fetchPlayerAway = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5500/playerAway");
-        setPlayerAway(response.data);
+        const [
+          playerHomeResponse,
+          playerAwayResponse,
+          homeResponse,
+          awayResponse,
+          teamResponse,
+          scoreResponse,
+        ] = await Promise.all([
+          axios.get("http://localhost:5500/playerHome"),
+          axios.get("http://localhost:5500/playerAway"),
+          axios.get("http://localhost:5500/home"),
+          axios.get("http://localhost:5500/away"),
+          axios.get("http://localhost:5500/team"),
+          axios.get("http://localhost:5500/score"),
+        ]);
+
+        setPlayerHome(playerHomeResponse.data);
+        setPlayerAway(playerAwayResponse.data);
+        setHome(homeResponse.data[0]);
+        setAway(awayResponse.data[0]);
+        setOptions(teamResponse.data);
+        setScore(scoreResponse.data[0]);
+        setButtons(playerHomeResponse.data); // Assuming playerHomeResponse and playerAwayResponse have the same structure
+        setButtonsAway(playerAwayResponse.data);
       } catch (error) {
-        console.error("Error fetching player home:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchPlayerAway();
-  }, []);
-
-  React.useEffect(() => {
-    axios.get("http://localhost:5500/home").then((response) => {
-      setHome(response.data[0]);
-    });
-    axios.get("http://localhost:5500/away").then((response) => {
-      setAway(response.data[0]);
-    });
-    axios.get("http://localhost:5500/team").then((response) => {
-      setOptions(response.data);
-    });
-    axios.get("http://localhost:5500/score").then((response) => {
-      setScore(response.data[0]);
-    });
-    axios.get("http://localhost:5500/playerHome").then((response) => {
-      setButtons(response.data);
-    });
-    axios.get("http://localhost:5500/playerAway").then((response) => {
-      setButtonsAway(response.data);
-    });
-  }, []);
-  // if (!team) return null;
+    fetchData();
+  }, []); // This useEffect only runs once on component mount
   if (!score) return null;
   console.log(home[0].name);
 
@@ -697,43 +721,49 @@ export default function Admin() {
     ));
   };
   const handleButtonClick = (formNumber) => {
-    // Toggle the respective form visibility based on the button clicked
+    setShowFormation4231Home(false);
+    setShowFormation442Home(false);
+    setShowFormation433Home(false);
+
     if (formNumber === 1) {
-      setShowFormation442Home(!showFormation442Home);
+      setShowFormation442Home(true);
       setShowForm1(true);
       setShowForm2(false);
       setShowForm3(false);
     } else if (formNumber === 2) {
-      setShowFormation4231Home(!showFormation4231Home);
+      setShowFormation4231Home(true);
       setShowForm1(false);
       setShowForm2(true);
       setShowForm3(false);
     } else if (formNumber === 3) {
-      setShowFormation433Home(!showFormation433Home);
+      setShowFormation433Home(true);
       setShowForm1(false);
       setShowForm2(false);
       setShowForm3(true);
     }
   };
   const handleButtonClickAway = (formNumber) => {
-    // Toggle the respective form visibility based on the button clicked
+    setShowFormation4231Away(false);
+    setShowFormation442Away(false);
+    setShowFormation433Away(false);
     if (formNumber === 1) {
-      setShowFormation442Away(!showFormation442Away);
+      setShowFormation442Away(true);
       setShowForm1Away(true);
       setShowForm2Away(false);
       setShowForm3Away(false);
     } else if (formNumber === 2) {
-      setShowFormation4231Away(!showFormation4231Away);
+      setShowFormation4231Away(true);
       setShowForm1Away(false);
       setShowForm2Away(true);
       setShowForm3Away(false);
     } else if (formNumber === 3) {
-      setShowFormation433Away(!showFormation433Away);
+      setShowFormation433Away(true);
       setShowForm1Away(false);
       setShowForm2Away(false);
       setShowForm3Away(true);
     }
   };
+
   return (
     <Fragment>
       <Navbar />

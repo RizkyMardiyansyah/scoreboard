@@ -103,6 +103,11 @@ export default function Admin() {
       ? localStorage.setItem("showComponent", "3")
       : localStorage.setItem("showComponent", "1");
   };
+  const toggleComponent1 = () => {
+    localStorage.getItem("showComponent") === "1"
+      ? localStorage.setItem("showComponent", "1")
+      : localStorage.setItem("showComponent", "1");
+  };
 
   const toggleComponent2 = () => {
     localStorage.getItem("showComponent") === "2"
@@ -697,38 +702,44 @@ export default function Admin() {
     ));
   };
   const handleButtonClick = (formNumber) => {
+    setShowFormation4231Home(false);
+    setShowFormation442Home(false);
+    setShowFormation433Home(false);
     // Toggle the respective form visibility based on the button clicked
     if (formNumber === 1) {
-      setShowFormation442Home(!showFormation442Home);
+      setShowFormation442Home(true);
       setShowForm1(true);
       setShowForm2(false);
       setShowForm3(false);
     } else if (formNumber === 2) {
-      setShowFormation4231Home(!showFormation4231Home);
+      setShowFormation4231Home(true);
       setShowForm1(false);
       setShowForm2(true);
       setShowForm3(false);
     } else if (formNumber === 3) {
-      setShowFormation433Home(!showFormation433Home);
+      setShowFormation433Home(true);
       setShowForm1(false);
       setShowForm2(false);
       setShowForm3(true);
     }
   };
   const handleButtonClickAway = (formNumber) => {
+    setShowFormation4231Away(false);
+    setShowFormation442Away(false);
+    setShowFormation433Away(false);
     // Toggle the respective form visibility based on the button clicked
     if (formNumber === 1) {
-      setShowFormation442Away(!showFormation442Away);
+      setShowFormation442Away(true);
       setShowForm1Away(true);
       setShowForm2Away(false);
       setShowForm3Away(false);
     } else if (formNumber === 2) {
-      setShowFormation4231Away(!showFormation4231Away);
+      setShowFormation4231Away(true);
       setShowForm1Away(false);
       setShowForm2Away(true);
       setShowForm3Away(false);
     } else if (formNumber === 3) {
-      setShowFormation433Away(!showFormation433Away);
+      setShowFormation433Away(true);
       setShowForm1Away(false);
       setShowForm2Away(false);
       setShowForm3Away(true);
@@ -749,6 +760,12 @@ export default function Admin() {
           <TabPanel className="controlPanel">
             <div className="container flex">
               <div className="flex-auto w-64 ml-10">
+                <button
+                  onClick={toggleComponent1}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                >
+                  Show Scoreboard
+                </button>
                 <button
                   onClick={toggleComponent1Or3}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
@@ -899,19 +916,19 @@ export default function Admin() {
               <div className={`${styles.box1}`}>
                 <h2>Player Home</h2>
                 <button
-                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
                   onClick={() => handleButtonClick(1)}
                 >
                   4-4-2
                 </button>
                 <button
-                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
                   onClick={() => handleButtonClick(2)}
                 >
                   4-2-3-1
                 </button>
                 <button
-                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
                   onClick={() => handleButtonClick(3)}
                 >
                   4-3-3
@@ -932,19 +949,19 @@ export default function Admin() {
               <div className={`${styles.box2}`}>
                 <h2>Player Away</h2>
                 <button
-                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 bg-blue-500 hover:bg-blue-700"
                   onClick={() => handleButtonClickAway(1)}
                 >
                   4-4-2
                 </button>
                 <button
-                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 bg-blue-500 hover:bg-blue-700"
                   onClick={() => handleButtonClickAway(2)}
                 >
                   4-2-3-1
                 </button>
                 <button
-                  className="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 bg-blue-500 hover:bg-blue-700"
                   onClick={() => handleButtonClickAway(3)}
                 >
                   4-3-3

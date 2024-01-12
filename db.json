@@ -1,9 +1,101 @@
 {
+  "auth": [
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kepo12345",
+      "id": 1
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 2
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 3
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 4
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 5
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 6
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 7
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 8
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 9
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 10
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 11
+    },
+    {
+      "email": "",
+      "password": "kurapika404",
+      "id": 12
+    },
+    {
+      "email": "",
+      "password": "kurapika404sars",
+      "id": 13
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 14
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 15
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 16
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 17
+    },
+    {
+      "email": "alamsyahbima22@gmail.com",
+      "password": "kurapika404",
+      "id": 18
+    }
+  ],
   "home": [
     {
       "0": {
-        "name": "Arema FC",
-        "logo": "https://i.ibb.co/bvHpR5v/Arema-FC.png",
+        "name": "Bali United",
+        "logo": "https://i.ibb.co/6tMZdhB/pngegg.png",
         "id": 1
       },
       "id": 1
