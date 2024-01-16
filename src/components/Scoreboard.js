@@ -11,13 +11,13 @@ export default function Scoreboard() {
   const [score, setScore] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:5500/home/1").then((response) => {
+    axios.get("http://localhost:8000/homeTeam").then((response) => {
       setTeam(response.data[0]);
     });
-    axios.get("http://localhost:5500/away/1").then((response) => {
+    axios.get("http://localhost:8000/awayTeam").then((response) => {
       setTeamAway(response.data[0]);
     });
-    axios.get("http://localhost:5500/score").then((response) => {
+    axios.get("http://localhost:8000/score").then((response) => {
       setScore(response.data[0]);
     });
   }, []);

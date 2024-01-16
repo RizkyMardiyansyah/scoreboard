@@ -8,7 +8,7 @@ const Formation4231 = ({ players }) => {
   useEffect(() => {
     const fetchPlayerAway = async () => {
       try {
-        const response = await axios.get("http://localhost:5500/playerAway");
+        const response = await axios.get("http://localhost:8000/playerAway");
         setPlayerAway(response.data);
       } catch (error) {
         console.error("Error fetching player away:", error);
@@ -19,7 +19,7 @@ const Formation4231 = ({ players }) => {
   }, []);
   useEffect(() => {
     axios
-      .get("http://localhost:5500/away")
+      .get("http://localhost:8000/awayTeam")
       .then((response) => {
         setTeamAway(response.data);
       })
@@ -31,7 +31,7 @@ const Formation4231 = ({ players }) => {
     <>
       {teamAway.length > 0 ? (
         <h1 className="text-white text-3xl text-center mt-8">
-          {teamAway[0][0].name} Lineup
+          {teamAway[0].name} Lineup
         </h1>
       ) : (
         <span>Loading...</span>

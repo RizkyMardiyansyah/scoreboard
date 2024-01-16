@@ -27,7 +27,7 @@ const MyComponent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/home")
+      .get("http://localhost:8000/home")
       .then((response) => {
         setTeamHome(response.data);
       })
@@ -38,7 +38,7 @@ const MyComponent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/away")
+      .get("http://localhost:8000/away")
       .then((response) => {
         setTeamAway(response.data);
       })

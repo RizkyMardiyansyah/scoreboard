@@ -9,7 +9,7 @@ const DropdownComponent = () => {
   useEffect(() => {
     // Fetch team dropdown options from the API
     axios
-      .get("http://localhost:5500/team")
+      .get("http://localhost:8000/team")
       .then((response) => {
         setTeamOptions(response.data);
       })
@@ -19,7 +19,7 @@ const DropdownComponent = () => {
 
     // Fetch home data from the API
     axios
-      .get("http://localhost:5500/home")
+      .get("http://localhost:8000/homeTeam")
       .then((response) => {
         setHomeData(response.data);
       })
@@ -27,7 +27,9 @@ const DropdownComponent = () => {
         console.error("Error fetching home data:", error);
       });
   }, []);
+
   console.log(homeData[0]);
+
   const handleSelectChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedTeam(selectedValue);
@@ -41,21 +43,24 @@ const DropdownComponent = () => {
         {
           name: selectedTeamData.name,
           logo: selectedTeamData.logo,
-          id: 1, // Set the appropriate ID for the home data
         },
       ];
 
       // Update the homeData state
       setHomeData(updatedHomeData);
+      console.log(updatedHomeData[0]);
 
       // Update the /home endpoint with the new data
       axios
-        .put("http://localhost:5500/home/1", updatedHomeData)
+        .put(
+          "http://localhost:8000/homeTeam/65a4c43b781814cf4206a691",
+          updatedHomeData[0]
+        )
         .then((response) => {
           console.log(response.data.message);
         })
         .catch((error) => {
-          console.error("Error updating /home endpoint:", error);
+          console.error("Error updating", error);
         });
     }
   };
@@ -71,15 +76,6 @@ const DropdownComponent = () => {
           </option>
         ))}
       </select>
-
-      {/* <h2>Home Data</h2>
-      <ul>
-        {homeData.map((home) => (
-          <li key={home.id}>
-            {home.name} - {home.logo}
-          </li>
-        ))}
-      </ul> */}
     </div>
   );
 };

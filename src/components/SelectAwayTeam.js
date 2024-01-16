@@ -9,7 +9,7 @@ const DropdownComponent = () => {
   useEffect(() => {
     // Fetch team dropdown options from the API
     axios
-      .get("http://localhost:5500/team")
+      .get("http://localhost:8000/team")
       .then((response) => {
         setTeamOptions(response.data);
       })
@@ -19,7 +19,7 @@ const DropdownComponent = () => {
 
     // Fetch home data from the API
     axios
-      .get("http://localhost:5500/away")
+      .get("http://localhost:8000/awayTeam")
       .then((response) => {
         setHomeData(response.data);
       })
@@ -41,7 +41,6 @@ const DropdownComponent = () => {
         {
           name: selectedTeamData.name,
           logo: selectedTeamData.logo,
-          id: 1, // Set the appropriate ID for the home data
         },
       ];
 
@@ -50,7 +49,10 @@ const DropdownComponent = () => {
 
       // Update the /home endpoint with the new data
       axios
-        .put("http://localhost:5500/away/1", updatedHomeData)
+        .put(
+          "http://localhost:8000/awayTeam/65a4cbb0a5c2cc43008bbe79",
+          updatedHomeData[0]
+        )
         .then((response) => {
           console.log(response.data.message);
         })

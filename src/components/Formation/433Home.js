@@ -9,7 +9,7 @@ const FootballFormation = () => {
   useEffect(() => {
     const fetchPlayerHome = async () => {
       try {
-        const response = await axios.get("http://localhost:5500/playerHome");
+        const response = await axios.get("http://localhost:8000/playerHome");
         setPlayerHome(response.data);
       } catch (error) {
         console.error("Error fetching player home:", error);
@@ -23,7 +23,7 @@ const FootballFormation = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/home")
+      .get("http://localhost:8000/homeTeam")
       .then((response) => {
         setTeamHome(response.data);
       })
@@ -36,7 +36,7 @@ const FootballFormation = () => {
     <>
       {teamHome.length > 0 ? (
         <h1 className="text-white text-3xl text-center mt-8">
-          {teamHome[0][0].name} Lineup
+          {teamHome[0].name} Lineup
         </h1>
       ) : (
         <span>Loading...</span>

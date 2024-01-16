@@ -12,10 +12,10 @@ const YellowCard = () => {
   const [buttonsAway, setButtonsAway] = useState([]);
 
   React.useEffect(() => {
-    axios.get("http://localhost:5500/playerHome").then((response) => {
+    axios.get("http://localhost:8000/playerHome").then((response) => {
       setButtons(response.data);
     });
-    axios.get("http://localhost:5500/playerAway").then((response) => {
+    axios.get("http://localhost:8000/playerAway").then((response) => {
       setButtonsAway(response.data);
     });
   }, []);

@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
+import NavbarBeforeLogin from "@/components/NavbarBeforeLogin";
 import Scoreboard from "@/components/Scoreboard";
 import styles from "@/styles/goal.module.css";
 import Lineup433Home from "@/components/Formation/433Home";
@@ -195,7 +196,7 @@ const Page1 = () => {
 
   return (
     <>
-      <Navbar />
+      <NavbarBeforeLogin />
       <div>
         {showComponent1 && <Component1 />}
         {showComponent2 && <Component2 />}

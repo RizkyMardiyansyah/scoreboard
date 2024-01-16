@@ -41,7 +41,7 @@ export default function Admin() {
   useEffect(() => {
     const fetchPlayerHome = async () => {
       try {
-        const response = await axios.get("http://localhost:5500/playerHome");
+        const response = await axios.get("http://localhost:8000/playerHome");
         setPlayerHome(response.data);
       } catch (error) {
         console.error("Error fetching player home:", error);
@@ -54,7 +54,7 @@ export default function Admin() {
   useEffect(() => {
     const fetchPlayerAway = async () => {
       try {
-        const response = await axios.get("http://localhost:5500/playerAway");
+        const response = await axios.get("http://localhost:8000/playerAway");
         setPlayerAway(response.data);
       } catch (error) {
         console.error("Error fetching player home:", error);
@@ -65,36 +65,38 @@ export default function Admin() {
   }, []);
 
   React.useEffect(() => {
-    axios.get("http://localhost:5500/home").then((response) => {
+    axios.get("http://localhost:8000/homeTeam").then((response) => {
       setHome(response.data[0]);
     });
-    axios.get("http://localhost:5500/away").then((response) => {
+    axios.get("http://localhost:8000/awayTeam").then((response) => {
       setAway(response.data[0]);
     });
-    axios.get("http://localhost:5500/team").then((response) => {
+    axios.get("http://localhost:8000/team").then((response) => {
       setOptions(response.data);
     });
-    axios.get("http://localhost:5500/score").then((response) => {
+    axios.get("http://localhost:8000/score").then((response) => {
       setScore(response.data[0]);
     });
-    axios.get("http://localhost:5500/playerHome").then((response) => {
+    axios.get("http://localhost:8000/playerHome").then((response) => {
       setButtons(response.data);
     });
-    axios.get("http://localhost:5500/playerAway").then((response) => {
+    axios.get("http://localhost:8000/playerAway").then((response) => {
       setButtonsAway(response.data);
     });
   }, []);
   // if (!team) return null;
   if (!score) return null;
-  console.log(home[0].name);
+  // console.log(home.name);
 
   function updateScore() {
-    axios.put("http://localhost:5500/score/1", score).then((response) => {
-      Swal.fire({
-        title: `Score updated successfully!`,
-        icon: "success",
+    axios
+      .put("http://localhost:8000/score/65a4e089ba3ad71beb1ed86f", score)
+      .then((response) => {
+        Swal.fire({
+          title: `Score updated successfully!`,
+          icon: "success",
+        });
       });
-    });
   }
 
   const toggleComponent1Or3 = () => {
@@ -157,7 +159,7 @@ export default function Admin() {
   const handleSubmit = async () => {
     try {
       const promises = playerHome.map((player) =>
-        axios.put(`http://localhost:5500/playerHome/${player.id}`, player)
+        axios.put(`http://localhost:8000/playerHome/${player._id}`, player)
       );
       await Promise.all(promises);
       Swal.fire({
@@ -177,7 +179,7 @@ export default function Admin() {
   const handleSubmit2 = async () => {
     try {
       const promises = playerAway.map((player) =>
-        axios.put(`http://localhost:5500/playerAway/${player.id}`, player)
+        axios.put(`http://localhost:8000/playerAway/${player._id}`, player)
       );
       await Promise.all(promises);
       // console.log("All players updated successfully!");
@@ -207,7 +209,7 @@ export default function Admin() {
   };
   const renderForms442 = () => {
     return playerHome.map((player, index) => (
-      <div key={player.id}>
+      <div key={player._id}>
         {index === 0 ? (
           <label
             htmlFor={`playerName${index}`}
@@ -855,7 +857,7 @@ export default function Admin() {
               />
             </div>
           </TabPanel>
-          <TabPanel className="updateTeamScore">
+          <TabPanel className="updateTeam&Score">
             <div className="bg-slate-300 flex h-screen">
               <div className="mr-3">
                 <SelectHomeTeam />
@@ -870,7 +872,7 @@ export default function Admin() {
                   htmlFor="price"
                   className="block text-sm font-medium leading-6 text-black"
                 >
-                  {home[0].name}
+                  {home.name}
                 </label>
                 <div className="relative mt-2 rounded-md shadow-sm">
                   <input
@@ -888,7 +890,7 @@ export default function Admin() {
                   htmlFor="price"
                   className="block text-sm font-medium leading-6 text-black"
                 >
-                  {away[0].name}
+                  {away.name}
                 </label>
                 <div className="relative mt-2 rounded-md shadow-sm">
                   <input

@@ -6,7 +6,7 @@ const ImageComponent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5500/team") // Replace with your API endpoint
+      .get("http://localhost:8000/team") // Replace with your API endpoint
       .then((response) => {
         setImageData(response.data[1]);
       })
