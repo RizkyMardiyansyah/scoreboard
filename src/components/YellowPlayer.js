@@ -9,10 +9,10 @@ const MyComponent = () => {
 
   useEffect(() => {
     // Fetch button names from the API
-    axios.get("http://localhost:5500/playerHome").then((response) => {
+    axios.get("http://localhost:8000/playerHome").then((response) => {
       setButtons(response.data);
     });
-    axios.get("http://localhost:5500/playerAway").then((response) => {
+    axios.get("http://localhost:8000/playerAway").then((response) => {
       setButtonsAway(response.data);
     });
   }, []);
@@ -27,7 +27,7 @@ const MyComponent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/home")
+      .get("http://localhost:8000/homeTeam")
       .then((response) => {
         setTeamHome(response.data);
       })
@@ -38,7 +38,7 @@ const MyComponent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/away")
+      .get("http://localhost:8000/awayTeam")
       .then((response) => {
         setTeamAway(response.data);
       })
@@ -47,13 +47,15 @@ const MyComponent = () => {
       });
   }, []);
 
+  console.log(teamHome);
+
   return (
     <>
       <div className="container">
         <div className="box">
           {teamHome.length > 0 ? (
             <h1 className="text-black text-xl text-center mt-8">
-              {teamHome[0][0].name}
+              {teamHome[0].name}
             </h1>
           ) : (
             <span>Loading...</span>
@@ -73,7 +75,7 @@ const MyComponent = () => {
         <div className="box">
           {teamAway.length > 0 ? (
             <h3 className="text-black text-xl text-center mt-8">
-              {teamAway[0][0].name}
+              {teamAway[0].name}
             </h3>
           ) : (
             <span>Loading...</span>

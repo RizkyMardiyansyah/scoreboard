@@ -5,8 +5,17 @@ import io from "socket.io-client";
 const socket = io("http://localhost:8000"); // Update with your Socket.IO server URL and port
 
 export function MyStopwatch() {
+  // Retrieve the initial timer state from localStorage
+  const initialState = JSON.parse(localStorage.getItem("timerState")) || {
+    totalSeconds: 0,
+    isRunning: false,
+  };
+
   const { totalSeconds, seconds, minutes, isRunning, start, pause, reset } =
-    useStopwatch({ autoStart: false });
+    useStopwatch({
+      autoStart: initialState.isRunning,
+      initialTimestamp: initialState.totalSeconds * 1000,
+    });
 
   useEffect(() => {
     socket.on("start", () => {
@@ -17,11 +26,20 @@ export function MyStopwatch() {
       pause();
     });
 
+    // Cleanup: Remove event listeners when component unmounts
     return () => {
       socket.off("start");
       socket.off("stop");
     };
   }, [start, pause]);
+
+  // Store the current timer state in localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem(
+      "timerState",
+      JSON.stringify({ totalSeconds, isRunning })
+    );
+  }, [totalSeconds, isRunning]);
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -48,7 +66,7 @@ export function MyStopwatch() {
       <button
         style={{ color: "white" }}
         onClick={() => {
-          socket.emit("stop"); // Ensure timer is stopped on all clients
+          socket.emit("stop");
           reset();
         }}
       >

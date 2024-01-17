@@ -15,7 +15,7 @@ import Image from "next/image";
 import YellowCard from "@/components/YellowCard";
 import RedCard from "@/components/RedCard";
 
-const Page1 = () => {
+const Page1 = (isAuthenticated) => {
   const [showComponent1, setShowComponent1] = useState(false);
   const [showComponent2, setShowComponent2] = useState(false);
   const [showComponent3, setShowComponent3] = useState(false);
@@ -196,7 +196,7 @@ const Page1 = () => {
 
   return (
     <>
-      <NavbarBeforeLogin />
+      <Navbar isAuthenticated={isAuthenticated} />
       <div>
         {showComponent1 && <Component1 />}
         {showComponent2 && <Component2 />}

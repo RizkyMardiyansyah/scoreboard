@@ -1,6 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { useHistory } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 const navigation = [
   { name: "Dashboard", href: "/", current: true },
@@ -13,7 +17,27 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+const Navbar = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogout = () => {
+    // Clear the token from localStorage and cookies
+    localStorage.removeItem("token");
+    Cookies.remove("token");
+
+    // Update isAuthenticated state
+    setIsAuthenticated(false);
+
+    // Redirect to the login page
+    window.location.href = "/";
+  };
+
+  useEffect(() => {
+    // Check for the presence of the token
+    const token = localStorage.getItem("token") || Cookies.get("token");
+    setIsAuthenticated(!!token);
+  }, []); // Run this effect only once after component mount
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -61,17 +85,22 @@ export default function Example() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-
+                {isAuthenticated ? (
+                  <>
+                    <button
+                      onClick={handleLogout}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    <Link href="/login">Login</Link>
+                  </button>
+                )}
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
+                {/* <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="absolute -inset-1.5" />
@@ -134,7 +163,7 @@ export default function Example() {
                       </Menu.Item>
                     </Menu.Items>
                   </Transition>
-                </Menu>
+                </Menu> */}
               </div>
             </div>
           </div>
@@ -163,4 +192,5 @@ export default function Example() {
       )}
     </Disclosure>
   );
-}
+};
+export default Navbar;

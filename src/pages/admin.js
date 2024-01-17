@@ -12,8 +12,13 @@ import styles from "@/pages/adminFormation.module.css";
 import YellowPlayer from "@/components/YellowPlayer";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import Timer from "@/components/Timer";
+import withAuth from "../components/withAuth";
 
-export default function Admin() {
+// const Admin = () =>{
+
+// }
+const Admin = (isAuthenticated) => {
   const [options, setOptions] = useState([]);
   const [score, setScore] = useState(null);
   const [buttons, setButtons] = useState([]);
@@ -749,7 +754,7 @@ export default function Admin() {
   };
   return (
     <Fragment>
-      <Navbar />
+      <Navbar isAuthenticated={isAuthenticated} />
 
       <div className="bg-slate-300">
         <Tabs>
@@ -762,6 +767,7 @@ export default function Admin() {
           <TabPanel className="controlPanel">
             <div className="container flex">
               <div className="flex-auto w-64 ml-10">
+                <Timer />
                 <button
                   onClick={toggleComponent1}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
@@ -985,4 +991,5 @@ export default function Admin() {
       </div>
     </Fragment>
   );
-}
+};
+export default withAuth(Admin);
