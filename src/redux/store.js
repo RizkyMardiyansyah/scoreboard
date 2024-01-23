@@ -1,11 +1,7 @@
 // store.js
-
 import { createStore } from "redux";
-import rootReducer from "./reducers"; // Your combined reducers
+import stopwatchReducer from "./reducers/reducer";
 
-const store = createStore(
-  rootReducer
-  // Apply middleware if needed
-);
+const store = createStore(stopwatchReducer);
 
 export default store;

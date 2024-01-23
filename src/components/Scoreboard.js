@@ -1,6 +1,6 @@
 "use client";
 import { Fragment } from "react";
-import Timer from "./Timer";
+import Timer from "./test/timer3";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -34,26 +34,43 @@ export default function Scoreboard() {
   const day = currentDate.getDate();
   return (
     <Fragment>
-      <div className="flex items-center justify-center mt-10">
-        <p className="text-white text-3xl">Date: {`${day}/${month}/${year}`}</p>
-      </div>
-      <div class="scoreboard">
-        <div class="team">
-          <div>
-            <Image src={team.logo} width={512} height={512} />
+      <div className="border border-slate-900 mt-10 p-4 rounded-md bg-[#2f2f2f] ">
+        <div class="flex justify-around mt-10">
+          <div className="text-white text-center">
+            <Image src={team.logo} width={200} height={200} />
+            {team.name}
           </div>
-          {/* <h2>{team.name}</h2> */}
-          <p id="teamAScore">{score.home}</p>
+          <div className="text-white">
+            <div className="text-white">
+              <Image
+                src="https://i.ibb.co/n7XgrJd/BRI-Liga-1-Indonesia.png"
+                width={200}
+                height={200}
+              />
+            </div>
+          </div>
+          <div className="text-white text-center mt-5">
+            <Image src={teamAway.logo} width={200} height={200} />{" "}
+            {teamAway.name}
+          </div>
         </div>
 
-        <Timer />
-
-        <div class="teamb">
-          <div>
-            <Image src={teamAway.logo} width={512} height={512} />
+        <div class="flex justify-around mt-8">
+          <div className="text-6xl text-white text-center">
+            <p className="teamAScore ml-8">{score.home}</p>
           </div>
-          {/* <h2>{teamAway.name}</h2> */}
-          <p id="teamBScore">{score.away}</p>
+          <div className="text-white">
+            <Timer />
+          </div>
+          <div className="text-6xl text-white">
+            <p className="teamBScore mr-10">{score.away}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-center absolute bottom-0 w-full mb-4 text-white">
+        <div className="text-center">
+          <p>AFC Asian Cup</p>
         </div>
       </div>
     </Fragment>

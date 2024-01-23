@@ -17,12 +17,12 @@ const MyComponent = () => {
     });
   }, []);
 
-  const handleButtonClick = (buttonName) => {
-    // Handle button click logic
-    console.log(`Button "${buttonName}" clicked`);
+  const handleButtonClick = (buttonData) => {
+    console.log(`Button "${buttonData.no}" clicked`);
+    console.log(`Button "${buttonData.name}" clicked`);
 
-    // Save the clicked button name to local storage
-    localStorage.setItem("clickedButton", buttonName);
+    localStorage.setItem("clickedButton", JSON.stringify(buttonData.name));
+    localStorage.setItem("clickedButton2", JSON.stringify(buttonData.no));
   };
 
   useEffect(() => {
@@ -61,11 +61,8 @@ const MyComponent = () => {
             <span>Loading...</span>
           )}
           <div className="buttons">
-            {buttons.map((button) => (
-              <button
-                key={button.id}
-                onClick={() => handleButtonClick(button.name)}
-              >
+            {buttons.slice(0, 11).map((button) => (
+              <button key={button.id} onClick={() => handleButtonClick(button)}>
                 {button.name}
               </button>
             ))}
@@ -81,11 +78,8 @@ const MyComponent = () => {
             <span>Loading...</span>
           )}
           <div className="buttons">
-            {buttonsAway.map((button) => (
-              <button
-                key={button.id}
-                onClick={() => handleButtonClick(button.name)}
-              >
+            {buttonsAway.slice(0, 11).map((button) => (
+              <button key={button.id} onClick={() => handleButtonClick(button)}>
                 {button.name}
               </button>
             ))}

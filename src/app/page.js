@@ -14,6 +14,7 @@ import Goal from "@/components/Goal";
 import Image from "next/image";
 import YellowCard from "@/components/YellowCard";
 import RedCard from "@/components/RedCard";
+import Timer from "@/components/test/Timer2";
 
 const Page1 = (isAuthenticated) => {
   const [showComponent1, setShowComponent1] = useState(false);
@@ -197,6 +198,7 @@ const Page1 = (isAuthenticated) => {
   return (
     <>
       <Navbar isAuthenticated={isAuthenticated} />
+      {/* <Timer /> */}
       <div>
         {showComponent1 && <Component1 />}
         {showComponent2 && <Component2 />}
@@ -214,7 +216,11 @@ const Page1 = (isAuthenticated) => {
 };
 
 const Component1 = () => {
-  return <Scoreboard />;
+  return (
+    <>
+      <Scoreboard />;
+    </>
+  );
 };
 
 const Component3 = () => {

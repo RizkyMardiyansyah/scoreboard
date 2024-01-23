@@ -1,85 +1,76 @@
-import React, { useEffect } from "react";
-import { useStopwatch } from "react-timer-hook";
-import io from "socket.io-client";
+// Stopwatch.js
+import React from "react";
+import { connect } from "react-redux";
+import {
+  startStopwatch,
+  pauseStopwatch,
+  resetStopwatch,
+  updateStopwatchTime,
+} from "../../redux/action/action";
 
-const socket = io("http://localhost:8000"); // Update with your Socket.IO server URL and port
-
-export function MyStopwatch() {
-  // Retrieve the initial timer state from localStorage
-  const initialState = JSON.parse(localStorage.getItem("timerState")) || {
-    totalSeconds: 0,
-    isRunning: false,
+const Stopwatch = ({
+  isRunning,
+  time,
+  startStopwatch,
+  pauseStopwatch,
+  resetStopwatch,
+  updateStopwatchTime,
+}) => {
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
   };
 
-  const { totalSeconds, seconds, minutes, isRunning, start, pause, reset } =
-    useStopwatch({
-      autoStart: initialState.isRunning,
-      initialTimestamp: initialState.totalSeconds * 1000,
-    });
+  const handleStart = () => {
+    startStopwatch();
+    // Add any necessary logic to handle timer start
+  };
 
-  useEffect(() => {
-    socket.on("start", () => {
-      start();
-    });
+  const handlePause = () => {
+    pauseStopwatch();
+    // Add any necessary logic to handle timer pause
+  };
 
-    socket.on("stop", () => {
-      pause();
-    });
-
-    // Cleanup: Remove event listeners when component unmounts
-    return () => {
-      socket.off("start");
-      socket.off("stop");
-    };
-  }, [start, pause]);
-
-  // Store the current timer state in localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem(
-      "timerState",
-      JSON.stringify({ totalSeconds, isRunning })
-    );
-  }, [totalSeconds, isRunning]);
+  const handleReset = () => {
+    resetStopwatch();
+    // Add any necessary logic to handle timer reset
+  };
 
   return (
     <div style={{ textAlign: "center" }}>
       <div id="reset-btn" style={{ fontSize: "70px", color: "white" }}>
-        <span>{minutes}</span>:<span>{seconds}</span>
+        <span>{formatTime(time)}</span>
       </div>
-
-      <button
-        style={{ color: "white" }}
-        onClick={() => {
-          socket.emit("start");
-        }}
-      >
-        Start
-      </button>
-      <button
-        style={{ color: "white" }}
-        onClick={() => {
-          socket.emit("stop");
-        }}
-      >
-        Pause
-      </button>
-      <button
-        style={{ color: "white" }}
-        onClick={() => {
-          socket.emit("stop");
-          reset();
-        }}
-      >
+      {!isRunning ? (
+        <button style={{ color: "white" }} onClick={handleStart}>
+          Start
+        </button>
+      ) : (
+        <button style={{ color: "white" }} onClick={handlePause}>
+          Pause
+        </button>
+      )}
+      <button style={{ color: "white" }} onClick={handleReset}>
         Reset
       </button>
     </div>
   );
-}
+};
 
-export default function Timer() {
-  return (
-    <div>
-      <MyStopwatch />
-    </div>
-  );
-}
+const mapStateToProps = (state) => ({
+  isRunning: state.isRunning,
+  time: state.time,
+});
+
+const mapDispatchToProps = {
+  startStopwatch,
+  pauseStopwatch,
+  resetStopwatch,
+  updateStopwatchTime,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Stopwatch);
