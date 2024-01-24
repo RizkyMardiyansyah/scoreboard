@@ -12,11 +12,12 @@ import styles from "@/pages/adminFormation.module.css";
 import YellowPlayer from "@/components/YellowPlayer";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
-// import Timer from "@/components/test/Timer2";
+import TimerButton from "@/components/test/timerButton";
 import withAuth from "../components/withAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import DropdownButton from "../components/Dropdown";
+import Image from "next/image";
 
 // const Admin = () =>{
 
@@ -49,7 +50,6 @@ const Admin = (isAuthenticated) => {
   const [selectedFormation, setSelectedFormation] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(true);
   const [data, setData] = useState(null);
-  const [coachName, setCoachName] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -195,8 +195,8 @@ const Admin = (isAuthenticated) => {
 
     if (result.isConfirmed) {
       try {
-        const promises = playerHome.map((player) =>
-          axios.put(`http://localhost:8000/playerHome/${player._id}`, player)
+        const promises = playerHome.map(({ _id, name, no }) =>
+          axios.put(`http://localhost:8000/playerHome/${_id}`, { name, no })
         );
         await Promise.all(promises);
         Swal.fire({
@@ -308,7 +308,6 @@ const Admin = (isAuthenticated) => {
         "S9",
         "S10",
         "S11",
-        "Coach",
       ];
       return positions[index] || "";
     };
@@ -352,6 +351,39 @@ const Admin = (isAuthenticated) => {
       }
     };
 
+    const handleFileChange = async (e, index) => {
+      try {
+        const newPlayerHome = [...playerHome];
+        const file = e.target.files[0];
+
+        // You may want to perform additional checks on the file, e.g., size, type, etc.
+
+        // Update the corresponding player's photo property
+        newPlayerHome[index].photo = file;
+
+        // Update the state with the new array
+        setPlayerHome(newPlayerHome);
+
+        // Prepare FormData to send the file to the server
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Make a PUT request to update the player's photo on the server
+        await axios.put(
+          `http://localhost:8000/playerHome/${newPlayerHome[index]._id}/photo`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error handling file change:", error);
+      }
+    };
+    // console.log("Player Photo:", playerHome[15].photo);
+
     return (
       <table className="table-auto w-full bg-slate-300">
         <thead>
@@ -365,6 +397,7 @@ const Admin = (isAuthenticated) => {
         </thead>
         <tbody>
           {playerHome.map((player, index) => (
+            // console.log("Player Photo:", player.photo);
             <tr key={player.id}>
               <td className="px-4 py-2">{getPlayerPosition(index)}</td>
               <td className="px-4 py-2">
@@ -388,13 +421,29 @@ const Admin = (isAuthenticated) => {
                 </div>
               </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileChange(e, index)}
-                    className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
+                {player.photo ? (
+                  <>
+                    {/* Log the data for inspection */}
+                    {console.log("Player Photo:", player.photo)}
+
+                    {/* Render the image using a standard img tag */}
+                    <Image
+                      src={`http://localhost:8000/playerHome/${player._id}/photo`}
+                      alt={`Player ${player.name}`}
+                      width={100} // Specify the desired width
+                      height={100} // Specify the desired height
+                      className="rounded-full"
+                    />
+                  </>
+                ) : (
+                  <div className="relative mt-2 rounded-md shadow-sm">
+                    <input
+                      type="file"
+                      onChange={(e) => handleFileChange(e, index)}
+                      className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                )}
               </td>
               <td className="px-4 py-2">
                 <button
@@ -892,14 +941,47 @@ const Admin = (isAuthenticated) => {
     // Handle form submission
     console.log("Selected Formation:", selectedFormation);
   };
+  const newPlayer = {
+    name: "",
+    no: "",
+
+    photo: null, // Assuming you want to upload a photo
+  };
 
   const createPlayer = async (newPlayer) => {
     try {
-      // Create the new player
+      if (!newPlayer) {
+        console.error("Error creating player: 'newPlayer' is undefined.");
+        return;
+      }
+
+      // Ensure that 'name' and 'no' properties are present
+      // if (!newPlayer.name || !newPlayer.no) {
+      //   console.error(
+      //     "Error creating player: 'name' and 'no' are required properties."
+      //   );
+      //   return;
+      // }
+
+      // Create a new FormData object
+      const formData = new FormData();
+
+      // Append key-value pairs to the FormData object
+      formData.append("name", newPlayer.name);
+      formData.append("no", newPlayer.no);
+      formData.append("Position", newPlayer.Position || "");
+
+      // If there's a photo, append it to FormData
+      if (newPlayer.photo) {
+        formData.append("file", newPlayer.photo);
+      }
+
+      // Make a POST request using Axios
       const response = await axios.post(
         "http://localhost:8000/playerHome",
-        newPlayer
+        formData
       );
+
       const createdPlayer = response.data;
 
       // Fetch the updated list of players
@@ -910,15 +992,11 @@ const Admin = (isAuthenticated) => {
 
       // Update state with the new list of players
       setPlayerHome(updatedPlayers);
-
-      // Now you can safely delete the created player
-      await axios.delete(
-        `http://localhost:8000/playerHome/${createdPlayer._id}`
-      );
     } catch (error) {
       console.error("Error creating player:", error);
     }
   };
+
   // console.log(coachName);
 
   return (
@@ -994,7 +1072,7 @@ const Admin = (isAuthenticated) => {
 
                     <button
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                      onClick={() => createPlayer()}
+                      onClick={() => createPlayer(newPlayer)}
                     >
                       Add Player
                     </button>
@@ -1039,7 +1117,6 @@ const Admin = (isAuthenticated) => {
           <TabPanel className="controlPanel">
             <div className="container flex">
               <div className="flex-auto w-64 ml-10">
-                {/* <Timer /> */}
                 <button
                   onClick={toggleComponent1}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
@@ -1069,6 +1146,7 @@ const Admin = (isAuthenticated) => {
                   {showRedPlayer ? "Hide Red Player" : "Show Red Card"}
                 </button>
               </div>
+
               <div className="flex-auto w-32">
                 {showFormation4231Home && (
                   <button
@@ -1121,6 +1199,7 @@ const Admin = (isAuthenticated) => {
                 )}
               </div>
             </div>
+            <TimerButton />
             {/* <YellowPlayer /> */}
             {showGoalPlayer && <YellowPlayer />}
             {showYellowPlayer && <YellowPlayer />}

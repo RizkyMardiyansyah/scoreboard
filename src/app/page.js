@@ -14,7 +14,7 @@ import Goal from "@/components/Goal";
 import Image from "next/image";
 import YellowCard from "@/components/YellowCard";
 import RedCard from "@/components/RedCard";
-// import Timer from "@/components/test/Timer2";
+import Timer from "@/components/test/timer3";
 
 const Page1 = (isAuthenticated) => {
   const [showComponent1, setShowComponent1] = useState(false);
@@ -166,21 +166,43 @@ const Page1 = (isAuthenticated) => {
     };
   }, []);
 
+  useEffect(() => {
+    // Apply styles to hide scroll when the component mounts
+    document.body.style.overflow = "hidden";
+
+    // Clean up the styles when the component unmounts
+    return () => {
+      document.body.style.overflow = "visible";
+    };
+  }, []); // Empty dependency array ensures the effect runs only once on mount
+
   return (
     <>
-      <Navbar isAuthenticated={isAuthenticated} />
-      {/* <Timer /> */}
-      <div>
-        {showComponent1 && <Component1 />}
-        {showComponent2 && <Component2 />}
-        {showComponent3 && <Component3 />}
-        {showComponent4 && <Component4 />}
-        {showComponent5 && <Component5 />}
-        {showComponent6 && <Component6 />}
-        {showComponent7 && <Component7 />}
-        {showComponent8 && <Component8 />}
-        {showComponent9 && <Component9 />}
-        {showComponent10 && <Component10 />}
+      {/* <Navbar isAuthenticated={isAuthenticated} /> */}
+      <div className="flex h-screen">
+        <div className="w-1/4 bg-[#2f2f2f] flex items-center justify-center">
+          <div className="text-white">
+            <Timer />
+          </div>
+        </div>
+        <div className="flex-1 bg-red-500 flex flex-col items-center justify-center">
+          <div className="mt-3 text-3xl">BRI Liga 1</div>
+          <div className="mt-auto w-full ">
+            {showComponent1 && <Component1 />}
+            {showComponent2 && <Component2 />}
+            {showComponent3 && <Component3 />}
+            {showComponent4 && <Component4 />}
+            {showComponent5 && <Component5 />}
+            {showComponent6 && <Component6 />}
+            {showComponent7 && <Component7 />}
+            {showComponent8 && <Component8 />}
+            {showComponent9 && <Component9 />}
+            {showComponent10 && <Component10 />}
+          </div>
+          <div className="mt-auto mb-4 text-center ">
+            <p>AFC Asian Cup</p>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -1,5 +1,3 @@
-// FootballFormation.js
-
 import React from "react";
 import styles from "@/styles/goal.module.css";
 import yellowcard from "@/assets/yellow-card.gif";

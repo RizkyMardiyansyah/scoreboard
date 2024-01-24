@@ -61,21 +61,30 @@ const Stopwatch = () => {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <div id="reset-btn" style={{ fontSize: "70px", color: "white" }}>
+      <div id="reset-btn" style={{ fontSize: "70px" }}>
         <span>{formatTime(time)}</span>
       </div>
-      {/* {!isRunning ? (
-        <button style={{ color: "white" }} onClick={startTimer}>
+      {!isRunning ? (
+        <button
+          onClick={startTimer}
+          className=" text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
+        >
           Start
         </button>
       ) : (
-        <button style={{ color: "white" }} onClick={pauseTimer}>
+        <button
+          className=" text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
+          onClick={pauseTimer}
+        >
           Pause
         </button>
       )}
-      <button style={{ color: "white" }} onClick={resetTimer}>
+      <button
+        onClick={resetTimer}
+        className=" text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
+      >
         Reset
-      </button> */}
+      </button>
     </div>
   );
 };
