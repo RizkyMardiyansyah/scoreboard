@@ -1,6 +1,6 @@
 "use client";
 import { Fragment } from "react";
-import Timer from "./test/timer3";
+import Timer from "../components/test/timer3";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Image from "next/image";

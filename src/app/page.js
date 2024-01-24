@@ -14,7 +14,7 @@ import Goal from "@/components/Goal";
 import Image from "next/image";
 import YellowCard from "@/components/YellowCard";
 import RedCard from "@/components/RedCard";
-import Timer from "@/components/test/Timer2";
+// import Timer from "@/components/test/Timer2";
 
 const Page1 = (isAuthenticated) => {
   const [showComponent1, setShowComponent1] = useState(false);
@@ -152,48 +152,19 @@ const Page1 = (isAuthenticated) => {
       localStorage.setItem("showComponent", "1");
     }
 
-    window.addEventListener("storage", () => {
-      window.location.reload();
-    });
+    const handleStorageChange = (event) => {
+      // Check if the change is related to the specific key you want to ignore
+      if (event.key !== "stopwatchTime") {
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
 
     return () => {
-      window.removeEventListener("storage", () => {
-        window.location.reload();
-      });
+      window.removeEventListener("storage", handleStorageChange);
     };
   }, []);
-
-  // const toggleComponent1Or3 = () => {
-  //   if (showComponent1) {
-  //     setShowComponent1(false);
-  //     setShowComponent3(true);
-  //     localStorage.setItem("showComponent", "3");
-  //   } else {
-  //     setShowComponent1(true);
-  //     setShowComponent3(false);
-  //     localStorage.setItem("showComponent", "1");
-  //   }
-  // };
-
-  // const toggleComponent2 = () => {
-  //   if (showComponent2) {
-  //     setShowComponent2(false);
-  //     if (showComponent1) {
-  //       setShowComponent1(true);
-  //       setShowComponent3(false);
-  //       localStorage.setItem("showComponent", "1");
-  //     } else {
-  //       setShowComponent3(true);
-  //       setShowComponent1(false);
-  //       localStorage.setItem("showComponent", "3");
-  //     }
-  //   } else {
-  //     setShowComponent2(true);
-  //     setShowComponent1(false);
-  //     setShowComponent3(false);
-  //     localStorage.setItem("showComponent", "2");
-  //   }
-  // };
 
   return (
     <>
