@@ -46,8 +46,11 @@ export default function Scoreboard() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1; // Month is zero-based
   const day = currentDate.getDate();
+  const lines = score.massageHome.split("\n");
+  const linesAway = score.massageAway.split("\n");
   return (
     <Fragment>
+      {/* score bawah */}
       {/* <div className="">
         <div class="flex justify-around">
           <div className="text-white text-center hometeam">
@@ -82,27 +85,46 @@ export default function Scoreboard() {
         </div>
       </div> */}
 
+      {/* score nyamping */}
       <div className="">
         <div class="flex justify-around">
           <div className="text-white text-center hometeam">
             <Image src={team.logo} width={200} height={200} />
           </div>
 
-          <div className="text-9xl text-white text-center">
-            <p className="teamAScore mt-5">{score.home}</p>
+          <div className="text-white">
+            <p className="text-9xl teamAScore mt-5">{score.home}</p>
           </div>
 
-          <div className="text-9xl text-white text-center">
-            <p className="teamAScore mt-5">:</p>
+          <div className="text-white">
+            <p className="text-9xl teamAScore mt-4">:</p>
           </div>
 
-          <div className="text-9xl text-white">
-            <p className="teamBScore mt-5">{score.away}</p>
+          <div className=" text-white">
+            <p className="text-9xl teamBScore mt-5">{score.away}</p>
           </div>
 
           <div className="text-white text-center awayteam">
             <Image src={teamAway.logo} width={200} height={200} />{" "}
           </div>
+        </div>
+      </div>
+
+      <div className="text-white flex justify-evenly mt-5">
+        <div>
+          {lines.map((line, index) => (
+            <p key={index} className="text-5xl mt-5">
+              {line}
+            </p>
+          ))}
+        </div>
+
+        <div>
+          {linesAway.map((line, index) => (
+            <p key={index} className="text-5xl mt-5">
+              {line}
+            </p>
+          ))}
         </div>
       </div>
     </Fragment>

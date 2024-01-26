@@ -21,8 +21,11 @@ const MyComponent = () => {
     console.log(`Button "${buttonData.no}" clicked`);
     console.log(`Button "${buttonData.name}" clicked`);
 
-    localStorage.setItem("clickedButton", JSON.stringify(buttonData.name));
-    localStorage.setItem("clickedButton2", JSON.stringify(buttonData.no));
+    localStorage.setItem("clickedButton", buttonData.name);
+    const photoUrl = `http://localhost:8000/playerHome/${buttonData._id}/photo`;
+    // const photoUrlAway = `http://localhost:8000/playerAway/${buttonData._id}/photo`;
+    localStorage.setItem("playerPhotoUrl", photoUrl);
+    // localStorage.setItem("playerPhotoUrlAway", photoUrlAway);
   };
 
   useEffect(() => {

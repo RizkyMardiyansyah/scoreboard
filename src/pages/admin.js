@@ -48,14 +48,30 @@ const Admin = (isAuthenticated) => {
   const [showFormation4231Away, setShowFormation4231Away] = useState(false);
   const [showFormation433Away, setShowFormation433Away] = useState(false);
   const [selectedFormation, setSelectedFormation] = useState(null);
+  const [selectedFormationAway, setSelectedFormationAway] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(true);
+  const [isFormVisibleAway, setIsFormVisibleAway] = useState(true);
   const [data, setData] = useState(null);
+  const [coachAway, setCoachAway] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:8000/coach");
         setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/coach");
+        setCoachAway(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -115,8 +131,9 @@ const Admin = (isAuthenticated) => {
   // console.log(home.name);
 
   function updateScore() {
+    // localStorage.setItem('scoreMessage', score.message);
     axios
-      .put("http://localhost:8000/score/65a4e089ba3ad71beb1ed86f", score)
+      .put("http://localhost:8000/score/65b206baf38e97ebd2175017", score)
       .then((response) => {
         Swal.fire({
           title: `Score updated successfully!`,
@@ -214,23 +231,34 @@ const Admin = (isAuthenticated) => {
     }
   };
 
-  const handleSubmit2 = async () => {
-    try {
-      const promises = playerAway.map((player) =>
-        axios.put(`http://localhost:8000/playerAway/${player._id}`, player)
-      );
-      await Promise.all(promises);
-      // console.log("All players updated successfully!");
-      Swal.fire({
-        title: "All players updated successfully!",
-        icon: "success",
-      });
-    } catch (error) {
-      Swal.fire({
-        title: error,
-        icon: "error",
-      });
-      console.error("Error updating players:", error);
+  const handleSubmitAway = async () => {
+    const result = await Swal.fire({
+      title: "Update All Players?",
+      text: "Are you sure you want to update all players?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, update all players",
+      cancelButtonText: "No, cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const promises = playerAway.map(({ _id, name, no }) =>
+          axios.put(`http://localhost:8000/playerAway/${_id}`, { name, no })
+        );
+        await Promise.all(promises);
+        Swal.fire({
+          title: "All players updated successfully!",
+          icon: "success",
+        });
+        console.log("All players updated successfully!");
+      } catch (error) {
+        Swal.fire({
+          title: `Error updating players ${error}`,
+          icon: "error",
+        });
+        console.error("Error updating players:", error);
+      }
     }
   };
 
@@ -258,10 +286,40 @@ const Admin = (isAuthenticated) => {
     }
   };
 
+  const handleSubmitCoachAway = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Assuming data[0].id exists in your coach data
+      const coachId = coachAway[1]._id;
+
+      const updatedData = {
+        name: coachAway.name,
+      };
+
+      // Make the PUT request to update the coach name
+      await axios.put(`http://localhost:8000/coach/${coachId}`, updatedData);
+
+      // Fetch the latest data after the update
+      const response = await axios.get("http://localhost:8000/coach");
+      setCoachAway(response.data);
+
+      console.log("Coach data saved successfully!");
+    } catch (error) {
+      console.error("Error saving coach data:", error);
+    }
+  };
+
   const handleInputChange = (e, index) => {
     const updatedPlayerHome = [...playerHome];
     updatedPlayerHome[index].name = e.target.value;
     setPlayerHome(updatedPlayerHome);
+  };
+
+  const handleInputChangeAway = (e, index) => {
+    const updatedPlayerAway = [...playerAway];
+    updatedPlayerAway[index].name = e.target.value;
+    setPlayerAway(updatedPlayerAway);
   };
 
   const handleNumberChange = (e, index) => {
@@ -270,8 +328,21 @@ const Admin = (isAuthenticated) => {
     setPlayerHome(updatedPlayerHome);
   };
 
+  const handleNumberChangeAway = (e, index) => {
+    const updatedPlayerAway = [...playerAway];
+    updatedPlayerAway[index].no = e.target.value;
+    setPlayerAway(updatedPlayerAway);
+  };
+
   const handleCoachNameChange = (event) => {
     setData((prevData) => ({
+      ...prevData,
+      name: event.target.value,
+    }));
+  };
+
+  const handleCoachNameChangeAway = (event) => {
+    setCoachAway((prevData) => ({
       ...prevData,
       name: event.target.value,
     }));
@@ -423,15 +494,11 @@ const Admin = (isAuthenticated) => {
               <td className="px-4 py-2">
                 {player.photo ? (
                   <>
-                    {/* Log the data for inspection */}
-                    {console.log("Player Photo:", player.photo)}
-
-                    {/* Render the image using a standard img tag */}
                     <Image
                       src={`http://localhost:8000/playerHome/${player._id}/photo`}
                       alt={`Player ${player.name}`}
-                      width={100} // Specify the desired width
-                      height={100} // Specify the desired height
+                      width={45}
+                      height={45}
                       className="rounded-full"
                     />
                   </>
@@ -488,8 +555,79 @@ const Admin = (isAuthenticated) => {
       ];
       return positions[index] || "";
     };
+    const handleDeleteClick = async (playerId) => {
+      // Show SweetAlert confirmation dialog
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      // If user confirms, proceed with deletion
+      if (confirmation.isConfirmed) {
+        try {
+          // Delete player from the API
+          await axios.delete(`http://localhost:8000/playerHome/${playerId}`);
+
+          // Update state to remove the deleted player
+          setPlayerHome(playerHome.filter((player) => player._id !== playerId));
+
+          // Show success message
+          Swal.fire({
+            title: "Deleted!",
+            text: "The player has been deleted.",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error("Error deleting player:", error);
+          // Show error message
+          Swal.fire({
+            title: "Error!",
+            text: "An error occurred while deleting the player.",
+            icon: "error",
+          });
+        }
+      }
+    };
+
+    const handleFileChange = async (e, index) => {
+      try {
+        const newPlayerHome = [...playerHome];
+        const file = e.target.files[0];
+
+        // You may want to perform additional checks on the file, e.g., size, type, etc.
+
+        // Update the corresponding player's photo property
+        newPlayerHome[index].photo = file;
+
+        // Update the state with the new array
+        setPlayerHome(newPlayerHome);
+
+        // Prepare FormData to send the file to the server
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Make a PUT request to update the player's photo on the server
+        await axios.put(
+          `http://localhost:8000/playerHome/${newPlayerHome[index]._id}/photo`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error handling file change:", error);
+      }
+    };
+    // console.log("Player Photo:", playerHome[15].photo);
+
     return (
-      // <div className="flex justify-center">
       <table className="table-auto w-full bg-slate-300">
         <thead>
           <tr>
@@ -497,10 +635,12 @@ const Admin = (isAuthenticated) => {
             <th className="px-4 py-2">Player Name</th>
             <th className="px-4 py-2">No Punggung</th>
             <th className="px-4 py-2">Photo</th>
+            <th className="px-4 py-2">Delete</th>
           </tr>
         </thead>
         <tbody>
           {playerHome.map((player, index) => (
+            // console.log("Player Photo:", player.photo);
             <tr key={player.id}>
               <td className="px-4 py-2">{getPlayerPosition(index)}</td>
               <td className="px-4 py-2">
@@ -524,19 +664,38 @@ const Admin = (isAuthenticated) => {
                 </div>
               </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileChange(e, index)}
-                    className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
+                {player.photo ? (
+                  <>
+                    <Image
+                      src={`http://localhost:8000/playerHome/${player._id}/photo`}
+                      alt={`Player ${player.name}`}
+                      width={45}
+                      height={45}
+                      className="rounded-full"
+                    />
+                  </>
+                ) : (
+                  <div className="relative mt-2 rounded-md shadow-sm">
+                    <input
+                      type="file"
+                      onChange={(e) => handleFileChange(e, index)}
+                      className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                )}
+              </td>
+              <td className="px-4 py-2">
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                  onClick={() => handleDeleteClick(player._id)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      // </div>
     );
   };
   const renderForms433 = () => {
@@ -568,8 +727,79 @@ const Admin = (isAuthenticated) => {
       ];
       return positions[index] || "";
     };
+    const handleDeleteClick = async (playerId) => {
+      // Show SweetAlert confirmation dialog
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      // If user confirms, proceed with deletion
+      if (confirmation.isConfirmed) {
+        try {
+          // Delete player from the API
+          await axios.delete(`http://localhost:8000/playerHome/${playerId}`);
+
+          // Update state to remove the deleted player
+          setPlayerHome(playerHome.filter((player) => player._id !== playerId));
+
+          // Show success message
+          Swal.fire({
+            title: "Deleted!",
+            text: "The player has been deleted.",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error("Error deleting player:", error);
+          // Show error message
+          Swal.fire({
+            title: "Error!",
+            text: "An error occurred while deleting the player.",
+            icon: "error",
+          });
+        }
+      }
+    };
+
+    const handleFileChange = async (e, index) => {
+      try {
+        const newPlayerHome = [...playerHome];
+        const file = e.target.files[0];
+
+        // You may want to perform additional checks on the file, e.g., size, type, etc.
+
+        // Update the corresponding player's photo property
+        newPlayerHome[index].photo = file;
+
+        // Update the state with the new array
+        setPlayerHome(newPlayerHome);
+
+        // Prepare FormData to send the file to the server
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Make a PUT request to update the player's photo on the server
+        await axios.put(
+          `http://localhost:8000/playerHome/${newPlayerHome[index]._id}/photo`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error handling file change:", error);
+      }
+    };
+    // console.log("Player Photo:", playerHome[15].photo);
+
     return (
-      // <div className="flex justify-center">
       <table className="table-auto w-full bg-slate-300">
         <thead>
           <tr>
@@ -577,10 +807,12 @@ const Admin = (isAuthenticated) => {
             <th className="px-4 py-2">Player Name</th>
             <th className="px-4 py-2">No Punggung</th>
             <th className="px-4 py-2">Photo</th>
+            <th className="px-4 py-2">Delete</th>
           </tr>
         </thead>
         <tbody>
           {playerHome.map((player, index) => (
+            // console.log("Player Photo:", player.photo);
             <tr key={player.id}>
               <td className="px-4 py-2">{getPlayerPosition(index)}</td>
               <td className="px-4 py-2">
@@ -604,98 +836,211 @@ const Admin = (isAuthenticated) => {
                 </div>
               </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileChange(e, index)}
-                    className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
+                {player.photo ? (
+                  <>
+                    <Image
+                      src={`http://localhost:8000/playerHome/${player._id}/photo`}
+                      alt={`Player ${player.name}`}
+                      width={45}
+                      height={45}
+                      className="rounded-full"
+                    />
+                  </>
+                ) : (
+                  <div className="relative mt-2 rounded-md shadow-sm">
+                    <input
+                      type="file"
+                      onChange={(e) => handleFileChange(e, index)}
+                      className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                )}
+              </td>
+              <td className="px-4 py-2">
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                  onClick={() => handleDeleteClick(player._id)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      // </div>
     );
   };
   const renderForms442Away = () => {
-    return playerAway.map((player, index) => (
-      <div key={player.id}>
-        {index === 0 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            GK
-          </label>
-        ) : index === 1 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DL
-          </label>
-        ) : index >= 2 && index <= 3 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DC
-          </label>
-        ) : index === 4 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DR
-          </label>
-        ) : index === 5 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            ML
-          </label>
-        ) : index >= 6 && index <= 7 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            MC
-          </label>
-        ) : index === 8 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            MR
-          </label>
-        ) : index >= 9 && index <= 10 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            ST
-          </label>
-        ) : (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            Player {index + 1} Name
-          </label>
-        )}
-        <div className="relative mt-2 rounded-md shadow-sm">
-          <input
-            type="text"
-            value={player.name}
-            onChange={(e) => handleInputChange2(e, index)}
-            className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-      </div>
-    ));
+    const getPlayerPosition = (index) => {
+      const positions = [
+        "GK",
+        "DL",
+        "DC",
+        "DC",
+        "DR",
+        "ML",
+        "MC",
+        "MC",
+        "MR",
+        "ST",
+        "ST",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+      ];
+      return positions[index] || "";
+    };
+
+    const handleDeleteClick = async (playerId) => {
+      // Show SweetAlert confirmation dialog
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      // If user confirms, proceed with deletion
+      if (confirmation.isConfirmed) {
+        try {
+          // Delete player from the API
+          await axios.delete(`http://localhost:8000/playerAway/${playerId}`);
+
+          // Update state to remove the deleted player
+          setPlayerAway(playerAway.filter((player) => player._id !== playerId));
+
+          // Show success message
+          Swal.fire({
+            title: "Deleted!",
+            text: "The player has been deleted.",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error("Error deleting player:", error);
+          // Show error message
+          Swal.fire({
+            title: "Error!",
+            text: "An error occurred while deleting the player.",
+            icon: "error",
+          });
+        }
+      }
+    };
+
+    const handleFileChange = async (e, index) => {
+      try {
+        const newPlayerAway = [...playerAway];
+        const file = e.target.files[0];
+
+        // You may want to perform additional checks on the file, e.g., size, type, etc.
+
+        // Update the corresponding player's photo property
+        newPlayerAway[index].photo = file;
+
+        // Update the state with the new array
+        setPlayerAway(newPlayerAway);
+
+        // Prepare FormData to send the file to the server
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Make a PUT request to update the player's photo on the server
+        await axios.put(
+          `http://localhost:8000/playerAway/${newPlayerAway[index]._id}/photo`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error handling file change:", error);
+      }
+    };
+    // console.log("Player Photo:", playerHome[15].photo);
+
+    return (
+      <table className="table-auto w-full bg-slate-300">
+        <thead>
+          <tr>
+            <th className="px-4 py-2">Position</th>
+            <th className="px-4 py-2">Player Name</th>
+            <th className="px-4 py-2">No Punggung</th>
+            <th className="px-4 py-2">Photo</th>
+            <th className="px-4 py-2">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {playerAway.map((player, index) => (
+            // console.log("Player Photo:", player.photo);
+            <tr key={player.id}>
+              <td className="px-4 py-2">{getPlayerPosition(index)}</td>
+              <td className="px-4 py-2">
+                <div className="relative mt-2 rounded-md shadow-sm">
+                  <input
+                    type="text"
+                    value={player.name}
+                    onChange={(e) => handleInputChangeAway(e, index)}
+                    className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </td>
+              <td className="px-4 py-2">
+                <div className="relative mt-2 rounded-md shadow-sm">
+                  <input
+                    type="text"
+                    value={player.no}
+                    onChange={(e) => handleNumberChangeAway(e, index)}
+                    className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </td>
+              <td className="px-4 py-2">
+                {player.photo ? (
+                  <>
+                    <Image
+                      src={`http://localhost:8000/playerAway/${player._id}/photo`}
+                      alt={`Player ${player.name}`}
+                      width={45}
+                      height={45}
+                      className="rounded-full"
+                    />
+                  </>
+                ) : (
+                  <div className="relative mt-2 rounded-md shadow-sm">
+                    <input
+                      type="file"
+                      onChange={(e) => handleFileChange(e, index)}
+                      className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                )}
+              </td>
+              <td className="px-4 py-2">
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                  onClick={() => handleDeleteClick(player._id)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   };
   const renderForms4231Away = () => {
     return playerAway.map((player, index) => (
@@ -917,9 +1262,19 @@ const Admin = (isAuthenticated) => {
     setIsFormVisible(true);
   };
 
+  const handleFormationSelectAway = (formation) => {
+    setSelectedFormationAway(formation);
+    setIsFormVisibleAway(true);
+  };
+
   const handleToggleForm = () => {
     // setFormVisibility(!isFormVisible);
     setIsFormVisible((prevIsFormVisible) => !prevIsFormVisible);
+  };
+
+  const handleToggleFormAway = () => {
+    // setFormVisibility(!isFormVisible);
+    setIsFormVisibleAway((prevIsFormVisibleAway) => !prevIsFormVisibleAway);
   };
 
   const renderSelectedForm = () => {
@@ -937,9 +1292,19 @@ const Admin = (isAuthenticated) => {
     return null; // Return null if no formation is selected
   };
 
-  const handleSubmit3 = () => {
-    // Handle form submission
-    console.log("Selected Formation:", selectedFormation);
+  const renderSelectedFormAway = () => {
+    if (!isFormVisibleAway) {
+      return null;
+    }
+
+    if (selectedFormationAway === "4-4-2") {
+      return renderForms442Away();
+    } else if (selectedFormationAway === "4-2-3-1") {
+      return renderForms4231Away();
+    } else if (selectedFormationAway === "4-3-3") {
+      return renderForms433Away();
+    }
+    return null; // Return null if no formation is selected
   };
   const newPlayer = {
     name: "",
@@ -954,14 +1319,6 @@ const Admin = (isAuthenticated) => {
         console.error("Error creating player: 'newPlayer' is undefined.");
         return;
       }
-
-      // Ensure that 'name' and 'no' properties are present
-      // if (!newPlayer.name || !newPlayer.no) {
-      //   console.error(
-      //     "Error creating player: 'name' and 'no' are required properties."
-      //   );
-      //   return;
-      // }
 
       // Create a new FormData object
       const formData = new FormData();
@@ -997,6 +1354,46 @@ const Admin = (isAuthenticated) => {
     }
   };
 
+  const createPlayerAway = async (newPlayer) => {
+    try {
+      if (!newPlayer) {
+        console.error("Error creating player: 'newPlayer' is undefined.");
+        return;
+      }
+
+      // Create a new FormData object
+      const formData = new FormData();
+
+      // Append key-value pairs to the FormData object
+      formData.append("name", newPlayer.name);
+      formData.append("no", newPlayer.no);
+      formData.append("Position", newPlayer.Position || "");
+
+      // If there's a photo, append it to FormData
+      if (newPlayer.photo) {
+        formData.append("file", newPlayer.photo);
+      }
+
+      // Make a POST request using Axios
+      const response = await axios.post(
+        "http://localhost:8000/playerAway",
+        formData
+      );
+
+      const createdPlayer = response.data;
+
+      // Fetch the updated list of players
+      const updatedResponse = await axios.get(
+        "http://localhost:8000/playerAway"
+      );
+      const updatedPlayers = updatedResponse.data;
+
+      // Update state with the new list of players
+      setPlayerAway(updatedPlayers);
+    } catch (error) {
+      console.error("Error creating player:", error);
+    }
+  };
   // console.log(coachName);
 
   return (
@@ -1013,94 +1410,141 @@ const Admin = (isAuthenticated) => {
             <Tab>Formation Away</Tab>
           </TabList>
 
-          <TabPanel>
-            {/* <div className="flex justify-evenly ">
-              <button
-                onClick=""
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                Select All
-              </button>
-              <button
-                onClick=""
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                Unselect All
-              </button>
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-                <FontAwesomeIcon icon={faTrash} className="" />
-              </button>
-              <button
-                onClick=""
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-              >
-                Add Player
-              </button>
-            </div> */}
-            <div className={`${styles.container}`}>
-              <div className={`${styles.box1}`}>
-                <h2>Formation Home</h2>
-                <DropdownButton
-                  options={["4-4-2", "4-2-3-1", "4-3-3"]}
-                  onSelect={handleFormationSelect}
-                  label="Select Formation"
-                />
+          <TabPanel className="test">
+            <div className="flex justify-between">
+              <div className={`${styles.container}`}>
+                <div className={`ml-9`}>
+                  <h2>Formation Home</h2>
+                  <DropdownButton
+                    options={["4-4-2", "4-2-3-1", "4-3-3"]}
+                    onSelect={handleFormationSelect}
+                    label="Select Formation"
+                  />
 
-                <div className="mt-5 ml-5">{renderSelectedForm()}</div>
-                {selectedFormation && isFormVisible && (
-                  <div className="mt-5 ml-5">
-                    <button
-                      onClick={handleToggleForm}
-                      className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
-                    >
-                      Hide Form
-                    </button>
+                  <div className="mt-5">{renderSelectedForm()}</div>
+                  {selectedFormation && isFormVisible && (
+                    <div className="mt-5 ml-5">
+                      <button
+                        onClick={handleToggleForm}
+                        className="mr-4 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
+                      >
+                        Hide Form
+                      </button>
 
-                    <button
-                      onClick={handleSubmit}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                    >
-                      Submit
-                    </button>
+                      <button
+                        onClick={handleSubmit}
+                        className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                      >
+                        Submit
+                      </button>
 
-                    <button
-                      onClick={handleSubmit}
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                    >
-                      Cancel
-                    </button>
+                      <button
+                        onClick={handleSubmit}
+                        className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                      >
+                        Cancel
+                      </button>
 
-                    <button
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                      onClick={() => createPlayer(newPlayer)}
-                    >
-                      Add Player
-                    </button>
+                      <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                        onClick={() => createPlayer(newPlayer)}
+                      >
+                        Add Player
+                      </button>
+                    </div>
+                  )}
+
+                  {data ? (
+                    <div className="mt-5">
+                      <form onSubmit={handleSubmitCoach}>
+                        <label>
+                          Coach:
+                          <input
+                            type="text"
+                            value={data.name || ""}
+                            onChange={handleCoachNameChange}
+                            placeholder={data[0].name}
+                          />
+                          <button type="submit" className="">
+                            Submit
+                          </button>
+                        </label>
+                      </form>
+                    </div>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                  <div className="mt-5">
+                    Coach Name: {data ? data[0].name : "Loading..."}
                   </div>
-                )}
+                </div>
+              </div>
 
-                {data ? (
-                  <div className="ml-4 mt-5">
-                    <form onSubmit={handleSubmitCoach}>
-                      <label>
-                        Coach:
-                        <input
-                          type="text"
-                          value={data.name || ""}
-                          onChange={handleCoachNameChange}
-                          placeholder={data[0].name}
-                        />
-                        <button type="submit" className="">
-                          Submit
-                        </button>
-                      </label>
-                    </form>
+              <div className={`${styles.container}`}>
+                <div className={`mr-9`}>
+                  <h2>Formation Away</h2>
+                  <DropdownButton
+                    options={["4-4-2", "4-2-3-1", "4-3-3"]}
+                    onSelect={handleFormationSelectAway}
+                    label="Select Formation"
+                  />
+
+                  <div className="mt-5">{renderSelectedFormAway()}</div>
+                  {selectedFormationAway && isFormVisibleAway && (
+                    <div className="mt-5">
+                      <button
+                        onClick={handleToggleFormAway}
+                        className="mr-4 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
+                      >
+                        Hide Form
+                      </button>
+
+                      <button
+                        onClick={handleSubmitAway}
+                        className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                      >
+                        Submit
+                      </button>
+
+                      <button
+                        onClick={handleSubmitAway}
+                        className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                      >
+                        Cancel
+                      </button>
+
+                      <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                        onClick={() => createPlayerAway(newPlayer)}
+                      >
+                        Add Player
+                      </button>
+                    </div>
+                  )}
+
+                  {coachAway ? (
+                    <div className="mt-5">
+                      <form onSubmit={handleSubmitCoachAway}>
+                        <label>
+                          Coach:
+                          <input
+                            type="text"
+                            value={coachAway.name || ""}
+                            onChange={handleCoachNameChangeAway}
+                            placeholder={coachAway[1].name}
+                          />
+                          <button type="submit" className="">
+                            Submit
+                          </button>
+                        </label>
+                      </form>
+                    </div>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                  <div className="mt-5">
+                    Coach Name: {coachAway ? coachAway[1].name : "Loading..."}
                   </div>
-                ) : (
-                  <p>Loading...</p>
-                )}
-                <div className="ml-4 mt-5">
-                  Coach Name: {data ? data[0].name : "Loading..."}
                 </div>
               </div>
             </div>
@@ -1242,7 +1686,23 @@ const Admin = (isAuthenticated) => {
                       setScore({ ...score, home: e.target.value })
                     }
                   />
+
+                  <label
+                    for="message"
+                    class="block mb-2 text-sm font-medium text-gray-900"
+                  ></label>
+                  <textarea
+                    id="message"
+                    rows="4"
+                    value={score.massageHome}
+                    onChange={(e) =>
+                      setScore({ ...score, massageHome: e.target.value })
+                    }
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+                    placeholder="Haaland 14'"
+                  ></textarea>
                 </div>
+
                 <label
                   htmlFor="price"
                   className="block text-sm font-medium leading-6 text-black"
@@ -1260,6 +1720,20 @@ const Admin = (isAuthenticated) => {
                       setScore({ ...score, away: e.target.value })
                     }
                   />
+                  <label
+                    for="message"
+                    class="block mb-2 text-sm font-medium text-gray-900"
+                  ></label>
+                  <textarea
+                    id="message"
+                    rows="4"
+                    value={score.massageAway}
+                    onChange={(e) =>
+                      setScore({ ...score, massageAway: e.target.value })
+                    }
+                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+                    placeholder="Haaland 14'"
+                  ></textarea>
                 </div>
                 <button
                   class="my-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -1333,7 +1807,7 @@ const Admin = (isAuthenticated) => {
                 {showForm2Away && renderForms4231Away()}
                 {showForm3Away && renderForms433Away()}
                 <button
-                  onClick={handleSubmit2}
+                  onClick={handleSubmitAway}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                 >
                   Submit
