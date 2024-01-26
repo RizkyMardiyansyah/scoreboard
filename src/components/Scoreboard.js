@@ -46,8 +46,8 @@ export default function Scoreboard() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1; // Month is zero-based
   const day = currentDate.getDate();
-  const lines = score.massageHome.split("\n");
-  const linesAway = score.massageAway.split("\n");
+  // const lines = score.massageHome.split("\n");
+  // const linesAway = score.massageAway.split("\n");
   return (
     <Fragment>
       {/* score bawah */}
@@ -111,19 +111,19 @@ export default function Scoreboard() {
       </div>
 
       <div className="text-white flex justify-evenly mt-5">
-        <div>
-          {lines.map((line, index) => (
-            <p key={index} className="text-5xl mt-5">
-              {line}
-            </p>
+        <div className="text-3xl">
+          {score.messagesHome.map((message, index) => (
+            <div key={index} className="mt-3">
+              {message}
+            </div>
           ))}
         </div>
 
-        <div>
-          {linesAway.map((line, index) => (
-            <p key={index} className="text-5xl mt-5">
-              {line}
-            </p>
+        <div className="text-3xl">
+          {score.messagesAway.map((message, index) => (
+            <div key={index} className="mt-2">
+              {message}
+            </div>
           ))}
         </div>
       </div>

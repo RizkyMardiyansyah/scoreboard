@@ -17,15 +17,26 @@ const MyComponent = () => {
     });
   }, []);
 
-  const handleButtonClick = (buttonData) => {
+  const handleButtonClick = async (buttonData) => {
     console.log(`Button "${buttonData.no}" clicked`);
     console.log(`Button "${buttonData.name}" clicked`);
 
+    try {
+      // Try fetching playerHome URL
+      const response = await axios.get(
+        `http://localhost:8000/playerHome/${buttonData._id}/photo`
+      );
+
+      // If successful (status code 200), use playerHome URL
+      const photoUrl = `http://localhost:8000/playerHome/${buttonData._id}/photo`;
+      localStorage.setItem("playerPhotoUrl", photoUrl);
+    } catch (error) {
+      // If server responds with 404 or any other error, use playerAway URL
+      const photoUrl = `http://localhost:8000/playerAway/${buttonData._id}/photo`;
+      localStorage.setItem("playerPhotoUrl", photoUrl);
+    }
+
     localStorage.setItem("clickedButton", buttonData.name);
-    const photoUrl = `http://localhost:8000/playerHome/${buttonData._id}/photo`;
-    // const photoUrlAway = `http://localhost:8000/playerAway/${buttonData._id}/photo`;
-    localStorage.setItem("playerPhotoUrl", photoUrl);
-    // localStorage.setItem("playerPhotoUrlAway", photoUrlAway);
   };
 
   useEffect(() => {

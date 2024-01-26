@@ -52,11 +52,18 @@ const Stopwatch = () => {
     localStorage.setItem("stopwatchIsRunning", "false");
   };
 
-  const resetTimer = () => {
+  const handleStartFromZero = () => {
     setIsRunning(false);
     setTime(0);
-    localStorage.removeItem("stopwatchTime");
-    localStorage.removeItem("stopwatchIsRunning");
+    localStorage.setItem("stopwatchTime", "0");
+    localStorage.setItem("stopwatchIsRunning", "false");
+  };
+
+  const handleStartFrom45 = () => {
+    setIsRunning(false);
+    setTime(45 * 60); // 45 minutes in seconds
+    localStorage.setItem("stopwatchTime", String(45 * 60));
+    localStorage.setItem("stopwatchIsRunning", "false");
   };
 
   return (
@@ -79,11 +86,18 @@ const Stopwatch = () => {
           Pause
         </button>
       )}
+
       <button
-        onClick={resetTimer}
-        className=" text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
+        onClick={handleStartFromZero}
+        className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
       >
-        Reset
+        Start from 0
+      </button>
+      <button
+        onClick={handleStartFrom45}
+        className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
+      >
+        Start from 45
       </button>
     </div>
   );

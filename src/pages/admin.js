@@ -53,6 +53,8 @@ const Admin = (isAuthenticated) => {
   const [isFormVisibleAway, setIsFormVisibleAway] = useState(true);
   const [data, setData] = useState(null);
   const [coachAway, setCoachAway] = useState(null);
+  const [messageHome, setMessageHome] = useState("");
+  const [messageAway, setMessageAway] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -130,17 +132,26 @@ const Admin = (isAuthenticated) => {
   if (!score) return null;
   // console.log(home.name);
 
-  function updateScore() {
-    // localStorage.setItem('scoreMessage', score.message);
+  const updateScore = () => {
+    if (!score || !score.messagesHome || !score.messagesAway) {
+      // Handle the case where score or its properties are null
+      return;
+    }
+
+    console.log("Updated Score:", { ...score, messageHome, messageAway });
     axios
-      .put("http://localhost:8000/score/65b206baf38e97ebd2175017", score)
+      .put(`http://localhost:8000/score/${score._id}`, {
+        ...score,
+        messageHome,
+        messageAway,
+      })
       .then((response) => {
         Swal.fire({
           title: `Score updated successfully!`,
           icon: "success",
         });
       });
-  }
+  };
 
   const toggleComponent1Or3 = () => {
     setShowGoalPlayer(!showGoalPlayer);
@@ -338,6 +349,20 @@ const Admin = (isAuthenticated) => {
     setData((prevData) => ({
       ...prevData,
       name: event.target.value,
+    }));
+  };
+
+  const handleScoreChangeHome = (event) => {
+    setScore((prevData) => ({
+      ...prevData,
+      messagesHome: event.target.value,
+    }));
+  };
+
+  const handleScoreChangeAway = (event) => {
+    setScore((prevData) => ({
+      ...prevData,
+      messageAway: event.target.value,
     }));
   };
 
@@ -1306,6 +1331,7 @@ const Admin = (isAuthenticated) => {
     }
     return null; // Return null if no formation is selected
   };
+
   const newPlayer = {
     name: "",
     no: "",
@@ -1394,6 +1420,35 @@ const Admin = (isAuthenticated) => {
       console.error("Error creating player:", error);
     }
   };
+
+  const addMessage = (type) => {
+    if (type === "home") {
+      setScore({
+        ...score,
+        messagesHome: [...score.messagesHome, messageHome],
+      });
+      setMessageHome("");
+    } else {
+      setScore({
+        ...score,
+        messagesAway: [...score.messagesAway, messageAway],
+      });
+      setMessageAway("");
+    }
+  };
+
+  const deleteMessage = (type, index) => {
+    if (type === "home") {
+      const updatedMessagesHome = [...score.messagesHome];
+      updatedMessagesHome.splice(index, 1);
+      setScore({ ...score, messagesHome: updatedMessagesHome });
+    } else {
+      const updatedMessagesAway = [...score.messagesAway];
+      updatedMessagesAway.splice(index, 1);
+      setScore({ ...score, messagesAway: updatedMessagesAway });
+    }
+  };
+
   // console.log(coachName);
 
   return (
@@ -1667,76 +1722,169 @@ const Admin = (isAuthenticated) => {
                 <SelectAwayTeam />
               </div>
 
-              <div className="flex-auto bg-slate-300 ">
+              <div className="flex-auto bg-slate-300">
                 <h1 className="p-2 text-black">Score</h1>
+
                 <label
-                  htmlFor="price"
+                  htmlFor="home"
                   className="block text-sm font-medium leading-6 text-black"
                 >
                   {home.name}
                 </label>
-                <div className="relative mt-2 rounded-md shadow-sm">
-                  <input
-                    type="text"
-                    name="price"
-                    id="price"
-                    value={score.home}
-                    className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) =>
-                      setScore({ ...score, home: e.target.value })
-                    }
-                  />
-
-                  <label
-                    for="message"
-                    class="block mb-2 text-sm font-medium text-gray-900"
-                  ></label>
-                  <textarea
-                    id="message"
-                    rows="4"
-                    value={score.massageHome}
-                    onChange={(e) =>
-                      setScore({ ...score, massageHome: e.target.value })
-                    }
-                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-                    placeholder="Haaland 14'"
-                  ></textarea>
+                <div className="mt-2 mb-4">
+                  <span className="text-black">{score.home}</span>
                 </div>
 
                 <label
-                  htmlFor="price"
+                  htmlFor="away"
                   className="block text-sm font-medium leading-6 text-black"
                 >
                   {away.name}
                 </label>
-                <div className="relative mt-2 rounded-md shadow-sm">
-                  <input
-                    type="text"
-                    name="price"
-                    id="price"
-                    value={score.away}
-                    className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) =>
-                      setScore({ ...score, away: e.target.value })
-                    }
-                  />
-                  <label
-                    for="message"
-                    class="block mb-2 text-sm font-medium text-gray-900"
-                  ></label>
-                  <textarea
-                    id="message"
-                    rows="4"
-                    value={score.massageAway}
-                    onChange={(e) =>
-                      setScore({ ...score, massageAway: e.target.value })
-                    }
-                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-                    placeholder="Haaland 14'"
-                  ></textarea>
+                <div className="mt-2 mb-4">
+                  <span className="text-black">{score.away}</span>
                 </div>
+
+                <div>
+                  <label
+                    htmlFor="messageHome"
+                    className="block text-sm font-medium leading-6 text-black"
+                  >
+                    Messages for Home
+                  </label>
+
+                  {/* Form inputs for existing messages */}
+                  {score.messagesHome && score.messagesHome.length > 0 && (
+                    <>
+                      {score.messagesHome.map((message, index) => (
+                        <div
+                          key={index}
+                          className="relative mt-2 mb-4 rounded-md shadow-sm"
+                        >
+                          <input
+                            type="text"
+                            name={`messageHome_${index}`}
+                            id={`messageHome_${index}`}
+                            value={message}
+                            placeholder="Haaland 20'"
+                            className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            onChange={(e) => {
+                              const updatedMessagesHome = [
+                                ...score.messagesHome,
+                              ];
+                              updatedMessagesHome[index] = e.target.value;
+                              setScore({
+                                ...score,
+                                messagesHome: updatedMessagesHome,
+                              });
+                            }}
+                          />
+                          <button
+                            onClick={() => deleteMessage("home", index)}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none"
+                          >
+                            <svg
+                              className="h-5 w-5 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                  {/* Button to add new message */}
+                  <div className="relative mt-2 mb-4">
+                    <button
+                      onClick={() => addMessage("home")}
+                      className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Add Message
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="messageAway"
+                    className="block text-sm font-medium leading-6 text-black"
+                  >
+                    Messages for Away
+                  </label>
+
+                  {/* Form inputs for existing messages */}
+                  {score.messagesAway && score.messagesAway.length > 0 && (
+                    <>
+                      {score.messagesAway.map((message, index) => (
+                        <div
+                          key={index}
+                          className="relative mt-2 mb-4 rounded-md shadow-sm"
+                        >
+                          <input
+                            type="text"
+                            name={`messageAway_${index}`}
+                            id={`messageAway_${index}`}
+                            placeholder="Haaland 20'"
+                            value={message}
+                            className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            onChange={(e) => {
+                              const updatedMessagesAway = [
+                                ...score.messagesAway,
+                              ];
+                              updatedMessagesAway[index] = e.target.value;
+                              setScore({
+                                ...score,
+                                messagesAway: updatedMessagesAway,
+                              });
+                            }}
+                          />
+                          <button
+                            onClick={() => deleteMessage("away", index)}
+                            className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none"
+                          >
+                            <svg
+                              className="h-5 w-5 text-gray-400"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                  {/* Button to add new message */}
+                  <div className="relative mt-2 mb-4">
+                    <button
+                      onClick={() => addMessage("away")}
+                      className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Add Message
+                    </button>
+                  </div>
+                </div>
+
                 <button
-                  class="my-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  className="my-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                   onClick={updateScore}
                 >
                   Update Score

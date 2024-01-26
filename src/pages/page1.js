@@ -1,248 +1,90 @@
-"use client";
-import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
-import NavbarBeforeLogin from "@/components/NavbarBeforeLogin";
-import Scoreboard from "@/components/Scoreboard";
-import styles from "@/styles/goal.module.css";
-import Lineup433Home from "@/components/Formation/433Home";
-import Lineup4231Home from "@/components/Formation/4231Home";
-import Lineup442Home from "@/components/Formation/442Home";
-import Lineup433Away from "@/components/Formation/433Away";
-import Lineup4231Away from "@/components/Formation/4231Away";
-import Lineup442Away from "@/components/Formation/442Away";
-import Goal from "@/components/Goal";
-import Image from "next/image";
-import YellowCard from "@/components/YellowCard";
-import RedCard from "@/components/RedCard";
-// import Timer from "@/components/test/Timer2";
+import React, { useState, useEffect } from "react";
 
-const Page1 = (isAuthenticated) => {
-  const [showComponent1, setShowComponent1] = useState(false);
-  const [showComponent2, setShowComponent2] = useState(false);
-  const [showComponent3, setShowComponent3] = useState(false);
-  const [showComponent4, setShowComponent4] = useState(false);
-  const [showComponent5, setShowComponent5] = useState(false);
-  const [showComponent6, setShowComponent6] = useState(false);
-  const [showComponent7, setShowComponent7] = useState(false);
-  const [showComponent8, setShowComponent8] = useState(false);
-  const [showComponent9, setShowComponent9] = useState(false);
-  const [showComponent10, setShowComponent10] = useState(false);
+const Stopwatch = () => {
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
-    const storedComponent = localStorage.getItem("showComponent");
-    if (storedComponent === "1") {
-      setShowComponent1(true);
-      setShowComponent2(false);
-      setShowComponent3(false);
-      setShowComponent4(false);
-      setShowComponent5(false);
-      setShowComponent6(false);
-      setShowComponent7(false);
-      setShowComponent8(false);
-      setShowComponent9(false);
-      setShowComponent10(false);
-    } else if (storedComponent === "2") {
-      setShowComponent1(false);
-      setShowComponent2(true);
-      setShowComponent3(false);
-      setShowComponent4(false);
-      setShowComponent5(false);
-      setShowComponent6(false);
-      setShowComponent7(false);
-      setShowComponent8(false);
-      setShowComponent9(false);
-      setShowComponent10(false);
-    } else if (storedComponent === "3") {
-      setShowComponent1(false);
-      setShowComponent2(false);
-      setShowComponent3(true);
-      setShowComponent4(false);
-      setShowComponent5(false);
-      setShowComponent6(false);
-      setShowComponent7(false);
-      setShowComponent8(false);
-      setShowComponent9(false);
-      setShowComponent10(false);
-    } else if (storedComponent === "4") {
-      setShowComponent1(false);
-      setShowComponent2(false);
-      setShowComponent3(false);
-      setShowComponent4(true);
-      setShowComponent5(false);
-      setShowComponent6(false);
-      setShowComponent7(false);
-      setShowComponent8(false);
-      setShowComponent9(false);
-      setShowComponent10(false);
-    } else if (storedComponent === "5") {
-      setShowComponent1(false);
-      setShowComponent2(false);
-      setShowComponent3(false);
-      setShowComponent4(false);
-      setShowComponent5(true);
-      setShowComponent6(false);
-      setShowComponent7(false);
-      setShowComponent8(false);
-      setShowComponent9(false);
-      setShowComponent10(false);
-    } else if (storedComponent === "6") {
-      setShowComponent1(false);
-      setShowComponent2(false);
-      setShowComponent3(false);
-      setShowComponent4(false);
-      setShowComponent5(false);
-      setShowComponent6(true);
-      setShowComponent7(false);
-      setShowComponent8(false);
-      setShowComponent9(false);
-      setShowComponent10(false);
-    } else if (storedComponent === "7") {
-      setShowComponent1(false);
-      setShowComponent2(false);
-      setShowComponent3(false);
-      setShowComponent4(false);
-      setShowComponent5(false);
-      setShowComponent6(false);
-      setShowComponent7(true);
-      setShowComponent8(false);
-      setShowComponent9(false);
-      setShowComponent10(false);
-    } else if (storedComponent === "8") {
-      setShowComponent1(false);
-      setShowComponent2(false);
-      setShowComponent3(false);
-      setShowComponent4(false);
-      setShowComponent5(false);
-      setShowComponent6(false);
-      setShowComponent7(false);
-      setShowComponent8(true);
-      setShowComponent9(false);
-      setShowComponent10(false);
-    } else if (storedComponent === "9") {
-      setShowComponent1(false);
-      setShowComponent2(false);
-      setShowComponent3(false);
-      setShowComponent4(false);
-      setShowComponent5(false);
-      setShowComponent6(false);
-      setShowComponent7(false);
-      setShowComponent8(false);
-      setShowComponent9(true);
-      setShowComponent10(false);
-    } else if (storedComponent === "10") {
-      setShowComponent1(false);
-      setShowComponent2(false);
-      setShowComponent3(false);
-      setShowComponent4(false);
-      setShowComponent5(false);
-      setShowComponent6(false);
-      setShowComponent7(false);
-      setShowComponent8(false);
-      setShowComponent9(false);
-      setShowComponent10(true);
-    } else {
-      setShowComponent1(true);
-      setShowComponent2(false);
-      setShowComponent3(false);
-      setShowComponent4(false);
-      setShowComponent5(false);
-      setShowComponent6(false);
-      setShowComponent7(false);
-      setShowComponent8(false);
-      localStorage.setItem("showComponent", "1");
+    const storedTime = localStorage.getItem("stopwatchTime");
+    const storedIsRunning = localStorage.getItem("stopwatchIsRunning");
+
+    if (storedTime) {
+      setTime(parseInt(storedTime, 10));
     }
 
-    const handleStorageChange = (event) => {
-      // Check if the change is related to the specific key you want to ignore
-      if (event.key !== "stopwatchTime") {
-        window.location.reload();
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
+    if (storedIsRunning) {
+      setIsRunning(storedIsRunning === "true");
+    }
   }, []);
 
   useEffect(() => {
-    // Apply styles to hide scroll when the component mounts
-    document.body.style.overflow = "hidden";
+    let timer;
 
-    // Clean up the styles when the component unmounts
-    return () => {
-      document.body.style.overflow = "visible";
-    };
-  }, []); // Empty dependency array ensures the effect runs only once on mount
+    if (isRunning) {
+      timer = setInterval(() => {
+        setTime((prevTime) => {
+          const newTime = prevTime + 1;
+          localStorage.setItem("stopwatchTime", newTime);
+          return newTime;
+        });
+      }, 1000);
+    }
+
+    return () => clearInterval(timer);
+  }, [isRunning]);
+
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
+  };
+
+  const startTimer = () => {
+    setIsRunning(true);
+    localStorage.setItem("stopwatchIsRunning", "true");
+  };
+
+  const pauseTimer = () => {
+    setIsRunning(false);
+    localStorage.setItem("stopwatchIsRunning", "false");
+  };
+
+  const resetTimer = () => {
+    setIsRunning(false);
+    setTime(0);
+    localStorage.removeItem("stopwatchTime");
+    localStorage.removeItem("stopwatchIsRunning");
+  };
+
+  const handleStartFromZero = () => {
+    setIsRunning(false);
+    setTime(0);
+    localStorage.setItem("stopwatchTime", "0");
+    localStorage.setItem("stopwatchIsRunning", "false");
+  };
+
+  const handleStartFrom45 = () => {
+    setIsRunning(false);
+    setTime(45 * 60); // 45 minutes in seconds
+    localStorage.setItem("stopwatchTime", String(45 * 60));
+    localStorage.setItem("stopwatchIsRunning", "false");
+  };
 
   return (
-    <>
-      {/* <Navbar isAuthenticated={isAuthenticated} /> */}
-      <div className="flex h-screen ">
-        <div className="w-1/4 bg-[#2f2f2f]">
-          <div className="text-center text-white">01</div>
-        </div>
-        <div className="flex-1 bg-red-500 flex items-center justify-center">
-          <div className="m w-full">
-            {showComponent1 && <Component1 />}
-            {showComponent2 && <Component2 />}
-            {showComponent3 && <Component3 />}
-            {showComponent4 && <Component4 />}
-            {showComponent5 && <Component5 />}
-            {showComponent6 && <Component6 />}
-            {showComponent7 && <Component7 />}
-            {showComponent8 && <Component8 />}
-            {showComponent9 && <Component9 />}
-            {showComponent10 && <Component10 />}
-          </div>
-          <div className="y fixed bottom-0 left-0 right-0 text-center text-white p-4 mx-auto">
-            <p>AFC Asian Cup</p>
-          </div>
-        </div>
+    <div style={{ textAlign: "center" }}>
+      <div id="reset-btn" style={{ fontSize: "70px", color: "black" }}>
+        <span>{formatTime(time)}</span>
       </div>
-    </>
+      <button onClick={startTimer}>Start</button>
+      <button onClick={pauseTimer}>Pause</button>
+      <button onClick={resetTimer}>Reset</button>
+      <button onClick={handleStartFromZero}>Start from 0</button>
+      <button onClick={handleStartFrom45}>Start from 45</button>
+    </div>
   );
 };
 
-const Component1 = () => {
-  return (
-    <>
-      <Scoreboard />;
-    </>
-  );
-};
-
-const Component3 = () => {
-  return <Goal />;
-};
-
-const Component4 = () => {
-  return <YellowCard />;
-};
-
-const Component5 = () => {
-  return <RedCard />;
-};
-
-const Component2 = () => {
-  return <Lineup433Home />;
-};
-const Component7 = () => {
-  return <Lineup4231Home />;
-};
-const Component8 = () => {
-  return <Lineup442Home />;
-};
-
-const Component6 = () => {
-  return <Lineup433Away />;
-};
-
-const Component9 = () => {
-  return <Lineup4231Away />;
-};
-const Component10 = () => {
-  return <Lineup442Away />;
-};
-export default Page1;
+export default Stopwatch;

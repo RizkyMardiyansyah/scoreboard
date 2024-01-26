@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const Stopwatch = () => {
-  const [time, setTime] = useState(0);
+const Stopwatch = ({ initialTime }) => {
+  const [time, setTime] = useState(initialTime || 0);
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
@@ -64,6 +64,9 @@ const Stopwatch = () => {
       <div id="reset-btn" style={{ fontSize: "70px", color: "black" }}>
         <span>{formatTime(time)}</span>
       </div>
+      <button onClick={startTimer}>Start</button>
+      <button onClick={pauseTimer}>Pause</button>
+      <button onClick={resetTimer}>Reset</button>
     </div>
   );
 };

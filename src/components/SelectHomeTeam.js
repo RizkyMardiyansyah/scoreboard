@@ -28,8 +28,6 @@ const DropdownComponent = () => {
       });
   }, []);
 
-  console.log(homeData[0]);
-
   const handleSelectChange = (e) => {
     const selectedValue = e.target.value;
     setSelectedTeam(selectedValue);

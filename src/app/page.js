@@ -15,6 +15,8 @@ import Image from "next/image";
 import YellowCard from "@/components/YellowCard";
 import RedCard from "@/components/RedCard";
 import Timer from "@/components/test/timer3";
+import Berani from "@/assets/berani.png";
+import Nat from "@/assets/nat.png";
 
 const Page1 = (isAuthenticated) => {
   const [showComponent1, setShowComponent1] = useState(false);
@@ -180,13 +182,20 @@ const Page1 = (isAuthenticated) => {
     <>
       {/* <Navbar isAuthenticated={isAuthenticated} /> */}
       <div className="flex h-screen">
-        <div className="w-1/4 bg-[#2f2f2f] flex items-center justify-center">
+        <div className="w-1/4 bg-slate-300 flex flex-col items-center justify-center">
+          <div className="mb-auto mt-5">
+            <Image src={Berani} width={300} height={300} />
+          </div>
           <div className="text-white">
             <Timer />
           </div>
+          <div className="mt-auto mb-5">
+            <Image src={Nat} width={300} height={300} />
+          </div>
         </div>
-        <div className="flex-1 bg-red-500 flex flex-col items-center justify-center">
-          <div className="mt-3 text-3xl">BRI Liga 1</div>
+        {/* bg-[#2f2f2f] */}
+        <div className="flex-1 bg-sky-500 flex flex-col items-center justify-center">
+          <div className="mt-3 text-4xl font-medium">BRI Liga 1</div>
           <div className="mt-auto w-full ">
             {showComponent1 && <Component1 />}
             {showComponent2 && <Component2 />}
@@ -199,7 +208,7 @@ const Page1 = (isAuthenticated) => {
             {showComponent9 && <Component9 />}
             {showComponent10 && <Component10 />}
           </div>
-          <div className="mt-auto mb-4 text-center ">
+          <div className="mt-auto mb-4 text-center text-4xl font-medium">
             <p>AFC Asian Cup</p>
           </div>
         </div>
