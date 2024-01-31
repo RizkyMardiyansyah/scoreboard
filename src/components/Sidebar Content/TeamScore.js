@@ -1465,12 +1465,14 @@ const TeamScore = () => {
   };
 
   return (
-    <div className="bg-slate-300 flex h-screen">
-      <div className="mr-3">
-        <SelectHomeTeam />
-      </div>
-      <div className="mr-3">
-        <SelectAwayTeam />
+    <div className="bg-slate-300 flex justify-evenly mt-5 ml-9">
+      <div className="flex-auto w-16">
+        <div className="mr-3">
+          <SelectHomeTeam />
+        </div>
+        <div className="mr-3">
+          <SelectAwayTeam />
+        </div>
       </div>
 
       <div className="flex-auto bg-slate-300">

@@ -28,24 +28,15 @@ export default function Scoreboard() {
   };
 
   useEffect(() => {
-    fetchData(); // Fetch data initially
+    fetchData();
 
-    // Set up an interval to fetch data periodically (adjust the interval as needed)
-    const intervalId = setInterval(fetchData, 5000); // Fetch every 5 seconds
+    const intervalId = setInterval(fetchData, 5000);
 
-    // Clean up the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, []); // The empty dependency array ensures that this effect runs only once on mount
+  }, []); 
 
   if (!team || !teamAway || !score) return null;
 
-  console.log(team);
-  const currentDate = new Date();
-
-  // Get individual date components
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1; // Month is zero-based
-  const day = currentDate.getDate();
   function chunkArray(array, chunkSize) {
     return Array.from(
       { length: Math.ceil(array.length / chunkSize) },
@@ -55,42 +46,6 @@ export default function Scoreboard() {
   }
   return (
     <Fragment>
-      {/* score bawah */}
-      {/* <div className="">
-        <div class="flex justify-around">
-          <div className="text-white text-center hometeam">
-            <Image src={team.logo} width={200} height={200} />
-            {team.name}
-          </div>
-
-          <div className="text-white bri">
-            <div className="text-white">
-              <Image
-                src="https://i.ibb.co/n7XgrJd/BRI-Liga-1-Indonesia.png"
-                width={200}
-                height={200}
-              />
-            </div>
-          </div>
-
-          <div className="text-white text-center awayteam">
-            <Image src={teamAway.logo} width={200} height={200} />{" "}
-            {teamAway.name}
-          </div>
-        </div>
-
-        <div class="flex justify-around ">
-          <div className="text-6xl text-white text-center">
-            <p className="teamAScore mt-5">{score.home}</p>
-          </div>
-          <div className="text-white"></div>
-          <div className="text-6xl text-white">
-            <p className="teamBScore mt-5">{score.away}</p>
-          </div>
-        </div>
-      </div> */}
-
-      {/* score nyamping */}
       <div className="">
         <div class="flex justify-around">
           <div className="text-white text-center hometeam">

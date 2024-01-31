@@ -384,7 +384,7 @@ const SideBar = () => {
     return (
       <table className="table-auto w-full bg-slate-300">
         <thead>
-          <tr>
+          <tr className="">
             <th className="px-4 py-2">Position</th>
             <th className="px-4 py-2">Player Name</th>
             <th className="px-4 py-2">No Punggung</th>
@@ -392,13 +392,15 @@ const SideBar = () => {
             <th className="px-4 py-2">Delete</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="">
           {playerHome.map((player, index) => (
             // console.log("Player Photo:", player.photo);
             <tr key={player.id}>
-              <td className="px-4 py-2">{getPlayerPosition(index)}</td>
+              <td className="px-4 py-2 flex items-center justify-center">
+                {getPlayerPosition(index)}
+              </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                   <input
                     type="text"
                     value={player.name}
@@ -408,7 +410,7 @@ const SideBar = () => {
                 </div>
               </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                   <input
                     type="text"
                     value={player.no}
@@ -425,11 +427,11 @@ const SideBar = () => {
                       alt={`Player ${player.name}`}
                       width={45}
                       height={45}
-                      className="rounded-full"
+                      className="flex items-center justify-center"
                     />
                   </>
                 ) : (
-                  <div className="relative mt-2 rounded-md shadow-sm">
+                  <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                     <input
                       type="file"
                       onChange={(e) => handleFileChange(e, index)}
@@ -438,7 +440,7 @@ const SideBar = () => {
                   </div>
                 )}
               </td>
-              <td className="px-4 py-2">
+              <td className="px-4 py-2 flex items-center justify-center">
                 <button
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
                   onClick={() => handleDeleteClick(player._id)}
@@ -568,9 +570,11 @@ const SideBar = () => {
           {playerHome.map((player, index) => (
             // console.log("Player Photo:", player.photo);
             <tr key={player.id}>
-              <td className="px-4 py-2">{getPlayerPosition(index)}</td>
+              <td className="px-4 py-2 flex items-center justify-center">
+                {getPlayerPosition(index)}
+              </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                   <input
                     type="text"
                     value={player.name}
@@ -580,7 +584,7 @@ const SideBar = () => {
                 </div>
               </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                   <input
                     type="text"
                     value={player.no}
@@ -589,7 +593,7 @@ const SideBar = () => {
                   />
                 </div>
               </td>
-              <td className="px-4 py-2">
+              <td className="px-4 py-2 ">
                 {player.photo ? (
                   <>
                     <Image
@@ -597,11 +601,11 @@ const SideBar = () => {
                       alt={`Player ${player.name}`}
                       width={45}
                       height={45}
-                      className="rounded-full"
+                      className="flex items-center justify-center"
                     />
                   </>
                 ) : (
-                  <div className="relative mt-2 rounded-md shadow-sm">
+                  <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                     <input
                       type="file"
                       onChange={(e) => handleFileChange(e, index)}
@@ -610,7 +614,7 @@ const SideBar = () => {
                   </div>
                 )}
               </td>
-              <td className="px-4 py-2">
+              <td className="px-4 py-2 flex items-center justify-center">
                 <button
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
                   onClick={() => handleDeleteClick(player._id)}
@@ -740,9 +744,11 @@ const SideBar = () => {
           {playerHome.map((player, index) => (
             // console.log("Player Photo:", player.photo);
             <tr key={player.id}>
-              <td className="px-4 py-2">{getPlayerPosition(index)}</td>
+              <td className="px-4 py-2 flex items-center justify-center">
+                {getPlayerPosition(index)}
+              </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                   <input
                     type="text"
                     value={player.name}
@@ -752,7 +758,7 @@ const SideBar = () => {
                 </div>
               </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                   <input
                     type="text"
                     value={player.no}
@@ -769,11 +775,11 @@ const SideBar = () => {
                       alt={`Player ${player.name}`}
                       width={45}
                       height={45}
-                      className="rounded-full"
+                      className="flex items-center justify-center"
                     />
                   </>
                 ) : (
-                  <div className="relative mt-2 rounded-md shadow-sm">
+                  <div className="flex items-center justify-center">
                     <input
                       type="file"
                       onChange={(e) => handleFileChange(e, index)}
@@ -782,7 +788,7 @@ const SideBar = () => {
                   </div>
                 )}
               </td>
-              <td className="px-4 py-2">
+              <td className="px-4 py-2 flex items-center justify-center">
                 <button
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
                   onClick={() => handleDeleteClick(player._id)}
@@ -912,9 +918,11 @@ const SideBar = () => {
           {playerAway.map((player, index) => (
             // console.log("Player Photo:", player.photo);
             <tr key={player.id}>
-              <td className="px-4 py-2">{getPlayerPosition(index)}</td>
+              <td className="px-4 py-2 flex justify-center">
+                {getPlayerPosition(index)}
+              </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
                   <input
                     type="text"
                     value={player.name}
@@ -924,7 +932,7 @@ const SideBar = () => {
                 </div>
               </td>
               <td className="px-4 py-2">
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
                   <input
                     type="text"
                     value={player.no}
@@ -941,11 +949,11 @@ const SideBar = () => {
                       alt={`Player ${player.name}`}
                       width={45}
                       height={45}
-                      className="rounded-full"
+                      className="flex justify-center"
                     />
                   </>
                 ) : (
-                  <div className="relative mt-2 rounded-md shadow-sm">
+                  <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
                     <input
                       type="file"
                       onChange={(e) => handleFileChange(e, index)}
@@ -954,7 +962,7 @@ const SideBar = () => {
                   </div>
                 )}
               </td>
-              <td className="px-4 py-2">
+              <td className="px-4 py-2 flex justify-center">
                 <button
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
                   onClick={() => handleDeleteClick(player._id)}
@@ -969,174 +977,352 @@ const SideBar = () => {
     );
   };
   const renderForms4231Away = () => {
-    return playerAway.map((player, index) => (
-      <div key={player.id}>
-        {index === 0 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            GK
-          </label>
-        ) : index === 1 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DL
-          </label>
-        ) : index >= 2 && index <= 3 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DC
-          </label>
-        ) : index === 4 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DR
-          </label>
-        ) : index >= 5 && index <= 6 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            MC
-          </label>
-        ) : index === 7 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            AMC
-          </label>
-        ) : index === 8 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            AMR
-          </label>
-        ) : index === 9 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            AML
-          </label>
-        ) : index === 10 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            ST
-          </label>
-        ) : (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            Player {index + 1} Name
-          </label>
-        )}
-        <div className="relative mt-2 rounded-md shadow-sm">
-          <input
-            type="text"
-            value={player.name}
-            onChange={(e) => handleInputChange2(e, index)}
-            className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-      </div>
-    ));
+    const getPlayerPosition = (index) => {
+      const positions = [
+        "GK",
+        "DL",
+        "DC",
+        "DC",
+        "DR",
+        "MC",
+        "MC",
+        "AML",
+        "AMC",
+        "AMR",
+        "ST",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+      ];
+      return positions[index] || "";
+    };
+
+    const handleDeleteClick = async (playerId) => {
+      // Show SweetAlert confirmation dialog
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      // If user confirms, proceed with deletion
+      if (confirmation.isConfirmed) {
+        try {
+          // Delete player from the API
+          await axios.delete(`http://localhost:8000/playerAway/${playerId}`);
+
+          // Update state to remove the deleted player
+          setPlayerAway(playerAway.filter((player) => player._id !== playerId));
+
+          // Show success message
+          Swal.fire({
+            title: "Deleted!",
+            text: "The player has been deleted.",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error("Error deleting player:", error);
+          // Show error message
+          Swal.fire({
+            title: "Error!",
+            text: "An error occurred while deleting the player.",
+            icon: "error",
+          });
+        }
+      }
+    };
+
+    const handleFileChange = async (e, index) => {
+      try {
+        const newPlayerAway = [...playerAway];
+        const file = e.target.files[0];
+
+        // You may want to perform additional checks on the file, e.g., size, type, etc.
+
+        // Update the corresponding player's photo property
+        newPlayerAway[index].photo = file;
+
+        // Update the state with the new array
+        setPlayerAway(newPlayerAway);
+
+        // Prepare FormData to send the file to the server
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Make a PUT request to update the player's photo on the server
+        await axios.put(
+          `http://localhost:8000/playerAway/${newPlayerAway[index]._id}/photo`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error handling file change:", error);
+      }
+    };
+    // console.log("Player Photo:", playerHome[15].photo);
+
+    return (
+      <table className="table-auto w-full bg-slate-300">
+        <thead>
+          <tr>
+            <th className="px-4 py-2">Position</th>
+            <th className="px-4 py-2">Player Name</th>
+            <th className="px-4 py-2">No Punggung</th>
+            <th className="px-4 py-2">Photo</th>
+            <th className="px-4 py-2">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {playerAway.map((player, index) => (
+            // console.log("Player Photo:", player.photo);
+            <tr key={player.id}>
+              <td className="px-4 py-2 flex justify-center">
+                {getPlayerPosition(index)}
+              </td>
+              <td className="px-4 py-2">
+                <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
+                  <input
+                    type="text"
+                    value={player.name}
+                    onChange={(e) => handleInputChangeAway(e, index)}
+                    className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </td>
+              <td className="px-4 py-2">
+                <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
+                  <input
+                    type="text"
+                    value={player.no}
+                    onChange={(e) => handleNumberChangeAway(e, index)}
+                    className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </td>
+              <td className="px-4 py-2">
+                {player.photo ? (
+                  <>
+                    <Image
+                      src={`http://localhost:8000/playerAway/${player._id}/photo`}
+                      alt={`Player ${player.name}`}
+                      width={45}
+                      height={45}
+                      className="flex justify-center"
+                    />
+                  </>
+                ) : (
+                  <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
+                    <input
+                      type="file"
+                      onChange={(e) => handleFileChange(e, index)}
+                      className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                )}
+              </td>
+              <td className="px-4 py-2 flex justify-center">
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                  onClick={() => handleDeleteClick(player._id)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   };
   const renderForms433Away = () => {
-    return playerAway.map((player, index) => (
-      <div key={player.id}>
-        {index === 0 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            GK
-          </label>
-        ) : index === 1 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DL
-          </label>
-        ) : index >= 2 && index <= 3 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DC
-          </label>
-        ) : index === 4 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DR
-          </label>
-        ) : index === 5 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            DM
-          </label>
-        ) : index >= 6 && index <= 7 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            MC
-          </label>
-        ) : index === 8 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            AMR
-          </label>
-        ) : index === 9 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            AML
-          </label>
-        ) : index === 10 ? (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            ST
-          </label>
-        ) : (
-          <label
-            htmlFor={`playerName${index}`}
-            className="block text-sm font-medium text-gray-700"
-          >
-            Player {index + 1} Name
-          </label>
-        )}
-        <div className="relative mt-2 rounded-md shadow-sm">
-          <input
-            type="text"
-            value={player.name}
-            onChange={(e) => handleInputChange2(e, index)}
-            className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          />
-        </div>
-      </div>
-    ));
+    const getPlayerPosition = (index) => {
+      const positions = [
+        "GK",
+        "DL",
+        "DC",
+        "DC",
+        "DR",
+        "DM",
+        "MC",
+        "MC",
+        "AML",
+        "AMR",
+        "ST",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+      ];
+      return positions[index] || "";
+    };
+
+    const handleDeleteClick = async (playerId) => {
+      // Show SweetAlert confirmation dialog
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      // If user confirms, proceed with deletion
+      if (confirmation.isConfirmed) {
+        try {
+          // Delete player from the API
+          await axios.delete(`http://localhost:8000/playerAway/${playerId}`);
+
+          // Update state to remove the deleted player
+          setPlayerAway(playerAway.filter((player) => player._id !== playerId));
+
+          // Show success message
+          Swal.fire({
+            title: "Deleted!",
+            text: "The player has been deleted.",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error("Error deleting player:", error);
+          // Show error message
+          Swal.fire({
+            title: "Error!",
+            text: "An error occurred while deleting the player.",
+            icon: "error",
+          });
+        }
+      }
+    };
+
+    const handleFileChange = async (e, index) => {
+      try {
+        const newPlayerAway = [...playerAway];
+        const file = e.target.files[0];
+
+        // You may want to perform additional checks on the file, e.g., size, type, etc.
+
+        // Update the corresponding player's photo property
+        newPlayerAway[index].photo = file;
+
+        // Update the state with the new array
+        setPlayerAway(newPlayerAway);
+
+        // Prepare FormData to send the file to the server
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Make a PUT request to update the player's photo on the server
+        await axios.put(
+          `http://localhost:8000/playerAway/${newPlayerAway[index]._id}/photo`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Error handling file change:", error);
+      }
+    };
+    // console.log("Player Photo:", playerHome[15].photo);
+
+    return (
+      <table className="table-auto w-full bg-slate-300">
+        <thead>
+          <tr>
+            <th className="px-4 py-2">Position</th>
+            <th className="px-4 py-2">Player Name</th>
+            <th className="px-4 py-2">No Punggung</th>
+            <th className="px-4 py-2">Photo</th>
+            <th className="px-4 py-2">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {playerAway.map((player, index) => (
+            // console.log("Player Photo:", player.photo);
+            <tr key={player.id}>
+              <td className="px-4 py-2 flex justify-center">
+                {getPlayerPosition(index)}
+              </td>
+              <td className="px-4 py-2">
+                <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
+                  <input
+                    type="text"
+                    value={player.name}
+                    onChange={(e) => handleInputChangeAway(e, index)}
+                    className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </td>
+              <td className="px-4 py-2">
+                <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
+                  <input
+                    type="text"
+                    value={player.no}
+                    onChange={(e) => handleNumberChangeAway(e, index)}
+                    className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </td>
+              <td className="px-4 py-2">
+                {player.photo ? (
+                  <>
+                    <Image
+                      src={`http://localhost:8000/playerAway/${player._id}/photo`}
+                      alt={`Player ${player.name}`}
+                      width={45}
+                      height={45}
+                      className="flex justify-center"
+                    />
+                  </>
+                ) : (
+                  <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
+                    <input
+                      type="file"
+                      onChange={(e) => handleFileChange(e, index)}
+                      className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                )}
+              </td>
+              <td className="px-4 py-2 flex justify-center">
+                <button
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                  onClick={() => handleDeleteClick(player._id)}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   };
 
   const toggleComponent1Or3 = () => {
@@ -1400,9 +1586,9 @@ const SideBar = () => {
       case "FormationHome":
         return (
           <>
-            <div className="flex justify-between">
-              <div className={`${styles.container}`}>
-                <div className={`ml-9`}>
+            <div className="mt-5">
+              <div className={``}>
+                <div className={`ml-9 `}>
                   <h2>Formation Home</h2>
                   <DropdownButton
                     options={["4-4-2", "4-2-3-1", "4-3-3"]}
@@ -1410,9 +1596,9 @@ const SideBar = () => {
                     label="Select Formation"
                   />
 
-                  <div className="mt-5">{renderSelectedForm()}</div>
+                  <div className="mt-5 ">{renderSelectedForm()}</div>
                   {selectedFormation && isFormVisible && (
-                    <div className="mt-5 ml-5">
+                    <div className="mt-5 ml-5 flex justify-center">
                       <button
                         onClick={handleToggleForm}
                         className="mr-4 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
@@ -1454,7 +1640,10 @@ const SideBar = () => {
                             onChange={handleCoachNameChange}
                             placeholder={data[0].name}
                           />
-                          <button type="submit" className="">
+                          <button
+                            type="submit"
+                            className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full px-3 py-2 me-2 ml-3 text-sm  bg-blue-500 hover:bg-blue-700"
+                          >
                             Submit
                           </button>
                         </label>
@@ -1485,24 +1674,24 @@ const SideBar = () => {
       case "Control":
         return (
           <>
-            <div className="container flex">
+            <div className="container flex mt-5">
               <div className="flex-auto w-64 ml-10">
                 <button
                   onClick={toggleComponent1}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                 >
                   Show Scoreboard
                 </button>
                 <button
                   onClick={toggleComponent1Or3}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                 >
                   {showGoalPlayer ? "Hide Player" : "Show Goal Player"}
                 </button>
 
                 <button
                   onClick={toggleComponent4}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                 >
                   {showYellowPlayer
                     ? "Hide Yellow Player"
@@ -1511,16 +1700,9 @@ const SideBar = () => {
 
                 <button
                   onClick={toggleComponent5}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  className="mr-3 mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                 >
                   {showRedPlayer ? "Hide Red Player" : "Show Red Card"}
-                </button>
-
-                <button
-                  onClick={toggleComponent11}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  Show Subtitution
                 </button>
               </div>
 
@@ -1528,7 +1710,7 @@ const SideBar = () => {
                 {showFormation4231Home && (
                   <button
                     onClick={toggleComponent7}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                   >
                     Formation 4231 Home
                   </button>
@@ -1536,7 +1718,7 @@ const SideBar = () => {
                 {showFormation442Home && (
                   <button
                     onClick={toggleComponent8}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                   >
                     Formation 442 Home
                   </button>
@@ -1544,7 +1726,7 @@ const SideBar = () => {
                 {showFormation433Home && (
                   <button
                     onClick={toggleComponent2}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                   >
                     Formation 433 Home
                   </button>
@@ -1553,7 +1735,7 @@ const SideBar = () => {
                 {showFormation4231Away && (
                   <button
                     onClick={toggleComponent9}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                   >
                     Formation 4231 Away
                   </button>
@@ -1561,7 +1743,7 @@ const SideBar = () => {
                 {showFormation442Away && (
                   <button
                     onClick={toggleComponent10}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                   >
                     Formation 442 Away
                   </button>
@@ -1569,7 +1751,7 @@ const SideBar = () => {
                 {showFormation433Away && (
                   <button
                     onClick={toggleComponent6}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                   >
                     Formation 433 Away
                   </button>
@@ -1597,8 +1779,8 @@ const SideBar = () => {
       case "FormationAway":
         return (
           <>
-            <div className={`${styles.container}`}>
-              <div className={`mr-9`}>
+            <div className={`mt-5`}>
+              <div className={`ml-9`}>
                 <h2>Formation Away</h2>
                 <DropdownButton
                   options={["4-4-2", "4-2-3-1", "4-3-3"]}
@@ -1608,7 +1790,7 @@ const SideBar = () => {
 
                 <div className="mt-5">{renderSelectedFormAway()}</div>
                 {selectedFormationAway && isFormVisibleAway && (
-                  <div className="mt-5">
+                  <div className="mt-5 flex justify-center">
                     <button
                       onClick={handleToggleFormAway}
                       className="mr-4 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
@@ -1650,7 +1832,10 @@ const SideBar = () => {
                           onChange={handleCoachNameChangeAway}
                           placeholder={coachAway[1].name}
                         />
-                        <button type="submit" className="">
+                        <button
+                          type="submit"
+                          className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full px-3 py-2 me-2 ml-3 text-sm  bg-blue-500 hover:bg-blue-700"
+                        >
                           Submit
                         </button>
                       </label>

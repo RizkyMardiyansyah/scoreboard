@@ -22,12 +22,12 @@ const SubtitutionPage = () => {
             <Image src={subPhoto} width={250} height={250} />
           </div>
           <div>
-            <div className="text-white text-center ">In</div>
-            <Image src={green} width={115} height={115} />
+            <div className="text-white text-center ">Out</div>
+            <Image src={red} width={115} height={115} />
           </div>
           <div>
-            <div className="text-white text-center ">Out</div>
-            <Image src={red} width={100} height={100} />
+            <div className="text-white text-center ">In</div>
+            <Image src={green} width={115} height={115} />
           </div>
           <div>
             <div className="text-white text-center">{subName2}</div>

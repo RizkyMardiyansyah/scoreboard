@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import style from "@/styles/subtituteAdmin.module.css";
 
 const DropdownComponent = () => {
   const [teamOptions, setTeamOptions] = useState([]);
   const [selectedPlayerIn, setSelectedPlayerIn] = useState("");
   const [selectedPlayerOut, setSelectedPlayerOut] = useState("");
+
+  const toggleComponent1 = () => {
+    localStorage.getItem("showComponent") === "1"
+      ? localStorage.setItem("showComponent", "1")
+      : localStorage.setItem("showComponent", "1");
+  };
+  // const toggleComponent11 = () => {
+  //   localStorage.getItem("showComponent") === "11"
+  //     ? localStorage.removeItem("showComponent")
+  //     : localStorage.setItem("showComponent", "11");
+  // };
 
   useEffect(() => {
     axios
@@ -43,6 +55,8 @@ const DropdownComponent = () => {
   };
 
   const handleExchangePlayers = () => {
+    localStorage.setItem("showComponent", "11");
+
     // Find the IDs of the selected players
     const playerIn = teamOptions.find(
       (player) => player.name === selectedPlayerIn
@@ -92,38 +106,62 @@ const DropdownComponent = () => {
   };
 
   return (
-    <div>
-      <div>
-        <h1>Player In</h1>
-        <select
-          onChange={(e) => handleSelectChange(e, "in")}
-          value={selectedPlayerIn}
+    <div className="flex ">
+      <div className="flex-auto ">
+        <div>
+          <h1>Player Out</h1>
+          <select
+            onChange={(e) => handleSelectChange(e, "in")}
+            value={selectedPlayerIn}
+          >
+            <option value="">Select Player Out</option>
+            {teamOptions.slice(0, 11).map((player) => (
+              <option key={player._id} value={player.name}>
+                {player.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <h1>Player In</h1>
+          <select
+            onChange={(e) => handleSelectChange(e, "out")}
+            value={selectedPlayerOut}
+          >
+            <option value="">Select Player In</option>
+            {teamOptions.slice(11).map((player) => (
+              <option key={player._id} value={player.name}>
+                {player.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <button
+          onClick={handleExchangePlayers}
+          className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full px-3 py-2 me-2 mt-2 text-sm  bg-blue-500 hover:bg-blue-700"
         >
-          <option value="">Select Player In</option>
-          {teamOptions.slice(0, 11).map((player) => (
-            <option key={player._id} value={player.name}>
-              {player.name}
-            </option>
-          ))}
-        </select>
+          Subtitute Players
+        </button>
       </div>
 
-      <div>
-        <h1>Player Out</h1>
-        <select
-          onChange={(e) => handleSelectChange(e, "out")}
-          value={selectedPlayerOut}
-        >
-          <option value="">Select Player Out</option>
-          {teamOptions.slice(11).map((player) => (
-            <option key={player._id} value={player.name}>
-              {player.name}
-            </option>
-          ))}
-        </select>
+      <div className="flex-auto">
+        <h1>Starting Lineup</h1>
+        {teamOptions.slice(0, 11).map((player) => (
+          <div key={player._id} className={`${style.playerItem}`} tabIndex="0">
+            {player.name}
+          </div>
+        ))}
       </div>
 
-      <button onClick={handleExchangePlayers}>Exchange Players</button>
+      <div className="flex-auto">
+        <h1>Bench Player</h1>
+        {teamOptions.slice(11).map((player) => (
+          <div key={player._id} className={`${style.playerItem}`} tabIndex="0">
+            {player.name}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,10 @@
+.playerItem {
+  width: 150px;
+  margin-right: 8px;
+  margin-bottom: 8px; /* Adjust the margin as needed */
+  padding: 8px;
+  border: 1px solid #ddd; /* Optional: Add borders for a visual distinction */
+  border-radius: 4px;
+  background-color: #f9f9f9; /* Optional: Add background color */
+  cursor: default; /* Disable cursor on the div to indicate non-editable */
+}

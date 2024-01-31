@@ -34,16 +34,15 @@ const Page1 = (isAuthenticated) => {
   const [showComponent11, setShowComponent11] = useState(false);
   const [showPicture, setShowPicture] = useState([]);
 
-  // useEffect(() => {
-  //   if (showComponent11) {
-  //     const timeoutId = setTimeout(() => {
-  //       setShowComponent1(true);
-  //       setShowComponent11(false);
-  //     }, 10000);
-
-  //     return () => clearTimeout(timeoutId);
-  //   }
-  // }, [showComponent11]);
+  useEffect(() => {
+    if (localStorage.getItem("showComponent") === "11") {
+      setTimeout(() => {
+        localStorage.setItem("showComponent", "1");
+        setShowComponent11(false);
+        setShowComponent1(true);
+      }, 10000);
+    }
+  }, [showComponent11]);
 
   useEffect(() => {
     const storedComponent = localStorage.getItem("showComponent");
@@ -196,8 +195,13 @@ const Page1 = (isAuthenticated) => {
     }
 
     const handleStorageChange = (event) => {
-      // Check if the change is related to the specific key you want to ignore
-      if (event.key !== "stopwatchTime") {
+      if (
+        event.key !== "stopwatchTime" &&
+        event.key !== "subPhotoUrl2" &&
+        event.key !== "subPhotoUrl" &&
+        event.key !== "subPhotoName" &&
+        event.key !== "subPhotoName2"
+      ) {
         window.location.reload();
       }
     };
@@ -222,23 +226,15 @@ const Page1 = (isAuthenticated) => {
     fetchData();
   }, []);
 
-  console.log(
-    showPicture.length > 3 ? showPicture[3].logo : "No logo available"
-  );
-
   useEffect(() => {
-    // Apply styles to hide scroll when the component mounts
     document.body.style.overflow = "hidden";
-
-    // Clean up the styles when the component unmounts
     return () => {
       document.body.style.overflow = "visible";
     };
-  }, []); // Empty dependency array ensures the effect runs only once on mount
+  }, []);
 
   return (
     <>
-      {/* <Navbar isAuthenticated={isAuthenticated} /> */}
       <div className="flex h-screen">
         <div className="w-1/4 bg-[#8fcac5] flex flex-col items-center justify-center">
           <div className="mb-auto mt-5">
@@ -251,15 +247,13 @@ const Page1 = (isAuthenticated) => {
             <Image src={Nat} width={250} height={250} />
           </div>
         </div>
-        {/* bg-[#2f2f2f] */}
-        <div className="flex-1 bg-red-500 flex flex-col items-center justify-center">
+        <div className="flex-1 bg-[#c84ce0] flex flex-col items-center justify-center">
           <div className="flex">
             <div className="mt-3 text-4xl font-medium item-start">
               {showPicture && showPicture[3] && showPicture[3].logo && (
                 <Image src={showPicture[3].logo} width={100} height={100} />
               )}
             </div>
-            {/* <div className="mt-3 text-4xl font-medium mx-auto">BRI Liga 1</div> */}
           </div>
 
           <div className="mt-auto w-full ">

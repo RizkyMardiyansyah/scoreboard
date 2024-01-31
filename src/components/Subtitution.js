@@ -42,10 +42,8 @@ const Subtitution = () => {
   };
   return (
     <>
-      <div className="bg-slate-300 flex h-screen">
-        <div className="mr-3">
-          <SelectPlayerIn />
-        </div>
+      <div className="bg-slate-300 h-screen mt-5 ml-9">
+        <SelectPlayerIn />
       </div>
     </>
   );
