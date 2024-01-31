@@ -1,6 +1,6 @@
 "use client";
 import { Fragment } from "react";
-import Timer from "../components/test/timer3";
+import Timer from "./Timer/timer3";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -33,7 +33,7 @@ export default function Scoreboard() {
     const intervalId = setInterval(fetchData, 5000);
 
     return () => clearInterval(intervalId);
-  }, []); 
+  }, []);
 
   if (!team || !teamAway || !score) return null;
 

@@ -19,8 +19,6 @@ const FootballFormation = () => {
     fetchPlayerHome();
   }, []);
 
-  // console.log(team.home);
-
   useEffect(() => {
     axios
       .get("http://localhost:8000/homeTeam")

@@ -19,22 +19,17 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const handleLogout = () => {
-    // Clear the token from localStorage and cookies
     localStorage.removeItem("token");
     Cookies.remove("token");
-
-    // Update isAuthenticated state
     setIsAuthenticated(false);
 
-    // Redirect to the login page
     window.location.href = "/";
   };
 
   useEffect(() => {
-    // Check for the presence of the token
     const token = localStorage.getItem("token") || Cookies.get("token");
     setIsAuthenticated(!!token);
-  }, []); // Run this effect only once after component mount
+  }, []);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -74,7 +69,7 @@ const Navbar = () => {
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        target={item.current ? "" : "_blank"} // Add target="_blank" for non-current links
+                        target={item.current ? "" : "_blank"}
                       >
                         {item.name}
                       </a>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TimerButton from "@/components/test/timerButton";
+import TimerButton from "@/components/Timer/timerButton";
 import YellowPlayer from "@/components/YellowPlayer";
 
 const Control = () => {

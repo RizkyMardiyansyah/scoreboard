@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./FootballFormation.module.css"; // Assuming you have a CSS module for styling
+import styles from "./FootballFormation.module.css";
 import axios from "axios";
 
 const Formation4231 = ({ players }) => {

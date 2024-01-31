@@ -5,8 +5,8 @@
 .box1,
 .box2 {
   display: inline-block;
-  width: 45%; /* Adjust width as needed */
-  margin: 5px; /* Add margin as needed */
+  width: 45%;
+  margin: 5px;
 
-  box-sizing: border-box; /* Optional to include padding in width */
+  box-sizing: border-box;
 }

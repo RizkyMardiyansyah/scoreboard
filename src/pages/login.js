@@ -18,7 +18,6 @@ const LoginForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Replace with your actual backend API URL
     const apiUrl = "http://localhost:8000/auth/login";
 
     try {
@@ -29,28 +28,23 @@ const LoginForm = () => {
           title: "Login success",
           icon: "success",
         });
-        // Successful login
+
         const data = response.data;
 
-        // Store the token in localStorage or a state management solution (e.g., Redux)
         localStorage.setItem("token", data.token);
-        Cookies.set("token", data.token, { expires: 7 }); // Expires in 7 days
+        Cookies.set("token", data.token, { expires: 7 });
 
-        // Redirect to a protected route or dashboard
         router.push("/admin");
         setIsAuthenticated(true);
       } else {
-        // Handle unsuccessful login
         console.error("Login failed");
       }
-      // console.log("username:", username);
-      // console.log("Password:", password);
     } catch (error) {
       Swal.fire({
         title: `${error}`,
         icon: "error",
       });
-      // Handle errors (e.g., network issues, server errors)
+
       console.error("Error during login:", error);
     }
   };
@@ -111,14 +105,6 @@ const LoginForm = () => {
                         type="text"
                         placeholder="username"
                       />
-                      {/* <label className="text-sm font-medium text-gray-700 tracking-wide">
-                        Username
-                      </label>
-                      <input
-                        className=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-green-400"
-                        type
-                        placeholder="mail@gmail.com"
-                      /> */}
                     </div>
                     <div className="space-y-2">
                       <label className="mb-5 text-sm font-medium text-gray-700 tracking-wide">

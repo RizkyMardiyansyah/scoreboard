@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const FootballFormationAway = () => {
-  // const [playerAway, setplayerAway] = useState([]);
   const [playerAway, setPlayerAway] = useState([]);
   const [teamAway, setTeamAway] = useState([]);
 
@@ -35,8 +34,6 @@ const FootballFormationAway = () => {
       });
   }, []);
 
-  // console.log(team.home);
-  // console.log(playerAway);
   return (
     <>
       {teamAway.length > 0 ? (

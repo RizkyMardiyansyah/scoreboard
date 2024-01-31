@@ -14,7 +14,7 @@ import Goal from "@/components/Goal";
 import Image from "next/image";
 import YellowCard from "@/components/YellowCard";
 import RedCard from "@/components/RedCard";
-import Timer from "@/components/test/timer3";
+import Timer from "@/components/Timer/timer3";
 import Berani from "@/assets/berani.png";
 import Nat from "@/assets/nat.png";
 import axios from "axios";

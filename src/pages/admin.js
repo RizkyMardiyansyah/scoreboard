@@ -12,7 +12,7 @@ import styles from "@/pages/adminFormation.module.css";
 import YellowPlayer from "@/components/YellowPlayer";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
-import TimerButton from "@/components/test/timerButton";
+import TimerButton from "@/components/Timer/timerButton";
 import withAuth from "../components/withAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";

@@ -12,11 +12,6 @@ const DropdownComponent = () => {
       ? localStorage.setItem("showComponent", "1")
       : localStorage.setItem("showComponent", "1");
   };
-  // const toggleComponent11 = () => {
-  //   localStorage.getItem("showComponent") === "11"
-  //     ? localStorage.removeItem("showComponent")
-  //     : localStorage.setItem("showComponent", "11");
-  // };
 
   useEffect(() => {
     axios

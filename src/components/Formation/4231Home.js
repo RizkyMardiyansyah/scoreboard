@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./FootballFormation.module.css"; // Assuming you have a CSS module for styling
+import styles from "./FootballFormation.module.css";
 import axios from "axios";
 
 const Formation4231 = ({ players }) => {
@@ -27,7 +27,7 @@ const Formation4231 = ({ players }) => {
         console.error("Error fetching home data:", error);
       });
   }, []);
-  // console.log(teamHome[0][0].name);
+
   return (
     <>
       {teamHome.length > 0 ? (
@@ -80,13 +80,7 @@ const Formation4231 = ({ players }) => {
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.defender5}`}>d5</div> */}
-          {/* <div className={`${styles.player} ${styles.dm1}`}>dm1</div>
-      <div className={`${styles.player} ${styles.dm2}`}>dm2</div>
-      <div className={`${styles.player} ${styles.dm3}`}>dm3</div>
-      <div className={`${styles.player} ${styles.dm4}`}>dm4</div>
-      <div className={`${styles.player} ${styles.dm5}`}>dm5</div> */}
-          {/* <div className={`${styles.player} ${styles.mid1}`}>m1</div> */}
+
           <div className={`${styles.player} ${styles.mid2}`}>
             <div className={styles.playerCircle}>MC</div>{" "}
             {playerHome.length > 0 ? (

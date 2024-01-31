@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./FootballFormation.module.css"; // Assuming you have a CSS module for styling
+import styles from "./FootballFormation.module.css";
 import axios from "axios";
 
 const Formation4231 = ({ players }) => {
@@ -104,8 +104,7 @@ const Formation4231 = ({ players }) => {
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.am2}`}>am2</div>
-      <div className={`${styles.player} ${styles.am3}`}>am3</div> */}
+
           <div className={`${styles.player} ${styles.mid1}`}>
             <div className={styles.playerCircle}>ML</div>{" "}
             {playerAway.length > 0 ? (
@@ -122,12 +121,7 @@ const Formation4231 = ({ players }) => {
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.midfielder1}`}>mid1</div>
-      <div className={`${styles.player} ${styles.midfielder2}`}>mid2</div>
-      <div className={`${styles.player} ${styles.midfielder3}`}>mid2</div>
-      <div className={`${styles.player} ${styles.midfielder4}`}>mid2</div>
-      <div className={`${styles.player} ${styles.midfielder5}`}>mid2</div> */}
-          {/* <div className={`${styles.player} ${styles.striker1}`}>st1</div> */}
+
           <div className={`${styles.player} ${styles.striker3}`}>
             <div className={styles.playerCircle}>ST</div>{" "}
             {playerAway.length > 0 ? (
@@ -136,7 +130,6 @@ const Formation4231 = ({ players }) => {
               <span>Loading...</span>
             )}
           </div>
-          {/* <div className={`${styles.player} ${styles.striker3}`}>st3</div> */}
         </div>
       </div>
     </>
