@@ -7,10 +7,8 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 
 const navigation = [
-  { name: "Dashboard", href: "/", current: true },
-  { name: "Admin", href: "/admin", current: false },
-  // { name: "Projects", href: "#", current: false },
-  // { name: "Calendar", href: "#", current: false },
+  { name: "Scoreboard", href: "/", current: false },
+  { name: "Admin", href: "/admin", current: true },
 ];
 
 function classNames(...classes) {
@@ -76,7 +74,7 @@ const Navbar = () => {
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? "page" : undefined}
+                        target={item.current ? "" : "_blank"} // Add target="_blank" for non-current links
                       >
                         {item.name}
                       </a>

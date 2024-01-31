@@ -46,8 +46,13 @@ export default function Scoreboard() {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1; // Month is zero-based
   const day = currentDate.getDate();
-  // const lines = score.massageHome.split("\n");
-  // const linesAway = score.massageAway.split("\n");
+  function chunkArray(array, chunkSize) {
+    return Array.from(
+      { length: Math.ceil(array.length / chunkSize) },
+      (v, index) =>
+        array.slice(index * chunkSize, index * chunkSize + chunkSize)
+    );
+  }
   return (
     <Fragment>
       {/* score bawah */}
@@ -111,18 +116,22 @@ export default function Scoreboard() {
       </div>
 
       <div className="text-white flex justify-evenly mt-5">
-        <div className="text-3xl">
-          {score.messagesHome.map((message, index) => (
-            <div key={index} className="mt-3">
-              {message}
+        <div className="text-white flex flex-wrap ">
+          {chunkArray(score.messagesHome, 5).map((chunk, colIndex) => (
+            <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
+              {chunk.map((message, rowIndex) => (
+                <div key={rowIndex}>{message}</div>
+              ))}
             </div>
           ))}
         </div>
 
-        <div className="text-3xl">
-          {score.messagesAway.map((message, index) => (
-            <div key={index} className="mt-2">
-              {message}
+        <div className="text-white flex flex-wrap ">
+          {chunkArray(score.messagesAway, 5).map((chunk, colIndex) => (
+            <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
+              {chunk.map((message, rowIndex) => (
+                <div key={rowIndex}>{message}</div>
+              ))}
             </div>
           ))}
         </div>

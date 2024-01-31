@@ -37,14 +37,14 @@ const LoginForm = () => {
         Cookies.set("token", data.token, { expires: 7 }); // Expires in 7 days
 
         // Redirect to a protected route or dashboard
-        router.push("/");
+        router.push("/admin");
         setIsAuthenticated(true);
       } else {
         // Handle unsuccessful login
         console.error("Login failed");
       }
-      console.log("username:", username);
-      console.log("Password:", password);
+      // console.log("username:", username);
+      // console.log("Password:", password);
     } catch (error) {
       Swal.fire({
         title: `${error}`,

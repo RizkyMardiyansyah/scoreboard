@@ -1,8 +1,13 @@
-// pages/page2.js
-import Stopwatch from "../components/test/timer3";
+// App.js
+import React from "react";
+import Sidebar from "../components/Sidebar";
 
 const Page2 = () => {
-  return <Stopwatch />;
+  return (
+    <div>
+      <Sidebar />
+    </div>
+  );
 };
 
 export default Page2;

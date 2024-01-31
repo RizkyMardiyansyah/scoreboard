@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 const Stopwatch = () => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [stopTime, setStopTime] = useState(90 * 60); // Default stop time
 
   useEffect(() => {
     const storedTime = localStorage.getItem("stopwatchTime");
@@ -25,13 +26,19 @@ const Stopwatch = () => {
         setTime((prevTime) => {
           const newTime = prevTime + 1;
           localStorage.setItem("stopwatchTime", newTime);
+
+          // Check if the time has reached the stop time
+          if (newTime == stopTime) {
+            pauseTimer();
+          }
+
           return newTime;
         });
       }, 1000);
     }
 
     return () => clearInterval(timer);
-  }, [isRunning]);
+  }, [isRunning, stopTime]);
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
@@ -52,17 +59,28 @@ const Stopwatch = () => {
     localStorage.setItem("stopwatchIsRunning", "false");
   };
 
-  const resetTimer = () => {
+  const handleStartFromZero = () => {
     setIsRunning(false);
-    setTime(0);
-    localStorage.removeItem("stopwatchTime");
-    localStorage.removeItem("stopwatchIsRunning");
+    // setTime(0);
+    setTime(44 * 60 + 50);
+    setStopTime(45 * 60);
+    localStorage.setItem("stopwatchTime", String(45 * 60 + 55));
+    localStorage.setItem("stopwatchIsRunning", "false");
+  };
+
+  const handleStartFrom45 = () => {
+    setIsRunning(false);
+    // setTime(45 * 60);
+    setTime(89 * 60 + 55);
+    setStopTime(90 * 60);
+    localStorage.setItem("stopwatchTime", String(45 * 60 + 55));
+    localStorage.setItem("stopwatchIsRunning", "false");
   };
 
   return (
     <div style={{ textAlign: "center" }}>
-      <div id="reset-btn" style={{ fontSize: "70px", color: "black" }}>
-        <span>{formatTime(time)}</span>
+      <div id="reset-btn" style={{ fontSize: "70px" }}>
+        <span className="text-black">{formatTime(time)}</span>
       </div>
     </div>
   );

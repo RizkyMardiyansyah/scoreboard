@@ -1,30 +1,13 @@
-"use client";
-import { Fragment } from "react";
-import Navbar from "@/components/Navbar";
-import axios from "axios";
-import React from "react";
-import { useState } from "react";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
-import SelectHomeTeam from "@/components/SelectHomeTeam";
-import SelectAwayTeam from "@/components/SelectAwayTeam";
 import styles from "@/pages/adminFormation.module.css";
-import YellowPlayer from "@/components/YellowPlayer";
-import { useEffect } from "react";
-import Swal from "sweetalert2";
-import TimerButton from "@/components/test/timerButton";
-import withAuth from "../components/withAuth";
+import DropdownButton from "../Dropdown";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import DropdownButton from "../components/Dropdown";
 import Image from "next/image";
-import Subtitution from "../components/Subtitution";
-import Sidebar from "@/components/Sidebar Content/Sidebar2";
+import Control from "./Control";
 
-// const Admin = () =>{
-
-// }
-const Admin = (isAuthenticated) => {
+const FormationAway = () => {
   const [options, setOptions] = useState([]);
   const [score, setScore] = useState(null);
   const [buttons, setButtons] = useState([]);
@@ -58,10 +41,6 @@ const Admin = (isAuthenticated) => {
   const [messageHome, setMessageHome] = useState("");
   const [messageAway, setMessageAway] = useState("");
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-
-  const handleTabSelect = (index) => {
-    setSelectedTabIndex(index);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -138,84 +117,6 @@ const Admin = (isAuthenticated) => {
   // if (!team) return null;
   if (!score) return null;
   // console.log(home.name);
-
-  const updateScore = () => {
-    if (!score || !score.messagesHome || !score.messagesAway) {
-      // Handle the case where score or its properties are null
-      return;
-    }
-
-    console.log("Updated Score:", { ...score, messageHome, messageAway });
-    axios
-      .put(`http://localhost:8000/score/${score._id}`, {
-        ...score,
-        messageHome,
-        messageAway,
-      })
-      .then((response) => {
-        Swal.fire({
-          title: `Score updated successfully!`,
-          icon: "success",
-        });
-      });
-  };
-
-  const toggleComponent1Or3 = () => {
-    setShowGoalPlayer(!showGoalPlayer);
-    localStorage.getItem("showComponent") === "1"
-      ? localStorage.setItem("showComponent", "3")
-      : localStorage.setItem("showComponent", "1");
-  };
-  const toggleComponent1 = () => {
-    localStorage.getItem("showComponent") === "1"
-      ? localStorage.setItem("showComponent", "1")
-      : localStorage.setItem("showComponent", "1");
-  };
-
-  const toggleComponent2 = () => {
-    localStorage.getItem("showComponent") === "2"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "2");
-  };
-  const toggleComponent4 = () => {
-    setShowYellowPlayer(!showYellowPlayer);
-    localStorage.getItem("showComponent") === "4"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "4");
-  };
-
-  const toggleComponent5 = () => {
-    setShowRedPlayer(!showRedPlayer);
-    localStorage.getItem("showComponent") === "5"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "5");
-  };
-
-  const toggleComponent6 = () => {
-    localStorage.getItem("showComponent") === "6"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "6");
-  };
-  const toggleComponent7 = () => {
-    localStorage.getItem("showComponent") === "7"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "7");
-  };
-  const toggleComponent8 = () => {
-    localStorage.getItem("showComponent") === "8"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "8");
-  };
-  const toggleComponent9 = () => {
-    localStorage.getItem("showComponent") === "9"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "9");
-  };
-  const toggleComponent10 = () => {
-    localStorage.getItem("showComponent") === "10"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "10");
-  };
 
   const handleSubmit = async () => {
     // Show SweetAlert confirmation popup
@@ -1230,50 +1131,6 @@ const Admin = (isAuthenticated) => {
       </div>
     ));
   };
-  const handleButtonClick = (formNumber) => {
-    setShowFormation4231Home(false);
-    setShowFormation442Home(false);
-    setShowFormation433Home(false);
-    // Toggle the respective form visibility based on the button clicked
-    if (formNumber === 1) {
-      setShowFormation442Home(true);
-      setShowForm1(true);
-      setShowForm2(false);
-      setShowForm3(false);
-    } else if (formNumber === 2) {
-      setShowFormation4231Home(true);
-      setShowForm1(false);
-      setShowForm2(true);
-      setShowForm3(false);
-    } else if (formNumber === 3) {
-      setShowFormation433Home(true);
-      setShowForm1(false);
-      setShowForm2(false);
-      setShowForm3(true);
-    }
-  };
-  const handleButtonClickAway = (formNumber) => {
-    setShowFormation4231Away(false);
-    setShowFormation442Away(false);
-    setShowFormation433Away(false);
-    // Toggle the respective form visibility based on the button clicked
-    if (formNumber === 1) {
-      setShowFormation442Away(true);
-      setShowForm1Away(true);
-      setShowForm2Away(false);
-      setShowForm3Away(false);
-    } else if (formNumber === 2) {
-      setShowFormation4231Away(true);
-      setShowForm1Away(false);
-      setShowForm2Away(true);
-      setShowForm3Away(false);
-    } else if (formNumber === 3) {
-      setShowFormation433Away(true);
-      setShowForm1Away(false);
-      setShowForm2Away(false);
-      setShowForm3Away(true);
-    }
-  };
 
   const handleFormationSelect = (formation) => {
     setSelectedFormation(formation);
@@ -1299,6 +1156,15 @@ const Admin = (isAuthenticated) => {
       setShowForm2(false);
       setShowForm3(true);
     }
+    const stateProps = {
+      showFormation442Home,
+      setShowFormation442Home,
+      showFormation4231Home,
+      setShowFormation4231Home,
+      showFormation433Home,
+      setShowFormation433Home,
+    };
+    return <Control {...stateProps} />;
   };
 
   const handleFormationSelectAway = (formation) => {
@@ -1456,550 +1322,85 @@ const Admin = (isAuthenticated) => {
     }
   };
 
-  const addMessage = (type) => {
-    if (type === "home") {
-      setScore({
-        ...score,
-        messagesHome: [...score.messagesHome, messageHome],
-      });
-      setMessageHome("");
-    } else {
-      setScore({
-        ...score,
-        messagesAway: [...score.messagesAway, messageAway],
-      });
-      setMessageAway("");
-    }
-  };
-
-  const deleteMessage = (type, index) => {
-    if (type === "home") {
-      const updatedMessagesHome = [...score.messagesHome];
-      updatedMessagesHome.splice(index, 1);
-      setScore({ ...score, messagesHome: updatedMessagesHome });
-    } else {
-      const updatedMessagesAway = [...score.messagesAway];
-      updatedMessagesAway.splice(index, 1);
-      setScore({ ...score, messagesAway: updatedMessagesAway });
-    }
-  };
-
   return (
-    <Fragment>
-      <Navbar isAuthenticated={isAuthenticated} />
+    <>
+      <div className={`${styles.container}`}>
+        <div className={`mr-9`}>
+          <h2>Formation Away</h2>
+          <DropdownButton
+            options={["4-4-2", "4-2-3-1", "4-3-3"]}
+            onSelect={handleFormationSelectAway}
+            label="Select Formation"
+          />
 
-      <div className="bg-slate-300">
-        <Sidebar />
-        {/* <Tabs>
-          <TabList>
-            <Tab>Test</Tab>
-            <Tab>Subtitution</Tab>
-            <Tab>Control</Tab>
-            <Tab>Team & Score</Tab>
-            <Tab>Formation Home</Tab>
-            <Tab>Formation Away</Tab>
-          </TabList>
+          <div className="mt-5">{renderSelectedFormAway()}</div>
+          {selectedFormationAway && isFormVisibleAway && (
+            <div className="mt-5">
+              <button
+                onClick={handleToggleFormAway}
+                className="mr-4 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
+              >
+                Hide Form
+              </button>
 
-          <TabPanel className="test">
-            <div className="flex justify-between">
-              <div className={`${styles.container}`}>
-                <div className={`ml-9`}>
-                  <h2>Formation Home</h2>
-                  <DropdownButton
-                    options={["4-4-2", "4-2-3-1", "4-3-3"]}
-                    onSelect={handleFormationSelect}
-                    label="Select Formation"
+              <button
+                onClick={handleSubmitAway}
+                className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+              >
+                Submit
+              </button>
+
+              <button
+                onClick={handleSubmitAway}
+                className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+              >
+                Cancel
+              </button>
+
+              <button
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                onClick={() => createPlayerAway(newPlayer)}
+              >
+                Add Player
+              </button>
+            </div>
+          )}
+
+          {coachAway ? (
+            <div className="mt-5">
+              <form onSubmit={handleSubmitCoachAway}>
+                <label>
+                  Coach:
+                  <input
+                    type="text"
+                    value={coachAway.name || ""}
+                    onChange={handleCoachNameChangeAway}
+                    placeholder={coachAway[1].name}
                   />
-
-                  <div className="mt-5">{renderSelectedForm()}</div>
-                  {selectedFormation && isFormVisible && (
-                    <div className="mt-5 ml-5">
-                      <button
-                        onClick={handleToggleForm}
-                        className="mr-4 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
-                      >
-                        Hide Form
-                      </button>
-
-                      <button
-                        onClick={handleSubmit}
-                        className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                      >
-                        Submit
-                      </button>
-
-                      <button
-                        onClick={handleSubmit}
-                        className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                      >
-                        Cancel
-                      </button>
-
-                      <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                        onClick={() => createPlayer(newPlayer)}
-                      >
-                        Add Player
-                      </button>
-                    </div>
-                  )}
-
-                  {data ? (
-                    <div className="mt-5">
-                      <form onSubmit={handleSubmitCoach}>
-                        <label>
-                          Coach:
-                          <input
-                            type="text"
-                            value={data.name || ""}
-                            onChange={handleCoachNameChange}
-                            placeholder={data[0].name}
-                          />
-                          <button type="submit" className="">
-                            Submit
-                          </button>
-                        </label>
-                      </form>
-                    </div>
-                  ) : (
-                    <p>Loading...</p>
-                  )}
-                  <div className="mt-5">
-                    Coach Name: {data ? data[0].name : "Loading..."}
-                  </div>
-                </div>
-              </div>
-
-              <div className={`${styles.container}`}>
-                <div className={`mr-9`}>
-                  <h2>Formation Away</h2>
-                  <DropdownButton
-                    options={["4-4-2", "4-2-3-1", "4-3-3"]}
-                    onSelect={handleFormationSelectAway}
-                    label="Select Formation"
-                  />
-
-                  <div className="mt-5">{renderSelectedFormAway()}</div>
-                  {selectedFormationAway && isFormVisibleAway && (
-                    <div className="mt-5">
-                      <button
-                        onClick={handleToggleFormAway}
-                        className="mr-4 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
-                      >
-                        Hide Form
-                      </button>
-
-                      <button
-                        onClick={handleSubmitAway}
-                        className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                      >
-                        Submit
-                      </button>
-
-                      <button
-                        onClick={handleSubmitAway}
-                        className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                      >
-                        Cancel
-                      </button>
-
-                      <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                        onClick={() => createPlayerAway(newPlayer)}
-                      >
-                        Add Player
-                      </button>
-                    </div>
-                  )}
-
-                  {coachAway ? (
-                    <div className="mt-5">
-                      <form onSubmit={handleSubmitCoachAway}>
-                        <label>
-                          Coach:
-                          <input
-                            type="text"
-                            value={coachAway.name || ""}
-                            onChange={handleCoachNameChangeAway}
-                            placeholder={coachAway[1].name}
-                          />
-                          <button type="submit" className="">
-                            Submit
-                          </button>
-                        </label>
-                      </form>
-                    </div>
-                  ) : (
-                    <p>Loading...</p>
-                  )}
-                  <div className="mt-5">
-                    Coach Name: {coachAway ? coachAway[1].name : "Loading..."}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-5 flex items-center justify-center">
-              <iframe
-                src="http://localhost:3000/"
-                title="Content from localhost:3000"
-                width="95%"
-                height="800"
-              />
-            </div>
-          </TabPanel>
-          <TabPanel className="subtitution">
-            <Subtitution />
-          </TabPanel>
-          <TabPanel className="controlPanel">
-            <div className="container flex">
-              <div className="flex-auto w-64 ml-10">
-                <button
-                  onClick={toggleComponent1}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  Show Scoreboard
-                </button>
-                <button
-                  onClick={toggleComponent1Or3}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  {showGoalPlayer ? "Hide Player" : "Show Goal Player"}
-                </button>
-
-                <button
-                  onClick={toggleComponent4}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  {showYellowPlayer
-                    ? "Hide Yellow Player"
-                    : "Show Yellow Player"}
-                </button>
-
-                <button
-                  onClick={toggleComponent5}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  {showRedPlayer ? "Hide Red Player" : "Show Red Card"}
-                </button>
-              </div>
-
-              <div className="flex-auto w-32">
-                {showFormation4231Home && (
-                  <button
-                    onClick={toggleComponent7}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                  >
-                    Formation 4231 Home
+                  <button type="submit" className="">
+                    Submit
                   </button>
-                )}
-                {showFormation442Home && (
-                  <button
-                    onClick={toggleComponent8}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                  >
-                    Formation 442 Home
-                  </button>
-                )}
-                {showFormation433Home && (
-                  <button
-                    onClick={toggleComponent2}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                  >
-                    Formation 433 Home
-                  </button>
-                )}
-
-                {showFormation4231Away && (
-                  <button
-                    onClick={toggleComponent9}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                  >
-                    Formation 4231 Away
-                  </button>
-                )}
-                {showFormation442Away && (
-                  <button
-                    onClick={toggleComponent10}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                  >
-                    Formation 442 Away
-                  </button>
-                )}
-                {showFormation433Away && (
-                  <button
-                    onClick={toggleComponent6}
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                  >
-                    Formation 433 Away
-                  </button>
-                )}
-              </div>
-            </div>
-            <TimerButton />
-
-            {showGoalPlayer && <YellowPlayer />}
-            {showYellowPlayer && <YellowPlayer />}
-            {showRedPlayer && <YellowPlayer />}
-
-            <div className="mt-5 flex items-center justify-center">
-              <iframe
-                src="http://localhost:3000/"
-                title="Content from localhost:3000"
-                width="95%"
-                height="800"
-              />
-            </div>
-          </TabPanel>
-          <TabPanel className="updateTeam&Score">
-            <div className="bg-slate-300 flex h-screen">
-              <div className="mr-3">
-                <SelectHomeTeam />
-              </div>
-              <div className="mr-3">
-                <SelectAwayTeam />
-              </div>
-
-              <div className="flex-auto bg-slate-300">
-                <h1 className="p-2 text-black">Score</h1>
-
-                <label
-                  htmlFor="home"
-                  className="block text-sm font-medium leading-6 text-black"
-                >
-                  {home.name}
                 </label>
-                <div className="mt-2 mb-4">
-                  <span className="text-black">{score.home}</span>
-                </div>
-
-                <label
-                  htmlFor="away"
-                  className="block text-sm font-medium leading-6 text-black"
-                >
-                  {away.name}
-                </label>
-                <div className="mt-2 mb-4">
-                  <span className="text-black">{score.away}</span>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="messageHome"
-                    className="block text-sm font-medium leading-6 text-black"
-                  >
-                    Goalscorer for {home.name}
-                  </label>
-
-                  {score.messagesHome && score.messagesHome.length > 0 && (
-                    <>
-                      {score.messagesHome.map((message, index) => (
-                        <div
-                          key={index}
-                          className="relative mt-2 mb-4 rounded-md shadow-sm"
-                        >
-                          <input
-                            type="text"
-                            name={`messageHome_${index}`}
-                            id={`messageHome_${index}`}
-                            value={message}
-                            placeholder="Haaland 20'"
-                            className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            onChange={(e) => {
-                              const updatedMessagesHome = [
-                                ...score.messagesHome,
-                              ];
-                              updatedMessagesHome[index] = e.target.value;
-                              setScore({
-                                ...score,
-                                messagesHome: updatedMessagesHome,
-                              });
-                            }}
-                          />
-                          <button
-                            onClick={() => deleteMessage("home", index)}
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none"
-                          >
-                            <svg
-                              className="h-5 w-5 text-gray-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      ))}
-                    </>
-                  )}
-
-                  <div className="relative mt-2 mb-4">
-                    <button
-                      onClick={() => addMessage("home")}
-                      className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Add Score
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="messageAway"
-                    className="block text-sm font-medium leading-6 text-black"
-                  >
-                    Goalscorer for {away.name}
-                  </label>
-
-                  {score.messagesAway && score.messagesAway.length > 0 && (
-                    <>
-                      {score.messagesAway.map((message, index) => (
-                        <div
-                          key={index}
-                          className="relative mt-2 mb-4 rounded-md shadow-sm"
-                        >
-                          <input
-                            type="text"
-                            name={`messageAway_${index}`}
-                            id={`messageAway_${index}`}
-                            placeholder="Haaland 20'"
-                            value={message}
-                            className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                            onChange={(e) => {
-                              const updatedMessagesAway = [
-                                ...score.messagesAway,
-                              ];
-                              updatedMessagesAway[index] = e.target.value;
-                              setScore({
-                                ...score,
-                                messagesAway: updatedMessagesAway,
-                              });
-                            }}
-                          />
-                          <button
-                            onClick={() => deleteMessage("away", index)}
-                            className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none"
-                          >
-                            <svg
-                              className="h-5 w-5 text-gray-400"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M6 18L18 6M6 6l12 12"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      ))}
-                    </>
-                  )}
-
-                  <div className="relative mt-2 mb-4">
-                    <button
-                      onClick={() => addMessage("away")}
-                      className="bg-green-400 hover:bg-green-500 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Add Score
-                    </button>
-                  </div>
-                </div>
-
-                <button
-                  className="my-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  onClick={updateScore}
-                >
-                  Update Score
-                </button>
-              </div>
+              </form>
             </div>
-          </TabPanel>
-          <TabPanel className="formationHome">
-            <div className={`${styles.container} h-screen`}>
-              <div className={`${styles.box1}`}>
-                <h2>Player Home</h2>
-                <button
-                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
-                  onClick={() => handleButtonClick(1)}
-                >
-                  4-4-2
-                </button>
-                <button
-                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
-                  onClick={() => handleButtonClick(2)}
-                >
-                  4-2-3-1
-                </button>
-                <button
-                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2  bg-blue-500 hover:bg-blue-700"
-                  onClick={() => handleButtonClick(3)}
-                >
-                  4-3-3
-                </button>
-
-                {showForm1 && renderForms442()}
-                {showForm2 && renderForms4231()}
-                {showForm3 && renderForms433()}
-
-                <button
-                  onClick={handleSubmit}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </TabPanel>
-          <TabPanel className="formationAway">
-            <div className={`${styles.container} h-screen`}>
-              <div className={`${styles.box2}`}>
-                <h2>Player Away</h2>
-                <button
-                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 bg-blue-500 hover:bg-blue-700"
-                  onClick={() => handleButtonClickAway(1)}
-                >
-                  4-4-2
-                </button>
-                <button
-                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 bg-blue-500 hover:bg-blue-700"
-                  onClick={() => handleButtonClickAway(2)}
-                >
-                  4-2-3-1
-                </button>
-                <button
-                  className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 bg-blue-500 hover:bg-blue-700"
-                  onClick={() => handleButtonClickAway(3)}
-                >
-                  4-3-3
-                </button>
-
-                {showForm1Away && renderForms442Away()}
-                {showForm2Away && renderForms4231Away()}
-                {showForm3Away && renderForms433Away()}
-                <button
-                  onClick={handleSubmitAway}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  Submit
-                </button>
-              </div>
-            </div>
-          </TabPanel>
-        </Tabs> */}
+          ) : (
+            <p>Loading...</p>
+          )}
+          <div className="mt-5">
+            Coach Name: {coachAway ? coachAway[1].name : "Loading..."}
+          </div>
+        </div>
       </div>
-    </Fragment>
+
+      <div className="mt-5 flex items-center justify-center">
+        <iframe
+          src="http://localhost:3000/"
+          title="Content from localhost:3000"
+          width="95%"
+          height="800"
+        />
+      </div>
+    </>
   );
 };
-export default withAuth(Admin);
+export default FormationAway;

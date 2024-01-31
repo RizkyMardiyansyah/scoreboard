@@ -17,6 +17,8 @@ import RedCard from "@/components/RedCard";
 import Timer from "@/components/test/timer3";
 import Berani from "@/assets/berani.png";
 import Nat from "@/assets/nat.png";
+import axios from "axios";
+import SubtitutionPage from "@/components/SubtitutionPage";
 
 const Page1 = (isAuthenticated) => {
   const [showComponent1, setShowComponent1] = useState(false);
@@ -29,6 +31,19 @@ const Page1 = (isAuthenticated) => {
   const [showComponent8, setShowComponent8] = useState(false);
   const [showComponent9, setShowComponent9] = useState(false);
   const [showComponent10, setShowComponent10] = useState(false);
+  const [showComponent11, setShowComponent11] = useState(false);
+  const [showPicture, setShowPicture] = useState([]);
+
+  // useEffect(() => {
+  //   if (showComponent11) {
+  //     const timeoutId = setTimeout(() => {
+  //       setShowComponent1(true);
+  //       setShowComponent11(false);
+  //     }, 10000);
+
+  //     return () => clearTimeout(timeoutId);
+  //   }
+  // }, [showComponent11]);
 
   useEffect(() => {
     const storedComponent = localStorage.getItem("showComponent");
@@ -43,6 +58,7 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(false);
       setShowComponent9(false);
       setShowComponent10(false);
+      setShowComponent11(false);
     } else if (storedComponent === "2") {
       setShowComponent1(false);
       setShowComponent2(true);
@@ -54,6 +70,7 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(false);
       setShowComponent9(false);
       setShowComponent10(false);
+      setShowComponent11(false);
     } else if (storedComponent === "3") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -65,6 +82,7 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(false);
       setShowComponent9(false);
       setShowComponent10(false);
+      setShowComponent11(false);
     } else if (storedComponent === "4") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -76,6 +94,7 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(false);
       setShowComponent9(false);
       setShowComponent10(false);
+      setShowComponent11(false);
     } else if (storedComponent === "5") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -87,6 +106,7 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(false);
       setShowComponent9(false);
       setShowComponent10(false);
+      setShowComponent11(false);
     } else if (storedComponent === "6") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -98,6 +118,7 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(false);
       setShowComponent9(false);
       setShowComponent10(false);
+      setShowComponent11(false);
     } else if (storedComponent === "7") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -109,6 +130,7 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(false);
       setShowComponent9(false);
       setShowComponent10(false);
+      setShowComponent11(false);
     } else if (storedComponent === "8") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -120,6 +142,7 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(true);
       setShowComponent9(false);
       setShowComponent10(false);
+      setShowComponent11(false);
     } else if (storedComponent === "9") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -131,6 +154,7 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(false);
       setShowComponent9(true);
       setShowComponent10(false);
+      setShowComponent11(false);
     } else if (storedComponent === "10") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -142,6 +166,19 @@ const Page1 = (isAuthenticated) => {
       setShowComponent8(false);
       setShowComponent9(false);
       setShowComponent10(true);
+      setShowComponent11(false);
+    } else if (storedComponent === "11") {
+      setShowComponent1(false);
+      setShowComponent2(false);
+      setShowComponent3(false);
+      setShowComponent4(false);
+      setShowComponent5(false);
+      setShowComponent6(false);
+      setShowComponent7(false);
+      setShowComponent8(false);
+      setShowComponent9(false);
+      setShowComponent10(false);
+      setShowComponent11(true);
     } else {
       setShowComponent1(true);
       setShowComponent2(false);
@@ -151,6 +188,10 @@ const Page1 = (isAuthenticated) => {
       setShowComponent6(false);
       setShowComponent7(false);
       setShowComponent8(false);
+      setShowComponent9(false);
+      setShowComponent10(false);
+      setShowComponent11(false);
+
       localStorage.setItem("showComponent", "1");
     }
 
@@ -169,6 +210,23 @@ const Page1 = (isAuthenticated) => {
   }, []);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8000/homeTeam");
+        setShowPicture(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  console.log(
+    showPicture.length > 3 ? showPicture[3].logo : "No logo available"
+  );
+
+  useEffect(() => {
     // Apply styles to hide scroll when the component mounts
     document.body.style.overflow = "hidden";
 
@@ -182,20 +240,28 @@ const Page1 = (isAuthenticated) => {
     <>
       {/* <Navbar isAuthenticated={isAuthenticated} /> */}
       <div className="flex h-screen">
-        <div className="w-1/4 bg-slate-300 flex flex-col items-center justify-center">
+        <div className="w-1/4 bg-[#8fcac5] flex flex-col items-center justify-center">
           <div className="mb-auto mt-5">
-            <Image src={Berani} width={300} height={300} />
+            <Image src={Berani} width={250} height={250} />
           </div>
           <div className="text-white">
             <Timer />
           </div>
           <div className="mt-auto mb-5">
-            <Image src={Nat} width={300} height={300} />
+            <Image src={Nat} width={250} height={250} />
           </div>
         </div>
         {/* bg-[#2f2f2f] */}
-        <div className="flex-1 bg-sky-500 flex flex-col items-center justify-center">
-          <div className="mt-3 text-4xl font-medium">BRI Liga 1</div>
+        <div className="flex-1 bg-red-500 flex flex-col items-center justify-center">
+          <div className="flex">
+            <div className="mt-3 text-4xl font-medium item-start">
+              {showPicture && showPicture[3] && showPicture[3].logo && (
+                <Image src={showPicture[3].logo} width={100} height={100} />
+              )}
+            </div>
+            {/* <div className="mt-3 text-4xl font-medium mx-auto">BRI Liga 1</div> */}
+          </div>
+
           <div className="mt-auto w-full ">
             {showComponent1 && <Component1 />}
             {showComponent2 && <Component2 />}
@@ -207,9 +273,10 @@ const Page1 = (isAuthenticated) => {
             {showComponent8 && <Component8 />}
             {showComponent9 && <Component9 />}
             {showComponent10 && <Component10 />}
+            {showComponent11 && <Component11 />}
           </div>
           <div className="mt-auto mb-4 text-center text-4xl font-medium">
-            <p>AFC Asian Cup</p>
+            <p>BRI Liga 1</p>
           </div>
         </div>
       </div>
@@ -256,5 +323,8 @@ const Component9 = () => {
 };
 const Component10 = () => {
   return <Lineup442Away />;
+};
+const Component11 = () => {
+  return <SubtitutionPage />;
 };
 export default Page1;
