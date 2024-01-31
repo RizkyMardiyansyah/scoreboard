@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 const Stopwatch = () => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [stopTime, setStopTime] = useState(90 * 60); // Default stop time
+  const [stopTime, setStopTime] = useState(90 * 60);
 
   useEffect(() => {
     const storedTime = localStorage.getItem("stopwatchTime");
