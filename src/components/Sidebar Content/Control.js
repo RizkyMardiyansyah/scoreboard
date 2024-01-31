@@ -6,12 +6,6 @@ const Control = () => {
   const [showRedPlayer, setShowRedPlayer] = useState(false);
   const [showYellowPlayer, setShowYellowPlayer] = useState(false);
   const [showGoalPlayer, setShowGoalPlayer] = useState(false);
-  //   const [showFormation442Home, setShowFormation442Home] = useState(false);
-  //   const [showFormation4231Home, setShowFormation4231Home] = useState(false);
-  //   const [showFormation433Home, setShowFormation433Home] = useState(false);
-  //   const [showFormation442Away, setShowFormation442Away] = useState(false);
-  //   const [showFormation4231Away, setShowFormation4231Away] = useState(false);
-  //   const [showFormation433Away, setShowFormation433Away] = useState(false);
 
   const toggleComponent1Or3 = () => {
     setShowGoalPlayer(!showGoalPlayer);

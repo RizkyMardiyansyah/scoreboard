@@ -18,7 +18,7 @@ const LoginForm = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const apiUrl = "http://localhost:8000/auth/login";
+    const apiUrl = `${databaseUrl}/auth/login`;
 
     try {
       const response = await axios.post(apiUrl, { username, password });

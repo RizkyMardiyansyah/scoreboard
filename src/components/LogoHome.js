@@ -6,7 +6,7 @@ const ImageComponent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/team")
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/team`)
       .then((response) => {
         setImageData(response.data[1]);
       })

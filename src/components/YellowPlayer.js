@@ -9,12 +9,16 @@ const MyComponent = () => {
 
   useEffect(() => {
     // Fetch button names from the API
-    axios.get("http://localhost:8000/playerHome").then((response) => {
-      setButtons(response.data);
-    });
-    axios.get("http://localhost:8000/playerAway").then((response) => {
-      setButtonsAway(response.data);
-    });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`)
+      .then((response) => {
+        setButtons(response.data);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`)
+      .then((response) => {
+        setButtonsAway(response.data);
+      });
   }, []);
 
   const handleButtonClick = async (buttonData) => {
@@ -24,15 +28,15 @@ const MyComponent = () => {
     try {
       // Try fetching playerHome URL
       const response = await axios.get(
-        `http://localhost:8000/playerHome/${buttonData._id}/photo`
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`
       );
 
       // If successful (status code 200), use playerHome URL
-      const photoUrl = `http://localhost:8000/playerHome/${buttonData._id}/photo`;
+      const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`;
       localStorage.setItem("playerPhotoUrl", photoUrl);
     } catch (error) {
       // If server responds with 404 or any other error, use playerAway URL
-      const photoUrl = `http://localhost:8000/playerAway/${buttonData._id}/photo`;
+      const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${buttonData._id}/photo`;
       localStorage.setItem("playerPhotoUrl", photoUrl);
     }
 
@@ -41,7 +45,7 @@ const MyComponent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/homeTeam")
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`)
       .then((response) => {
         setTeamHome(response.data);
       })
@@ -52,7 +56,7 @@ const MyComponent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/awayTeam")
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam`)
       .then((response) => {
         setTeamAway(response.data);
       })

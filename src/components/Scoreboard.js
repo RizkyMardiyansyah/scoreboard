@@ -12,15 +12,19 @@ export default function Scoreboard() {
 
   const fetchData = async () => {
     try {
-      const responseTeam = await axios.get("http://localhost:8000/homeTeam");
+      const responseTeam = await axios.get(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`
+      );
       setTeam(responseTeam.data[0]);
 
       const responseTeamAway = await axios.get(
-        "http://localhost:8000/awayTeam"
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam`
       );
       setTeamAway(responseTeamAway.data[0]);
 
-      const responseScore = await axios.get("http://localhost:8000/score");
+      const responseScore = await axios.get(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/score`
+      );
       setScore(responseScore.data[0]);
     } catch (error) {
       console.error("Error fetching data:", error);

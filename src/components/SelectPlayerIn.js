@@ -15,7 +15,7 @@ const DropdownComponent = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/playerHome")
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`)
       .then((response) => {
         setTeamOptions(response.data);
       })
@@ -37,12 +37,12 @@ const DropdownComponent = () => {
     );
 
     if (type === "in") {
-      const subPhotoUrl = `http://localhost:8000/playerHome/${selectedPlayer._id}/photo`;
+      const subPhotoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${selectedPlayer._id}/photo`;
       localStorage.setItem("subPhotoUrl", subPhotoUrl);
       localStorage.setItem("subPhotoName", selectedPlayer.name);
       console.log("Selected Player ID:", selectedPlayer._id);
     } else if (type === "out") {
-      const subPhotoUrl2 = `http://localhost:8000/playerHome/${selectedPlayer._id}/photo`;
+      const subPhotoUrl2 = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${selectedPlayer._id}/photo`;
       localStorage.setItem("subPhotoName2", selectedPlayer.name);
       localStorage.setItem("subPhotoUrl2", subPhotoUrl2);
       console.log("Selected Player ID:", selectedPlayer._id);
@@ -86,7 +86,7 @@ const DropdownComponent = () => {
 
         // Update the database
         axios
-          .post("http://localhost:8000/playerHome/swap", {
+          .post(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/swap`, {
             team1Id: playerIn._id,
             team2Id: playerOut._id,
           })

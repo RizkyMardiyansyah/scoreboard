@@ -216,7 +216,9 @@ const Page1 = (isAuthenticated) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/homeTeam");
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`
+        );
         setShowPicture(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -279,11 +281,7 @@ const Page1 = (isAuthenticated) => {
 };
 
 const Component1 = () => {
-  return (
-    <>
-      <Scoreboard />;
-    </>
-  );
+  return <Scoreboard />;
 };
 
 const Component3 = () => {

@@ -9,15 +9,21 @@ const Subtitution = () => {
   const [score, setScore] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:8000/homeTeam").then((response) => {
-      setHome(response.data[0]);
-    });
-    axios.get("http://localhost:8000/awayTeam").then((response) => {
-      setAway(response.data[0]);
-    });
-    axios.get("http://localhost:8000/score").then((response) => {
-      setScore(response.data[0]);
-    });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`)
+      .then((response) => {
+        setHome(response.data[0]);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam`)
+      .then((response) => {
+        setAway(response.data[0]);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/score`)
+      .then((response) => {
+        setScore(response.data[0]);
+      });
   }, []);
 
   const updateScore = () => {
@@ -28,7 +34,7 @@ const Subtitution = () => {
 
     console.log("Updated Score:", { ...score, messageHome, messageAway });
     axios
-      .put(`http://localhost:8000/score/${score._id}`, {
+      .put(`${process.env.NEXT_PUBLIC_DATABASE_URL}/score/${score._id}`, {
         ...score,
         messageHome,
         messageAway,

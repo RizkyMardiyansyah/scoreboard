@@ -8,7 +8,9 @@ const Formation4231 = ({ players }) => {
   useEffect(() => {
     const fetchPlayerAway = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/playerAway");
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`
+        );
         setPlayerAway(response.data);
       } catch (error) {
         console.error("Error fetching player away:", error);
@@ -19,7 +21,7 @@ const Formation4231 = ({ players }) => {
   }, []);
   useEffect(() => {
     axios
-      .get("http://localhost:8000/awayTeam")
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam`)
       .then((response) => {
         setTeamAway(response.data);
       })

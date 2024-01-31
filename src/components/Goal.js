@@ -11,12 +11,16 @@ const Goal = () => {
   const [buttonsAway, setButtonsAway] = useState([]);
 
   React.useEffect(() => {
-    axios.get("http://localhost:8000/playerHome").then((response) => {
-      setButtons(response.data);
-    });
-    axios.get("http://localhost:8000/playerAway").then((response) => {
-      setButtonsAway(response.data);
-    });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`)
+      .then((response) => {
+        setButtons(response.data);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`)
+      .then((response) => {
+        setButtonsAway(response.data);
+      });
   }, []);
   const clickedButton = localStorage.getItem("clickedButton");
   const clickedButtonPhoto = localStorage.getItem("playerPhotoUrl");

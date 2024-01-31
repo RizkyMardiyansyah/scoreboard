@@ -8,7 +8,9 @@ const Formation4231 = ({ players }) => {
   useEffect(() => {
     const fetchPlayerHome = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/playerHome");
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`
+        );
         setPlayerHome(response.data);
       } catch (error) {
         console.error("Error fetching player home:", error);
@@ -19,7 +21,7 @@ const Formation4231 = ({ players }) => {
   }, []);
   useEffect(() => {
     axios
-      .get("http://localhost:8000/homeTeam")
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`)
       .then((response) => {
         setTeamHome(response.data);
       })

@@ -9,7 +9,7 @@ const DropdownComponent = () => {
   useEffect(() => {
     // Fetch team dropdown options from the API
     axios
-      .get("http://localhost:8000/team")
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/team`)
       .then((response) => {
         setTeamOptions(response.data);
       })
@@ -19,7 +19,7 @@ const DropdownComponent = () => {
 
     // Fetch home data from the API
     axios
-      .get("http://localhost:8000/homeTeam")
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`)
       .then((response) => {
         setHomeData(response.data);
       })
@@ -51,7 +51,7 @@ const DropdownComponent = () => {
       // Update the /home endpoint with the new data
       axios
         .put(
-          "http://localhost:8000/homeTeam/65a4c43b781814cf4206a691",
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam/65a4c43b781814cf4206a691`,
           updatedHomeData[0]
         )
         .then((response) => {

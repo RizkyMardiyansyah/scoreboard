@@ -46,7 +46,9 @@ const TeamScore = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/coach");
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`
+        );
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -59,7 +61,9 @@ const TeamScore = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/coach");
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`
+        );
         setCoachAway(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -72,7 +76,9 @@ const TeamScore = () => {
   useEffect(() => {
     const fetchPlayerHome = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/playerHome");
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`
+        );
         setPlayerHome(response.data);
       } catch (error) {
         console.error("Error fetching player home:", error);
@@ -85,7 +91,9 @@ const TeamScore = () => {
   useEffect(() => {
     const fetchPlayerAway = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/playerAway");
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`
+        );
         setPlayerAway(response.data);
       } catch (error) {
         console.error("Error fetching player home:", error);
@@ -96,24 +104,36 @@ const TeamScore = () => {
   }, []);
 
   React.useEffect(() => {
-    axios.get("http://localhost:8000/homeTeam").then((response) => {
-      setHome(response.data[0]);
-    });
-    axios.get("http://localhost:8000/awayTeam").then((response) => {
-      setAway(response.data[0]);
-    });
-    axios.get("http://localhost:8000/team").then((response) => {
-      setOptions(response.data);
-    });
-    axios.get("http://localhost:8000/score").then((response) => {
-      setScore(response.data[0]);
-    });
-    axios.get("http://localhost:8000/playerHome").then((response) => {
-      setButtons(response.data);
-    });
-    axios.get("http://localhost:8000/playerAway").then((response) => {
-      setButtonsAway(response.data);
-    });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`)
+      .then((response) => {
+        setHome(response.data[0]);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam`)
+      .then((response) => {
+        setAway(response.data[0]);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/team`)
+      .then((response) => {
+        setOptions(response.data);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/score`)
+      .then((response) => {
+        setScore(response.data[0]);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`)
+      .then((response) => {
+        setButtons(response.data);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`)
+      .then((response) => {
+        setButtonsAway(response.data);
+      });
   }, []);
   // if (!team) return null;
   if (!score) return null;
@@ -127,7 +147,7 @@ const TeamScore = () => {
 
     console.log("Updated Score:", { ...score, messageHome, messageAway });
     axios
-      .put(`http://localhost:8000/score/${score._id}`, {
+      .put(`${process.env.NEXT_PUBLIC_DATABASE_URL}/score/${score._id}`, {
         ...score,
         messageHome,
         messageAway,
@@ -211,7 +231,10 @@ const TeamScore = () => {
     if (result.isConfirmed) {
       try {
         const promises = playerHome.map(({ _id, name, no }) =>
-          axios.put(`http://localhost:8000/playerHome/${_id}`, { name, no })
+          axios.put(
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}`,
+            { name, no }
+          )
         );
         await Promise.all(promises);
         Swal.fire({
@@ -242,7 +265,10 @@ const TeamScore = () => {
     if (result.isConfirmed) {
       try {
         const promises = playerAway.map(({ _id, name, no }) =>
-          axios.put(`http://localhost:8000/playerAway/${_id}`, { name, no })
+          axios.put(
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${_id}`,
+            { name, no }
+          )
         );
         await Promise.all(promises);
         Swal.fire({
@@ -272,10 +298,15 @@ const TeamScore = () => {
       };
 
       // Make the PUT request to update the coach name
-      await axios.put(`http://localhost:8000/coach/${coachId}`, updatedData);
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach/${coachId}`,
+        updatedData
+      );
 
       // Fetch the latest data after the update
-      const response = await axios.get("http://localhost:8000/coach");
+      const response = await axios.get(
+        "${process.env.NEXT_PUBLIC_DATABASE_URL}/coach"
+      );
       setData(response.data);
 
       console.log("Coach data saved successfully!");
@@ -296,10 +327,15 @@ const TeamScore = () => {
       };
 
       // Make the PUT request to update the coach name
-      await axios.put(`http://localhost:8000/coach/${coachId}`, updatedData);
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach/${coachId}`,
+        updatedData
+      );
 
       // Fetch the latest data after the update
-      const response = await axios.get("http://localhost:8000/coach");
+      const response = await axios.get(
+        "${process.env.NEXT_PUBLIC_DATABASE_URL}/coach"
+      );
       setCoachAway(response.data);
 
       console.log("Coach data saved successfully!");
@@ -397,7 +433,9 @@ const TeamScore = () => {
       if (confirmation.isConfirmed) {
         try {
           // Delete player from the API
-          await axios.delete(`http://localhost:8000/playerHome/${playerId}`);
+          await axios.delete(
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}`
+          );
 
           // Update state to remove the deleted player
           setPlayerHome(playerHome.filter((player) => player._id !== playerId));
@@ -439,7 +477,7 @@ const TeamScore = () => {
 
         // Make a PUT request to update the player's photo on the server
         await axios.put(
-          `http://localhost:8000/playerHome/${newPlayerHome[index]._id}/photo`,
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${newPlayerHome[index]._id}/photo`,
           formData,
           {
             headers: {
@@ -493,7 +531,7 @@ const TeamScore = () => {
                 {player.photo ? (
                   <>
                     <Image
-                      src={`http://localhost:8000/playerHome/${player._id}/photo`}
+                      src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
                       alt={`Player ${player.name}`}
                       width={45}
                       height={45}
@@ -569,7 +607,9 @@ const TeamScore = () => {
       if (confirmation.isConfirmed) {
         try {
           // Delete player from the API
-          await axios.delete(`http://localhost:8000/playerHome/${playerId}`);
+          await axios.delete(
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}`
+          );
 
           // Update state to remove the deleted player
           setPlayerHome(playerHome.filter((player) => player._id !== playerId));
@@ -611,7 +651,7 @@ const TeamScore = () => {
 
         // Make a PUT request to update the player's photo on the server
         await axios.put(
-          `http://localhost:8000/playerHome/${newPlayerHome[index]._id}/photo`,
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${newPlayerHome[index]._id}/photo`,
           formData,
           {
             headers: {
@@ -665,7 +705,7 @@ const TeamScore = () => {
                 {player.photo ? (
                   <>
                     <Image
-                      src={`http://localhost:8000/playerHome/${player._id}/photo`}
+                      src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
                       alt={`Player ${player.name}`}
                       width={45}
                       height={45}
@@ -741,7 +781,9 @@ const TeamScore = () => {
       if (confirmation.isConfirmed) {
         try {
           // Delete player from the API
-          await axios.delete(`http://localhost:8000/playerHome/${playerId}`);
+          await axios.delete(
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}`
+          );
 
           // Update state to remove the deleted player
           setPlayerHome(playerHome.filter((player) => player._id !== playerId));
@@ -783,7 +825,7 @@ const TeamScore = () => {
 
         // Make a PUT request to update the player's photo on the server
         await axios.put(
-          `http://localhost:8000/playerHome/${newPlayerHome[index]._id}/photo`,
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${newPlayerHome[index]._id}/photo`,
           formData,
           {
             headers: {
@@ -837,7 +879,7 @@ const TeamScore = () => {
                 {player.photo ? (
                   <>
                     <Image
-                      src={`http://localhost:8000/playerHome/${player._id}/photo`}
+                      src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
                       alt={`Player ${player.name}`}
                       width={45}
                       height={45}
@@ -913,7 +955,9 @@ const TeamScore = () => {
       if (confirmation.isConfirmed) {
         try {
           // Delete player from the API
-          await axios.delete(`http://localhost:8000/playerAway/${playerId}`);
+          await axios.delete(
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${playerId}`
+          );
 
           // Update state to remove the deleted player
           setPlayerAway(playerAway.filter((player) => player._id !== playerId));
@@ -955,7 +999,7 @@ const TeamScore = () => {
 
         // Make a PUT request to update the player's photo on the server
         await axios.put(
-          `http://localhost:8000/playerAway/${newPlayerAway[index]._id}/photo`,
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${newPlayerAway[index]._id}/photo`,
           formData,
           {
             headers: {
@@ -1009,7 +1053,7 @@ const TeamScore = () => {
                 {player.photo ? (
                   <>
                     <Image
-                      src={`http://localhost:8000/playerAway/${player._id}/photo`}
+                      src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${player._id}/photo`}
                       alt={`Player ${player.name}`}
                       width={45}
                       height={45}
@@ -1376,7 +1420,7 @@ const TeamScore = () => {
 
       // Make a POST request using Axios
       const response = await axios.post(
-        "http://localhost:8000/playerHome",
+        "${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome",
         formData
       );
 
@@ -1384,7 +1428,7 @@ const TeamScore = () => {
 
       // Fetch the updated list of players
       const updatedResponse = await axios.get(
-        "http://localhost:8000/playerHome"
+        "${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome"
       );
       const updatedPlayers = updatedResponse.data;
 
@@ -1417,7 +1461,7 @@ const TeamScore = () => {
 
       // Make a POST request using Axios
       const response = await axios.post(
-        "http://localhost:8000/playerAway",
+        "${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway",
         formData
       );
 
@@ -1425,7 +1469,7 @@ const TeamScore = () => {
 
       // Fetch the updated list of players
       const updatedResponse = await axios.get(
-        "http://localhost:8000/playerAway"
+        "${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway"
       );
       const updatedPlayers = updatedResponse.data;
 
