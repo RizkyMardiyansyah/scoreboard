@@ -1,11 +1,11 @@
 // FootballFormation.js
 
 import React from "react";
-import styles from "@/styles/goal.module.css";
-import redCard from "@/assets/red-card.gif";
+import styles from "../styles/goal.module.css";
+import redCard from "../assets/red-card.gif";
 import Image from "next/image";
-import green from "@/assets/green.png";
-import red from "@/assets/red.png";
+import green from "../assets/green.png";
+import red from "../assets/red.png";
 
 const SubtitutionPage = () => {
   const subPhoto = localStorage.getItem("subPhotoUrl");

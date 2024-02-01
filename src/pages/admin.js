@@ -1,30 +1,30 @@
 "use client";
 import { Fragment } from "react";
-import Navbar from "@/components/Navbar";
+import Navbar from "../components/Navbar";
 import axios from "axios";
 import React from "react";
 import { useState } from "react";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import SelectHomeTeam from "@/components/SelectHomeTeam";
-import SelectAwayTeam from "@/components/SelectAwayTeam";
-import styles from "@/pages/adminFormation.module.css";
-import YellowPlayer from "@/components/YellowPlayer";
+import SelectHomeTeam from "../components/SelectHomeTeam";
+import SelectAwayTeam from "../components/SelectAwayTeam";
+import styles from "../pages/adminFormation.module.css";
+import YellowPlayer from "../components/YellowPlayer";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
-import TimerButton from "@/components/Timer/timerButton";
+import TimerButton from "../components/Timer/timerButton";
 import withAuth from "../components/withAuth";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "..fortawesome/react-fontawesome";
+import { faTrash } from "..fortawesome/free-solid-svg-icons";
 import DropdownButton from "../components/Dropdown";
 import Image from "next/image";
 import Subtitution from "../components/Subtitution";
-import Sidebar from "@/components/Sidebar Content/Sidebar2";
+import Sidebar from "../components/Sidebar Content/Sidebar2";
 
 // const Admin = () =>{
 
 // }
-const Admin = (isAuthenticated) => {
+const Admin = () => {
   const [options, setOptions] = useState([]);
   const [score, setScore] = useState(null);
   const [buttons, setButtons] = useState([]);
@@ -1478,7 +1478,7 @@ const Admin = (isAuthenticated) => {
 
   return (
     <Fragment>
-      <Navbar isAuthenticated={isAuthenticated} />
+      <Navbar />
 
       <div className="bg-slate-300">
         <Sidebar />
@@ -1486,4 +1486,4 @@ const Admin = (isAuthenticated) => {
     </Fragment>
   );
 };
-export default withAuth(Admin);
+export default Admin;

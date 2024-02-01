@@ -1,3 +1,4 @@
+"use client";
 import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
@@ -5,6 +6,7 @@ import Link from "next/link";
 import { useHistory } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import { UserButton, useUser } from "@clerk/nextjs";
 
 const navigation = [
   { name: "Scoreboard", href: "/", current: false },
@@ -16,20 +18,21 @@ function classNames(...classes) {
 }
 
 const Navbar = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user, isLoaded } = useUser();
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    Cookies.remove("token");
-    setIsAuthenticated(false);
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   Cookies.remove("token");
+  //   setIsAuthenticated(false);
 
-    window.location.href = "/";
-  };
+  //   window.location.href = "/";
+  // };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token") || Cookies.get("token");
-    setIsAuthenticated(!!token);
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token") || Cookies.get("token");
+  //   setIsAuthenticated(!!token);
+  // }, []);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -78,14 +81,9 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {isAuthenticated ? (
+                {isLoaded && user ? (
                   <>
-                    <button
-                      onClick={handleLogout}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                      Logout
-                    </button>
+                    <UserButton afterSignOutUrl="/" />
                   </>
                 ) : (
                   <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

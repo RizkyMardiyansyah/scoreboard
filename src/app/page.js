@@ -1,24 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
-import NavbarBeforeLogin from "@/components/NavbarBeforeLogin";
-import Scoreboard from "@/components/Scoreboard";
-import styles from "@/styles/goal.module.css";
-import Lineup433Home from "@/components/Formation/433Home";
-import Lineup4231Home from "@/components/Formation/4231Home";
-import Lineup442Home from "@/components/Formation/442Home";
-import Lineup433Away from "@/components/Formation/433Away";
-import Lineup4231Away from "@/components/Formation/4231Away";
-import Lineup442Away from "@/components/Formation/442Away";
-import Goal from "@/components/Goal";
+import Navbar from "../components/Navbar";
+import Scoreboard from "../components/Scoreboard";
+import styles from "../styles/goal.module.css";
+import Lineup433Home from "../components/Formation/433Home";
+import Lineup4231Home from "../components/Formation/4231Home";
+import Lineup442Home from "../components/Formation/442Home";
+import Lineup433Away from "../components/Formation/433Away";
+import Lineup4231Away from "../components/Formation/4231Away";
+import Lineup442Away from "../components/Formation/442Away";
+import Goal from "../components/Goal";
 import Image from "next/image";
-import YellowCard from "@/components/YellowCard";
-import RedCard from "@/components/RedCard";
-import Timer from "@/components/Timer/timer3";
-import Berani from "@/assets/berani.png";
-import Nat from "@/assets/nat.png";
+import YellowCard from "../components/YellowCard";
+import RedCard from "../components/RedCard";
+import Timer from "../components/Timer/timer3";
+import Berani from "../assets/berani.png";
+import Nat from "../assets/nat.png";
 import axios from "axios";
-import SubtitutionPage from "@/components/SubtitutionPage";
+import SubtitutionPage from "../components/SubtitutionPage";
 
 const Page1 = (isAuthenticated) => {
   const [showComponent1, setShowComponent1] = useState(false);
@@ -200,6 +199,7 @@ const Page1 = (isAuthenticated) => {
         event.key !== "subPhotoUrl2" &&
         event.key !== "subPhotoUrl" &&
         event.key !== "subPhotoName" &&
+        event.key !== "browser-tabs-lock-key-clerk.lock.refreshSessionToken" &&
         event.key !== "subPhotoName2"
       ) {
         window.location.reload();

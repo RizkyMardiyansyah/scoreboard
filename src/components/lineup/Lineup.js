@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styles from "./FootballLineup.module.css";
-import fieldImage from "@/assets/field.png"; // Import your field image
+import fieldImage from "../assets/field.png"; // Import your field image
 
 const FootballField = () => {
   return (

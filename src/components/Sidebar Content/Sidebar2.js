@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import Test from "@/components/Sidebar Content/FormationHome";
 import Subtitutions from "../Subtitution";
 import Control from "./Control";
 import TeamScore from "./TeamScore";
-import FormationAway from "./FormationAway";
 import axios from "axios";
-import styles from "@/pages/adminFormation.module.css";
 import DropdownButton from "../Dropdown";
-import TimerButton from "@/components/Timer/timerButton";
+import TimerButton from "../components/Timer/timerButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";

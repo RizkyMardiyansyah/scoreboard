@@ -1,6 +1,6 @@
 import { useState } from "react";
-import TimerButton from "@/components/Timer/timerButton";
-import YellowPlayer from "@/components/YellowPlayer";
+import TimerButton from "../components/Timer/timerButton";
+import YellowPlayer from "../components/YellowPlayer";
 
 const Control = () => {
   const [showRedPlayer, setShowRedPlayer] = useState(false);

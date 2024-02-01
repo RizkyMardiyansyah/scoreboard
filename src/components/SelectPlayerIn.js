@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import style from "@/styles/subtituteAdmin.module.css";
+import style from "../styles/subtituteAdmin.module.css";
 
 const DropdownComponent = () => {
   const [teamOptions, setTeamOptions] = useState([]);

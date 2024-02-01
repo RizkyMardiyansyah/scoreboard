@@ -1,4 +1,4 @@
-import styles from "@/pages/adminFormation.module.css";
+import styles from "../pages/adminFormation.module.css";
 import DropdownButton from "../Dropdown";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
