@@ -1,5 +1,5 @@
-import SelectHomeTeam from "../components/SelectHomeTeam";
-import SelectAwayTeam from "../components/SelectAwayTeam";
+import SelectHomeTeam from "../SelectHomeTeam";
+import SelectAwayTeam from "../SelectAwayTeam";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";

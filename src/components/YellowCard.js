@@ -6,6 +6,7 @@ import yellowcard from "../assets/yellow-card.gif";
 import Image from "next/image";
 import { useState } from "react";
 import axios from "axios";
+import YellowPlayer from "./YellowPlayer";
 
 const YellowCard = () => {
   const [buttons, setButtons] = useState([]);

@@ -19,7 +19,7 @@ import Nat from "../assets/nat.png";
 import axios from "axios";
 import SubtitutionPage from "../components/SubtitutionPage";
 
-const Page1 = (isAuthenticated) => {
+const Page = () => {
   const [showComponent1, setShowComponent1] = useState(false);
   const [showComponent2, setShowComponent2] = useState(false);
   const [showComponent3, setShowComponent3] = useState(false);
@@ -33,6 +33,7 @@ const Page1 = (isAuthenticated) => {
   const [showComponent11, setShowComponent11] = useState(false);
   const [showPicture, setShowPicture] = useState([]);
 
+  // show subtitute page for 10 seconds
   useEffect(() => {
     if (localStorage.getItem("showComponent") === "11") {
       setTimeout(() => {
@@ -193,6 +194,7 @@ const Page1 = (isAuthenticated) => {
       localStorage.setItem("showComponent", "1");
     }
 
+    //when there is a change in local storage auto reload, except event.key
     const handleStorageChange = (event) => {
       if (
         event.key !== "stopwatchTime" &&
@@ -213,6 +215,7 @@ const Page1 = (isAuthenticated) => {
     };
   }, []);
 
+  //get homeTeam
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -228,6 +231,7 @@ const Page1 = (isAuthenticated) => {
     fetchData();
   }, []);
 
+  // hide scroll on scoreboard main page
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -238,6 +242,7 @@ const Page1 = (isAuthenticated) => {
   return (
     <>
       <div className="flex h-screen">
+        {/* left side */}
         <div className="w-1/4 bg-[#8fcac5] flex flex-col items-center justify-center">
           <div className="mb-auto mt-5">
             <Image src={Berani} width={250} height={250} />
@@ -249,6 +254,7 @@ const Page1 = (isAuthenticated) => {
             <Image src={Nat} width={250} height={250} />
           </div>
         </div>
+        {/* center side */}
         <div className="flex-1 bg-[#c84ce0] flex flex-col items-center justify-center">
           <div className="flex">
             <div className="mt-3 text-4xl font-medium item-start">
@@ -257,7 +263,7 @@ const Page1 = (isAuthenticated) => {
               )}
             </div>
           </div>
-
+          {/* show component */}
           <div className="mt-auto w-full ">
             {showComponent1 && <Component1 />}
             {showComponent2 && <Component2 />}
@@ -319,4 +325,4 @@ const Component10 = () => {
 const Component11 = () => {
   return <SubtitutionPage />;
 };
-export default Page1;
+export default Page;

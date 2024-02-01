@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import axios from "axios";
 import GoalGif from "../assets/futuboalhafoari.gif";
+import YellowPlayer from "./YellowPlayer";
 
 const Goal = () => {
   const [buttons, setButtons] = useState([]);

@@ -5,10 +5,12 @@ import Control from "./Control";
 import TeamScore from "./TeamScore";
 import axios from "axios";
 import DropdownButton from "../Dropdown";
-import TimerButton from "../components/Timer/timerButton";
+import TimerButton from "../Timer/timerButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
+import YellowPlayer from "../YellowPlayer";
+import Swal from "sweetalert2";
 
 const SideBar = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("Control");
@@ -1562,7 +1564,7 @@ const SideBar = () => {
 
       // Make a POST request using Axios
       const response = await axios.post(
-        "${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome",
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`,
         formData
       );
 
@@ -1570,7 +1572,7 @@ const SideBar = () => {
 
       // Fetch the updated list of players
       const updatedResponse = await axios.get(
-        "${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome"
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`
       );
       const updatedPlayers = updatedResponse.data;
 
@@ -1603,7 +1605,7 @@ const SideBar = () => {
 
       // Make a POST request using Axios
       const response = await axios.post(
-        "${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway",
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`,
         formData
       );
 
@@ -1611,7 +1613,7 @@ const SideBar = () => {
 
       // Fetch the updated list of players
       const updatedResponse = await axios.get(
-        "${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway"
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`
       );
       const updatedPlayers = updatedResponse.data;
 
