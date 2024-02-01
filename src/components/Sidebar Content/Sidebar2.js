@@ -14,21 +14,12 @@ import Swal from "sweetalert2";
 
 const SideBar = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("Control");
-  const [options, setOptions] = useState([]);
   const [score, setScore] = useState(null);
-  const [buttons, setButtons] = useState([]);
-  const [buttonsAway, setButtonsAway] = useState([]);
   const [playerHome, setPlayerHome] = useState([]);
   const [playerAway, setPlayerAway] = useState([]);
-  const [playerNumber, setPlayerNumber] = useState([]);
-  const [home, setHome] = useState([]);
-  const [away, setAway] = useState([]);
   const [showForm1, setShowForm1] = useState(false);
   const [showForm2, setShowForm2] = useState(false);
   const [showForm3, setShowForm3] = useState(false);
-  const [showForm1Away, setShowForm1Away] = useState(false);
-  const [showForm2Away, setShowForm2Away] = useState(false);
-  const [showForm3Away, setShowForm3Away] = useState(false);
   const [showYellowPlayer, setShowYellowPlayer] = useState(false);
   const [showRedPlayer, setShowRedPlayer] = useState(false);
   const [showGoalPlayer, setShowGoalPlayer] = useState(false);
@@ -44,9 +35,6 @@ const SideBar = () => {
   const [isFormVisibleAway, setIsFormVisibleAway] = useState(true);
   const [data, setData] = useState(null);
   const [coachAway, setCoachAway] = useState(null);
-  const [messageHome, setMessageHome] = useState("");
-  const [messageAway, setMessageAway] = useState("");
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,39 +98,12 @@ const SideBar = () => {
 
   React.useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`)
-      .then((response) => {
-        setHome(response.data[0]);
-      });
-    axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam`)
-      .then((response) => {
-        setAway(response.data[0]);
-      });
-    axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/team`)
-      .then((response) => {
-        setOptions(response.data);
-      });
-    axios
       .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/score`)
       .then((response) => {
         setScore(response.data[0]);
       });
-    axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`)
-      .then((response) => {
-        setButtons(response.data);
-      });
-    axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`)
-      .then((response) => {
-        setButtonsAway(response.data);
-      });
   }, []);
-  // if (!team) return null;
   if (!score) return null;
-  // console.log(home.name);
 
   const handleSubmit = async () => {
     // Show SweetAlert confirmation popup
@@ -307,12 +268,6 @@ const SideBar = () => {
       ...prevData,
       name: event.target.value,
     }));
-  };
-
-  const handleInputChange2 = (e, index) => {
-    const updatedPlayerAway = [...playerAway];
-    updatedPlayerAway[index].name = e.target.value;
-    setPlayerAway(updatedPlayerAway);
   };
 
   const renderForms442 = () => {
@@ -1402,7 +1357,6 @@ const SideBar = () => {
       ? localStorage.removeItem("showComponent")
       : localStorage.setItem("showComponent", "5");
   };
-
   const toggleComponent6 = () => {
     localStorage.getItem("showComponent") === "6"
       ? localStorage.removeItem("showComponent")
@@ -1428,12 +1382,6 @@ const SideBar = () => {
       ? localStorage.removeItem("showComponent")
       : localStorage.setItem("showComponent", "10");
   };
-  const toggleComponent11 = () => {
-    localStorage.getItem("showComponent") === "11"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "11");
-  };
-
   const handleFormationSelect = (formation) => {
     setSelectedFormation(formation);
     setIsFormVisible(true);

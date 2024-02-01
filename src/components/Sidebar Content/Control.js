@@ -18,7 +18,6 @@ const Control = () => {
       ? localStorage.setItem("showComponent", "1")
       : localStorage.setItem("showComponent", "1");
   };
-
   const toggleComponent2 = () => {
     localStorage.getItem("showComponent") === "2"
       ? localStorage.removeItem("showComponent")
@@ -30,14 +29,12 @@ const Control = () => {
       ? localStorage.removeItem("showComponent")
       : localStorage.setItem("showComponent", "4");
   };
-
   const toggleComponent5 = () => {
     setShowRedPlayer(!showRedPlayer);
     localStorage.getItem("showComponent") === "5"
       ? localStorage.removeItem("showComponent")
       : localStorage.setItem("showComponent", "5");
   };
-
   const toggleComponent6 = () => {
     localStorage.getItem("showComponent") === "6"
       ? localStorage.removeItem("showComponent")

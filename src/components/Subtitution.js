@@ -1,5 +1,4 @@
 import SelectPlayerIn from "./SelectPlayerIn";
-import SelectPlayerOut from "./SelectPlayerOut";
 import { useEffect, useState } from "react";
 import axios from "axios";
 

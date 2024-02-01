@@ -1,8 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import Scoreboard from "../components/Scoreboard";
-import styles from "../styles/goal.module.css";
 import Lineup433Home from "../components/Formation/433Home";
 import Lineup4231Home from "../components/Formation/4231Home";
 import Lineup442Home from "../components/Formation/442Home";

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 const Stopwatch = () => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const [stopTime, setStopTime] = useState(90 * 60); // Default stop time
+  const [stopTime, setStopTime] = useState(90 * 60);
 
   useEffect(() => {
     const storedTime = localStorage.getItem("stopwatchTime");
@@ -49,31 +49,8 @@ const Stopwatch = () => {
     )}`;
   };
 
-  const startTimer = () => {
-    setIsRunning(true);
-    localStorage.setItem("stopwatchIsRunning", "true");
-  };
-
   const pauseTimer = () => {
     setIsRunning(false);
-    localStorage.setItem("stopwatchIsRunning", "false");
-  };
-
-  const handleStartFromZero = () => {
-    setIsRunning(false);
-    // setTime(0);
-    setTime(44 * 60 + 50);
-    setStopTime(45 * 60);
-    localStorage.setItem("stopwatchTime", String(45 * 60 + 55));
-    localStorage.setItem("stopwatchIsRunning", "false");
-  };
-
-  const handleStartFrom45 = () => {
-    setIsRunning(false);
-    // setTime(45 * 60);
-    setTime(89 * 60 + 55);
-    setStopTime(90 * 60);
-    localStorage.setItem("stopwatchTime", String(45 * 60 + 55));
     localStorage.setItem("stopwatchIsRunning", "false");
   };
 

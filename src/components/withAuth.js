@@ -1,5 +1,3 @@
-// withAuth.js
-
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Cookies from "js-cookie";

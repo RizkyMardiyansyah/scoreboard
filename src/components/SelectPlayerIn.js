@@ -7,12 +7,6 @@ const DropdownComponent = () => {
   const [selectedPlayerIn, setSelectedPlayerIn] = useState("");
   const [selectedPlayerOut, setSelectedPlayerOut] = useState("");
 
-  const toggleComponent1 = () => {
-    localStorage.getItem("showComponent") === "1"
-      ? localStorage.setItem("showComponent", "1")
-      : localStorage.setItem("showComponent", "1");
-  };
-
   useEffect(() => {
     axios
       .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`)

@@ -1,90 +1,15 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
-/* @import "./base.css"; */
 @import "tailwindcss/utilities";
 
-/* :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-} */
-
-body {
-  /* background-color: black; */
   margin: 0;
   padding: 0;
-  /* overflow: hidden; */
 }
 
 .noScroll {
   overflow: hidden;
 }
-
-/* * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
-.scoreboard {
-  background-color: #1e1e21;
-  width: min(90%, 45em);
-  position: absolute;
-  transform: translate(-50%, -50%);
-  left: 50%;
-  top: 50%;
-  padding: 3em;
-  border-radius: 0.5em;
-  display: grid;
-  grid-template-columns: 2fr 2fr 2fr;
-  align-items: center;
-}
-
-.another-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-  gap: 1em;
-}
-
-.another-grid .element {
-  background-color: #fff;
-  padding: 1em;
-  border-radius: 0.3em;
-}
-
-.team {
-  text-align: center;
-  background-color: #353638;
-  padding: 2em;
-  border-radius: 0.5em;
-}
-
-.teamb {
-  text-align: center;
-  background-color: #353638;
-  padding: 2em;
-  border-radius: 0.5em;
-} */
 
 button {
   cursor: pointer;

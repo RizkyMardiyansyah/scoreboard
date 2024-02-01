@@ -4,27 +4,10 @@ import Image from "next/image";
 import { useState } from "react";
 import axios from "axios";
 import GoalGif from "../assets/futuboalhafoari.gif";
-import YellowPlayer from "./YellowPlayer";
 
 const Goal = () => {
-  const [buttons, setButtons] = useState([]);
-  const [buttonsAway, setButtonsAway] = useState([]);
-
-  React.useEffect(() => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`)
-      .then((response) => {
-        setButtons(response.data);
-      });
-    axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`)
-      .then((response) => {
-        setButtonsAway(response.data);
-      });
-  }, []);
   const clickedButton = localStorage.getItem("clickedButton");
   const clickedButtonPhoto = localStorage.getItem("playerPhotoUrl");
-  const clickedButtonPhotoAway = localStorage.getItem("playerPhotoUrlAway");
   console.log("Clicked Button:", clickedButton);
   return (
     <>
@@ -39,17 +22,6 @@ const Goal = () => {
           </div>
         </div>
       </div>
-      {/* <div class="flex justify-around mt-8">
-          <div className="text-6xl text-white text-center">
-            <p className="teamAScore ml-8">{score.home}</p>
-          </div>
-          <div className="text-white">
-            <Timer />
-          </div>
-          <div className="text-6xl text-white">
-            <p className="teamBScore mr-10">{score.away}</p>
-          </div>
-        </div> */}
     </>
   );
 };

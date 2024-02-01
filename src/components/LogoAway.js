@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 const ImageComponent = () => {
   const [imageData, setImageData] = useState([]);
@@ -19,7 +20,7 @@ const ImageComponent = () => {
     <div>
       {imageData && (
         <div className="image-item">
-          <img src={imageData.logo} alt={imageData.title} />
+          <Image src={imageData.logo} alt={imageData.title} />
           <p>{imageData.title}</p>
         </div>
       )}
