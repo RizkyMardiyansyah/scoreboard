@@ -1,8 +1,6 @@
 import React from "react";
 import styles from "../styles/goal.module.css";
 import Image from "next/image";
-import { useState } from "react";
-import axios from "axios";
 import GoalGif from "../assets/futuboalhafoari.gif";
 
 const Goal = () => {

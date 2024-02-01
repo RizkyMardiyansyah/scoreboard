@@ -9,7 +9,6 @@ const Admin = () => {
   return (
     <Fragment>
       <Navbar />
-
       <div className="bg-slate-300">
         <Sidebar />
       </div>
