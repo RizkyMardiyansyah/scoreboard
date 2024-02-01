@@ -16,6 +16,7 @@ import Berani from "../assets/berani.png";
 import Nat from "../assets/nat.png";
 import axios from "axios";
 import SubtitutionPage from "../components/SubtitutionPage";
+import SubtitutionPageAway from "../components/SubtitutionPageAway";
 
 const Page = () => {
   const [showComponent1, setShowComponent1] = useState(false);
@@ -29,14 +30,19 @@ const Page = () => {
   const [showComponent9, setShowComponent9] = useState(false);
   const [showComponent10, setShowComponent10] = useState(false);
   const [showComponent11, setShowComponent11] = useState(false);
+  const [showComponent12, setShowComponent12] = useState(false);
   const [showPicture, setShowPicture] = useState([]);
 
   // show subtitute page for 10 seconds
   useEffect(() => {
-    if (localStorage.getItem("showComponent") === "11") {
+    if (
+      localStorage.getItem("showComponent") === "11" ||
+      localStorage.getItem("showComponent") === "12"
+    ) {
       setTimeout(() => {
         localStorage.setItem("showComponent", "1");
         setShowComponent11(false);
+        setShowComponent12(false);
         setShowComponent1(true);
       }, 10000);
     }
@@ -56,6 +62,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "2") {
       setShowComponent1(false);
       setShowComponent2(true);
@@ -68,6 +75,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "3") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -80,6 +88,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "4") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -92,6 +101,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "5") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -104,6 +114,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "6") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -116,6 +127,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "7") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -128,6 +140,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "8") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -140,6 +153,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "9") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -152,6 +166,7 @@ const Page = () => {
       setShowComponent9(true);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "10") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -164,6 +179,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(true);
       setShowComponent11(false);
+      setShowComponent12(false);
     } else if (storedComponent === "11") {
       setShowComponent1(false);
       setShowComponent2(false);
@@ -176,6 +192,20 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(true);
+      setShowComponent12(false);
+    } else if (storedComponent === "12") {
+      setShowComponent1(false);
+      setShowComponent2(false);
+      setShowComponent3(false);
+      setShowComponent4(false);
+      setShowComponent5(false);
+      setShowComponent6(false);
+      setShowComponent7(false);
+      setShowComponent8(false);
+      setShowComponent9(false);
+      setShowComponent10(false);
+      setShowComponent11(false);
+      setShowComponent12(true);
     } else {
       setShowComponent1(true);
       setShowComponent2(false);
@@ -188,6 +218,7 @@ const Page = () => {
       setShowComponent9(false);
       setShowComponent10(false);
       setShowComponent11(false);
+      setShowComponent12(false);
 
       localStorage.setItem("showComponent", "1");
     }
@@ -199,8 +230,12 @@ const Page = () => {
         event.key !== "subPhotoUrl2" &&
         event.key !== "subPhotoUrl" &&
         event.key !== "subPhotoName" &&
-        event.key !== "browser-tabs-lock-key-clerk.lock.refreshSessionToken" &&
-        event.key !== "subPhotoName2"
+        event.key !== "subPhotoName2" &&
+        event.key !== "subPhotoUrl2Away" &&
+        event.key !== "subPhotoUrlAway" &&
+        event.key !== "subPhotoNameAway" &&
+        event.key !== "subPhotoName2Away" &&
+        event.key !== "browser-tabs-lock-key-clerk.lock.refreshSessionToken"
       ) {
         window.location.reload();
       }
@@ -274,6 +309,7 @@ const Page = () => {
             {showComponent9 && <Component9 />}
             {showComponent10 && <Component10 />}
             {showComponent11 && <Component11 />}
+            {showComponent12 && <Component12 />}
           </div>
           <div className="mt-auto mb-4 text-center text-4xl font-medium">
             <p>BRI Liga 1</p>
@@ -322,5 +358,8 @@ const Component10 = () => {
 };
 const Component11 = () => {
   return <SubtitutionPage />;
+};
+const Component12 = () => {
+  return <SubtitutionPageAway />;
 };
 export default Page;

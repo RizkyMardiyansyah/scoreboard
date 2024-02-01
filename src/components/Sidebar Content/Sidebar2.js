@@ -1759,7 +1759,7 @@ const SideBar = () => {
             {showYellowPlayer && <YellowPlayer />}
             {showRedPlayer && <YellowPlayer />}
 
-            <div className="mt-5 flex items-center justify-center">
+            <div className="mt-5 flex items-center justify-center mb-5">
               <iframe
                 src="http://localhost:3000/"
                 title="Content from localhost:3000"

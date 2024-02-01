@@ -8,10 +8,11 @@ const DropdownComponent = () => {
   const [selectedPlayerIn, setSelectedPlayerIn] = useState("");
   const [selectedPlayerOut, setSelectedPlayerOut] = useState("");
   const [team, setTeam] = useState([]);
+  const [teamAway, setTeamAway] = useState([]);
 
   useEffect(() => {
     axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`)
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`)
       .then((response) => {
         setTeamOptions(response.data);
       });
@@ -43,20 +44,20 @@ const DropdownComponent = () => {
     );
 
     if (type === "in") {
-      const subPhotoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${selectedPlayer._id}/photo`;
-      localStorage.setItem("subPhotoUrl", subPhotoUrl);
-      localStorage.setItem("subPhotoName", selectedPlayer.name);
+      const subPhotoUrlAway = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${selectedPlayer._id}/photo`;
+      localStorage.setItem("subPhotoUrlAway", subPhotoUrlAway);
+      localStorage.setItem("subPhotoNameAway", selectedPlayer.name);
       console.log("Selected Player ID:", selectedPlayer._id);
     } else if (type === "out") {
-      const subPhotoUrl2 = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${selectedPlayer._id}/photo`;
-      localStorage.setItem("subPhotoName2", selectedPlayer.name);
-      localStorage.setItem("subPhotoUrl2", subPhotoUrl2);
+      const subPhotoUrl2Away = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${selectedPlayer._id}/photo`;
+      localStorage.setItem("subPhotoName2Away", selectedPlayer.name);
+      localStorage.setItem("subPhotoUrl2Away", subPhotoUrl2Away);
       console.log("Selected Player ID:", selectedPlayer._id);
     }
   };
 
   const handleExchangePlayers = () => {
-    localStorage.setItem("showComponent", "11");
+    localStorage.setItem("showComponent", "12");
 
     // Find the IDs of the selected players
     const playerIn = teamOptions.find(
@@ -92,7 +93,7 @@ const DropdownComponent = () => {
 
         // Update the database
         axios
-          .post(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/swap`, {
+          .post(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/swap`, {
             team1Id: playerIn._id,
             team2Id: playerOut._id,
           })
@@ -107,12 +108,12 @@ const DropdownComponent = () => {
   };
 
   // Conditional rendering based on whether team data is available
-  if (!team || !team[0]) {
+  if (!teamAway || !teamAway[0]) {
     return <p>Loading...</p>; // or any other loading indicator
   }
 
   // At this point, you can safely access team[0].logo
-  console.log(team[0].logo);
+  // console.log(team[0].logo);
 
   return (
     <div className="flex justify-around">
@@ -154,7 +155,7 @@ const DropdownComponent = () => {
         </button>
 
         <div className="mt-auto mb-auto">
-          <Image src={team[0].logo} width={200} height={200} />
+          <Image src={teamAway[0].logo} width={200} height={200} />
         </div>
       </div>
 

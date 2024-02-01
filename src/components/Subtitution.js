@@ -1,4 +1,5 @@
 import SelectPlayerIn from "./SelectPlayerIn";
+import SelectPlayerInAway from "./SelectPlayerInAway";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -47,8 +48,15 @@ const Subtitution = () => {
   };
   return (
     <>
-      <div className="bg-slate-300 h-screen mt-5 ml-9">
-        <SelectPlayerIn />
+      <div className="border border-black mt-5 ml-9 mr-9 rounded-xl">
+        <div className="bg-neutral-300 p-4 rounded-xl">
+          <SelectPlayerIn />
+        </div>
+      </div>
+      <div className="border border-black mt-5 mb-5 ml-9 mr-9 rounded-xl">
+        <div className="bg-neutral-300 p-4 rounded-xl">
+          <SelectPlayerInAway />
+        </div>
       </div>
     </>
   );
