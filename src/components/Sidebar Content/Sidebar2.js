@@ -44,22 +44,7 @@ const SideBar = () => {
         );
         setData(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`
-        );
-        setCoachAway(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching coach data:", error);
       }
     };
 
@@ -74,7 +59,7 @@ const SideBar = () => {
         );
         setPlayerHome(response.data);
       } catch (error) {
-        console.error("Error fetching player home:", error);
+        console.error("Error fetching player home data:", error);
       }
     };
 
@@ -89,21 +74,54 @@ const SideBar = () => {
         );
         setPlayerAway(response.data);
       } catch (error) {
-        console.error("Error fetching player home:", error);
+        console.error("Error fetching player away data:", error);
       }
     };
 
     fetchPlayerAway();
   }, []);
 
-  React.useEffect(() => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/score`)
-      .then((response) => {
+  useEffect(() => {
+    const fetchScore = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/score`
+        );
         setScore(response.data[0]);
-      });
+      } catch (error) {
+        console.error("Error fetching score data:", error);
+      }
+    };
+
+    fetchScore();
   }, []);
-  if (!score) return null;
+
+  useEffect(() => {
+    const localStorageValue = localStorage.getItem("showComponent");
+    setShowGoalPlayer(localStorageValue === "3");
+
+    // if localstorage != current state remove item
+
+    // if (localStorageValue !== "3") {
+    //   localStorage.removeItem("clickedButton");
+    //   localStorage.removeItem("playerPhotoUrl");
+    // }
+  }, []);
+
+  useEffect(() => {
+    const fetchCoachAway = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`
+        );
+        setCoachAway(response.data);
+      } catch (error) {
+        console.error("Error fetching coach away data:", error);
+      }
+    };
+
+    fetchCoachAway();
+  }, []);
 
   const handleSubmit = async () => {
     // Show SweetAlert confirmation popup
@@ -118,13 +136,32 @@ const SideBar = () => {
 
     if (result.isConfirmed) {
       try {
-        const promises = playerHome.map(({ _id, name, no }) =>
-          axios.put(
+        const promises = playerHome.map(async ({ _id, name, no, photo }) => {
+          // Update player data
+          await axios.put(
             `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}`,
             { name, no }
-          )
-        );
+          );
+
+          // Update player photo if it exists
+          if (photo) {
+            const formData = new FormData();
+            formData.append("file", photo);
+
+            await axios.put(
+              `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}/photo`,
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+          }
+        });
+
         await Promise.all(promises);
+
         Swal.fire({
           title: "All players updated successfully!",
           icon: "success",
@@ -371,7 +408,35 @@ const SideBar = () => {
         console.error("Error handling file change:", error);
       }
     };
-    // console.log("Player Photo:", playerHome[15].photo);
+    const handleClearFormClick = (index) => {
+      setPlayerHome((prevPlayerHome) => {
+        // Create a new array with the same length as playerHome
+        const newPlayerHome = prevPlayerHome.map((player, i) => {
+          if (i === index) {
+            // Reset the player data for the clicked row, including clearing the photo
+            return { ...player, photo: null, name: "", no: "0" };
+          }
+          return player;
+        });
+
+        // Return the new array to update the state
+        return newPlayerHome;
+      });
+
+      // Also, update the server-side data to remove the photo information
+      const playerId = playerHome[index]._id;
+      axios
+        .put(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photo`,
+          { photo: null }
+        )
+        .then(() => {
+          console.log("Server photo data cleared successfully!");
+        })
+        .catch((error) => {
+          console.error("Error clearing server photo data:", error);
+        });
+    };
 
     return (
       <table className="table-auto w-full bg-slate-300">
@@ -415,6 +480,7 @@ const SideBar = () => {
                 {player.photo ? (
                   <>
                     <Image
+                      key={player.photo ? player.photo : "default"}
                       src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
                       alt={`Player ${player.name}`}
                       width={45}
@@ -433,11 +499,21 @@ const SideBar = () => {
                 )}
               </td>
               <td className="px-4 py-2 flex items-center justify-center">
+                {index >= 11 && (
+                  <button
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                    onClick={() => handleDeleteClick(player._id)}
+                  >
+                    <FontAwesomeIcon icon={faTrash} />
+                  </button>
+                )}
+              </td>
+              <td className="px-4 py-2 flex items-center justify-center">
                 <button
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                  onClick={() => handleDeleteClick(player._id)}
+                  className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 border border-yellow-700 rounded"
+                  onClick={() => handleClearFormClick(index)}
                 >
-                  <FontAwesomeIcon icon={faTrash} />
+                  Clear Form
                 </button>
               </td>
             </tr>
@@ -1328,11 +1404,21 @@ const SideBar = () => {
   };
 
   const toggleComponent1Or3 = () => {
-    setShowGoalPlayer(!showGoalPlayer);
-    localStorage.getItem("showComponent") === "1"
-      ? localStorage.setItem("showComponent", "3")
-      : localStorage.setItem("showComponent", "1");
+    setShowGoalPlayer((prevShowGoalPlayer) => {
+      const newShowGoalPlayer = !prevShowGoalPlayer;
+
+      // Update localStorage based on the new value
+      localStorage.setItem("showComponent", newShowGoalPlayer ? "3" : "1");
+
+      // Set component to 3 after clicking "Show Goal Player"
+      if (newShowGoalPlayer) {
+        localStorage.setItem("showComponent", "3");
+      }
+
+      return newShowGoalPlayer;
+    });
   };
+
   const toggleComponent1 = () => {
     localStorage.getItem("showComponent") === "1"
       ? localStorage.setItem("showComponent", "1")
@@ -1345,17 +1431,35 @@ const SideBar = () => {
       : localStorage.setItem("showComponent", "2");
   };
   const toggleComponent4 = () => {
-    setShowYellowPlayer(!showYellowPlayer);
-    localStorage.getItem("showComponent") === "4"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "4");
+    setShowYellowPlayer((prevShowYellowPlayer) => {
+      const newShowYellowPlayer = !prevShowYellowPlayer;
+
+      // Update localStorage based on the new value
+      localStorage.setItem("showComponent", newShowYellowPlayer ? "4" : "1");
+
+      // Set component to 3 after clicking "Show Yellow Player"
+      if (newShowYellowPlayer) {
+        localStorage.setItem("showComponent", "4");
+      }
+
+      return newShowYellowPlayer;
+    });
   };
 
   const toggleComponent5 = () => {
-    setShowRedPlayer(!showRedPlayer);
-    localStorage.getItem("showComponent") === "5"
-      ? localStorage.removeItem("showComponent")
-      : localStorage.setItem("showComponent", "5");
+    setShowRedPlayer((prevShowRedPlayer) => {
+      const newShowRedPlayer = !prevShowRedPlayer;
+
+      // Update localStorage based on the new value
+      localStorage.setItem("showComponent", newShowRedPlayer ? "5" : "1");
+
+      // Set component to 5 after clicking "Show Red Player"
+      if (newShowRedPlayer) {
+        localStorage.setItem("showComponent", "5");
+      }
+
+      return newShowRedPlayer;
+    });
   };
   const toggleComponent6 = () => {
     localStorage.getItem("showComponent") === "6"
@@ -1489,6 +1593,17 @@ const SideBar = () => {
 
     photo: null, // Assuming you want to upload a photo
   };
+  const handleClearAllForm = () => {
+    // Reset the state values for all players in the array to their initial state or empty values
+    setPlayerHome((prevPlayerHome) =>
+      prevPlayerHome.map((player) => ({
+        ...player,
+        name: "",
+        no: "",
+        photo: null,
+      }))
+    );
+  };
 
   const createPlayer = async (newPlayer) => {
     try {
@@ -1600,26 +1715,23 @@ const SideBar = () => {
                       >
                         Hide Form
                       </button>
-
-                      <button
-                        onClick={handleSubmit}
-                        className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                      >
-                        Submit
-                      </button>
-
-                      <button
-                        onClick={handleSubmit}
-                        className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                      >
-                        Cancel
-                      </button>
-
                       <button
                         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                         onClick={() => createPlayer(newPlayer)}
                       >
                         Add Player
+                      </button>
+                      <button
+                        className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                        onClick={handleClearAllForm}
+                      >
+                        Clear All
+                      </button>
+                      <button
+                        onClick={handleSubmit}
+                        className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                      >
+                        Submit
                       </button>
                     </div>
                   )}
@@ -1681,7 +1793,7 @@ const SideBar = () => {
                   onClick={toggleComponent1Or3}
                   className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
                 >
-                  {showGoalPlayer ? "Hide Player" : "Show Goal Player"}
+                  {showGoalPlayer ? "Hide Goal Player" : "Show Goal Player"}
                 </button>
 
                 <button
