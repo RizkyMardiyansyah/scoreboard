@@ -32,6 +32,16 @@ const Page = () => {
   const [showComponent11, setShowComponent11] = useState(false);
   const [showComponent12, setShowComponent12] = useState(false);
   const [showPicture, setShowPicture] = useState([]);
+  const [getColor, setGetColor] = useState("");
+  const [getColor2, setGetColor2] = useState("");
+
+  useEffect(() => {
+    const color = localStorage.getItem("pageColor") || "#8fcac5";
+    setGetColor(color);
+
+    const color2 = localStorage.getItem("pageColor2") || "#8fcac5";
+    setGetColor2(color2);
+  }, []);
 
   // show subtitute page for 10 seconds
   useEffect(() => {
@@ -236,6 +246,8 @@ const Page = () => {
         event.key !== "subPhotoNameAway" &&
         event.key !== "subPhotoName2Away" &&
         event.key !== "browser-tabs-lock-key-clerk.lock.refreshSessionToken"
+        // event.key !== "pageColor" &&
+        // event.key !== "pageColor2"
       ) {
         window.location.reload();
       }
@@ -276,7 +288,16 @@ const Page = () => {
     <>
       <div className="flex h-screen">
         {/* left side */}
-        <div className="w-1/4 bg-[#8fcac5] flex flex-col items-center justify-center">
+        <div
+          style={{
+            width: "25%", // equivalent to w-1/4
+            backgroundColor: getColor, // equivalent to bg-[${getColor}]
+            display: "flex", // equivalent to flex
+            flexDirection: "column", // equivalent to flex-col
+            alignItems: "center", // equivalent to items-center
+            justifyContent: "center", // equivalent to justify-center
+          }}
+        >
           <div className="mb-auto mt-5">
             <Image src={Berani} width={250} height={250} />
           </div>
@@ -288,7 +309,16 @@ const Page = () => {
           </div>
         </div>
         {/* center side */}
-        <div className="flex-1 bg-[#c84ce0] flex flex-col items-center justify-center">
+        <div
+          style={{
+            flex: "1", // equivalent to flex-1
+            backgroundColor: getColor2, // equivalent to bg-[#c84ce0]
+            display: "flex", // equivalent to flex
+            flexDirection: "column", // equivalent to flex-col
+            alignItems: "center", // equivalent to items-center
+            justifyContent: "center", // equivalent to justify-center
+          }}
+        >
           <div className="flex">
             <div className="mt-3 text-4xl font-medium item-start">
               {showPicture && showPicture[3] && showPicture[3].logo && (

@@ -11,6 +11,8 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import YellowPlayer from "../YellowPlayer";
 import Swal from "sweetalert2";
+import ColorPicker from "../ColorPicker";
+import ColorPicker2 from "../ColorPicker2";
 
 const SideBar = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("Control");
@@ -35,6 +37,8 @@ const SideBar = () => {
   const [isFormVisibleAway, setIsFormVisibleAway] = useState(true);
   const [data, setData] = useState(null);
   const [coachAway, setCoachAway] = useState(null);
+  const [pageColor, setPageColor] = useState("#17192D");
+  const [pageColor2, setPageColor2] = useState("#17192D");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -1691,6 +1695,17 @@ const SideBar = () => {
     setSelectedMenuItem(menuItem);
   };
 
+  const handleColorChange = (color) => {
+    setPageColor(color);
+    localStorage.setItem("pageColor", color);
+    console.log(color); // Log the updated color
+  };
+  const handleColorChange2 = (color) => {
+    setPageColor2(color);
+    localStorage.setItem("pageColor2", color);
+    console.log(color); // Log the updated color
+  };
+
   const renderComponent = () => {
     switch (selectedMenuItem) {
       case "FormationHome":
@@ -1811,6 +1826,16 @@ const SideBar = () => {
                 >
                   {showRedPlayer ? "Hide Red Player" : "Show Red Card"}
                 </button>
+                <div className="flex mt-5">
+                  <ColorPicker2
+                    selectedColor={pageColor2}
+                    onColorChange={handleColorChange2}
+                  />
+                  <ColorPicker
+                    selectedColor={pageColor}
+                    onColorChange={handleColorChange}
+                  />
+                </div>
               </div>
 
               <div className="flex-auto w-32">
@@ -2075,7 +2100,7 @@ const SideBar = () => {
   return (
     <>
       <div style={{ display: "flex", height: "100%", minHeight: "400px" }}>
-        <Sidebar backgroundColor="#0b2948" width="200px">
+        <Sidebar backgroundColor={pageColor} width="200px">
           <Menu>
             <MenuItem
               onClick={() => handleMenuItemClick("Control")}
