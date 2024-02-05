@@ -9,7 +9,9 @@ const TeamScore = () => {
   const [home, setHome] = useState([]);
   const [away, setAway] = useState([]);
   const [messageHome, setMessageHome] = useState("");
+  const [minuteHome, setMinuteHome] = useState("");
   const [messageAway, setMessageAway] = useState("");
+  const [minuteAway, setMinuteAway] = useState("");
 
   React.useEffect(() => {
     axios
@@ -36,12 +38,20 @@ const TeamScore = () => {
       return;
     }
 
-    console.log("Updated Score:", { ...score, messageHome, messageAway });
+    console.log("Updated Score:", {
+      ...score,
+      messageHome,
+      messageAway,
+      minuteHome,
+      minuteAway,
+    });
     axios
       .put(`${process.env.NEXT_PUBLIC_DATABASE_URL}/score/${score._id}`, {
         ...score,
         messageHome,
         messageAway,
+        minuteHome,
+        minuteAway,
       })
       .then((response) => {
         Swal.fire({
@@ -67,6 +77,22 @@ const TeamScore = () => {
     }
   };
 
+  const addMinutes = (type) => {
+    if (type === "home") {
+      setScore({
+        ...score,
+        minutesHome: [...score.minutesHome, minuteHome],
+      });
+      setMinuteHome("");
+    } else {
+      setScore({
+        ...score,
+        minutesAway: [...score.minutesAway, minuteAway],
+      });
+      setMinuteAway("");
+    }
+  };
+
   const deleteMessage = (type, index) => {
     if (type === "home") {
       const updatedMessagesHome = [...score.messagesHome];
@@ -79,8 +105,26 @@ const TeamScore = () => {
     }
   };
 
+  const updateMinutesHome = (index, value) => {
+    const updatedMinutesHome = [...score.minutesHome];
+    updatedMinutesHome[index] = value;
+    setScore({
+      ...score,
+      minutesHome: updatedMinutesHome,
+    });
+  };
+
+  const updateMinutesAway = (index, value) => {
+    const updatedMinutesAway = [...score.minutesAway];
+    updatedMinutesAway[index] = value;
+    setScore({
+      ...score,
+      minutesAway: updatedMinutesAway,
+    });
+  };
+
   return (
-    <div className="bg-slate-300 flex justify-evenly mt-5 ml-9">
+    <div className="bg-slate-300 flex justify-evenly mt-5 ml-9 min-h-screen">
       <div className="flex-auto w-16">
         <div className="mr-3">
           <SelectHomeTeam />
@@ -121,52 +165,69 @@ const TeamScore = () => {
             Goalscorer for {home.name}
           </label>
 
-          {score.messagesHome && score.messagesHome.length > 0 && (
-            <>
-              {score.messagesHome.map((message, index) => (
-                <div
-                  key={index}
-                  className="relative mt-2 mb-4 rounded-md shadow-sm"
-                >
-                  <input
-                    type="text"
-                    name={`messageHome_${index}`}
-                    id={`messageHome_${index}`}
-                    value={message}
-                    placeholder="Haaland 20'"
-                    className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => {
-                      const updatedMessagesHome = [...score.messagesHome];
-                      updatedMessagesHome[index] = e.target.value;
-                      setScore({
-                        ...score,
-                        messagesHome: updatedMessagesHome,
-                      });
-                    }}
-                  />
-                  <button
-                    onClick={() => deleteMessage("home", index)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none"
-                  >
-                    <svg
-                      className="h-5 w-5 text-gray-400"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              ))}
-            </>
-          )}
+          <table className="min-w-full border border-gray-300">
+            <thead>
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Name</th>
+                <th className="border border-gray-300 px-4 py-2">Minute</th>
+                <th className="border border-gray-300 px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {score.messagesHome && score.messagesHome.length > 0 && (
+                <>
+                  {score.messagesHome.map((message, index) => (
+                    <tr key={index}>
+                      {/* Name input */}
+                      <td className="border border-gray-300 px-4 py-2 flex items-center justify-center">
+                        <input
+                          type="text"
+                          name={`messageHome_${index}`}
+                          id={`messageHome_${index}`}
+                          value={message}
+                          placeholder="Haaland"
+                          className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) => {
+                            const updatedMessagesHome = [...score.messagesHome];
+                            updatedMessagesHome[index] = e.target.value;
+                            setScore({
+                              ...score,
+                              messagesHome: updatedMessagesHome,
+                            });
+                          }}
+                        />
+                      </td>
+
+                      {/* Minute input */}
+                      <td className="border border-gray-300 px-4 py-2 text-center align-middle">
+                        <input
+                          type="text"
+                          name={`minutesHome_${index}`}
+                          id={`minutesHome_${index}`}
+                          value={score.minutesHome[index] || ""}
+                          placeholder="20'"
+                          className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) =>
+                            updateMinutesHome(index, e.target.value)
+                          }
+                        />
+                      </td>
+
+                      {/* Delete button */}
+                      <td className="border border-gray-300 px-4 py-2 text-center align-middle">
+                        <button
+                          onClick={() => deleteMessage("home", index)}
+                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-700 rounded"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              )}
+            </tbody>
+          </table>
 
           <div className="relative mt-2 mb-4">
             <button
@@ -186,52 +247,69 @@ const TeamScore = () => {
             Goalscorer for {away.name}
           </label>
 
-          {score.messagesAway && score.messagesAway.length > 0 && (
-            <>
-              {score.messagesAway.map((message, index) => (
-                <div
-                  key={index}
-                  className="relative mt-2 mb-4 rounded-md shadow-sm"
-                >
-                  <input
-                    type="text"
-                    name={`messageAway_${index}`}
-                    id={`messageAway_${index}`}
-                    placeholder="Haaland 20'"
-                    value={message}
-                    className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    onChange={(e) => {
-                      const updatedMessagesAway = [...score.messagesAway];
-                      updatedMessagesAway[index] = e.target.value;
-                      setScore({
-                        ...score,
-                        messagesAway: updatedMessagesAway,
-                      });
-                    }}
-                  />
-                  <button
-                    onClick={() => deleteMessage("away", index)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none"
-                  >
-                    <svg
-                      className="h-5 w-5 text-gray-400"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              ))}
-            </>
-          )}
+          <table className="min-w-full border border-gray-300">
+            <thead>
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Name</th>
+                <th className="border border-gray-300 px-4 py-2">Minute</th>
+                <th className="border border-gray-300 px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {score.messagesAway && score.messagesAway.length > 0 && (
+                <>
+                  {score.messagesAway.map((message, index) => (
+                    <tr key={index}>
+                      {/* Name input */}
+                      <td className="border border-gray-300 px-4 py-2 flex items-center justify-center">
+                        <input
+                          type="text"
+                          name={`messageAway_${index}`}
+                          id={`messageAway_${index}`}
+                          value={message}
+                          placeholder="Haaland"
+                          className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) => {
+                            const updatedMessagesAway = [...score.messagesAway];
+                            updatedMessagesAway[index] = e.target.value;
+                            setScore({
+                              ...score,
+                              messagesAway: updatedMessagesAway,
+                            });
+                          }}
+                        />
+                      </td>
+
+                      {/* Minute input */}
+                      <td className="border border-gray-300 px-4 py-2 text-center align-middle">
+                        <input
+                          type="text"
+                          name={`minutesAway_${index}`}
+                          id={`minutesAway_${index}`}
+                          value={score.minutesAway[index] || ""}
+                          placeholder="20'"
+                          className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                          onChange={(e) =>
+                            updateMinutesAway(index, e.target.value)
+                          }
+                        />
+                      </td>
+
+                      {/* Delete button */}
+                      <td className="border border-gray-300 px-4 py-2 text-center align-middle">
+                        <button
+                          onClick={() => deleteMessage("home", index)}
+                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-700 rounded"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              )}
+            </tbody>
+          </table>
 
           <div className="relative mt-2 mb-4">
             <button

@@ -82,10 +82,24 @@ export default function Scoreboard() {
               ))}
             </div>
           ))}
+          {chunkArray(score.minutesHome, 5).map((chunk, colIndex) => (
+            <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
+              {chunk.map((message, rowIndex) => (
+                <div key={rowIndex}>{message}</div>
+              ))}
+            </div>
+          ))}
         </div>
 
         <div className="text-white flex flex-wrap ">
           {chunkArray(score.messagesAway, 5).map((chunk, colIndex) => (
+            <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
+              {chunk.map((message, rowIndex) => (
+                <div key={rowIndex}>{message}</div>
+              ))}
+            </div>
+          ))}
+          {chunkArray(score.minutesAway, 5).map((chunk, colIndex) => (
             <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
               {chunk.map((message, rowIndex) => (
                 <div key={rowIndex}>{message}</div>

@@ -60,6 +60,7 @@ const Control = () => {
       ? localStorage.removeItem("showComponent")
       : localStorage.setItem("showComponent", "10");
   };
+
   return (
     <>
       <div className="container flex">
