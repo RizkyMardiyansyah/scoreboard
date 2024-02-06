@@ -1783,7 +1783,7 @@ const SideBar = () => {
 
             <div className="mt-5 flex items-center justify-center">
               <iframe
-                src="http://localhost:3000/"
+                src={`${process.env.IFRAME_URL}`}
                 title="Content from localhost:3000"
                 width="95%"
                 height="800"
@@ -1898,7 +1898,7 @@ const SideBar = () => {
 
             <div className="mt-5 flex items-center justify-center mb-5">
               <iframe
-                src="http://localhost:3000/"
+                src={`${process.env.IFRAME_URL}`}
                 title="Content from localhost:3000"
                 width="95%"
                 height="800"
@@ -2087,7 +2087,7 @@ const SideBar = () => {
 
             <div className="mt-5 flex items-center justify-center">
               <iframe
-                src="http://localhost:3000/"
+                src={`${process.env.IFRAME_URL}`}
                 title="Content from localhost:3000"
                 width="95%"
                 height="800"
