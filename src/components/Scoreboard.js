@@ -50,9 +50,14 @@ export default function Scoreboard() {
   return (
     <Fragment>
       <div className="">
-        <div class="flex justify-around">
+        <div className="flex justify-around">
           <div className="text-white text-center hometeam">
-            <Image src={team.logo} width={200} height={200} />
+            <Image
+              src={team.logo}
+              width={200}
+              height={200}
+              alt="Home Team Logo"
+            />
           </div>
 
           <div className="text-white">
@@ -68,7 +73,12 @@ export default function Scoreboard() {
           </div>
 
           <div className="text-white text-center awayteam">
-            <Image src={teamAway.logo} width={200} height={200} />{" "}
+            <Image
+              src={teamAway.logo}
+              width={200}
+              height={200}
+              alt="Away Team Logo"
+            />{" "}
           </div>
         </div>
       </div>

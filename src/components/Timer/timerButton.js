@@ -61,21 +61,21 @@ const Stopwatch = () => {
 
   const handleStartFromZero = () => {
     setIsRunning(false);
-    // setTime(0);
-    setTime(44 * 60 + 50);
+    setTime(0);
+    // setTime(44 * 60 + 50);
     setStopTime(45 * 60);
-    localStorage.setItem("stopwatchTime", String(44 * 60 + 50));
-    // localStorage.setItem("stopwatchTime", String(0));
+    // localStorage.setItem("stopwatchTime", String(44 * 60 + 50));
+    localStorage.setItem("stopwatchTime", String(0));
     localStorage.setItem("stopwatchIsRunning", "false");
   };
 
   const handleStartFrom45 = () => {
     setIsRunning(false);
-    // setTime(45 * 60);
-    setTime(89 * 60 + 50);
+    setTime(45 * 60);
+    // setTime(89 * 60 + 50);
     setStopTime(90 * 60);
-    localStorage.setItem("stopwatchTime", String(89 * 60 + 50));
-    // localStorage.setItem("stopwatchTime", String(45* 60));
+    // localStorage.setItem("stopwatchTime", String(89 * 60 + 50));
+    localStorage.setItem("stopwatchTime", String(45 * 60));
     localStorage.setItem("stopwatchIsRunning", "false");
   };
 

@@ -2100,7 +2100,7 @@ const SideBar = () => {
   return (
     <>
       <div style={{ display: "flex", height: "100%", minHeight: "400px" }}>
-        <Sidebar backgroundColor={pageColor} width="200px">
+        <Sidebar backgroundColor="#050A31" width="200px">
           <Menu>
             <MenuItem
               onClick={() => handleMenuItemClick("Control")}

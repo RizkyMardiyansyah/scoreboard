@@ -36,10 +36,10 @@ const Page = () => {
   const [getColor2, setGetColor2] = useState("");
 
   useEffect(() => {
-    const color = localStorage.getItem("pageColor") || "#8fcac5";
+    const color = localStorage.getItem("pageColor") || "#C2C2E6";
     setGetColor(color);
 
-    const color2 = localStorage.getItem("pageColor2") || "#8fcac5";
+    const color2 = localStorage.getItem("pageColor2") || "#CF4463";
     setGetColor2(color2);
   }, []);
 
@@ -290,39 +290,44 @@ const Page = () => {
         {/* left side */}
         <div
           style={{
-            width: "25%", // equivalent to w-1/4
-            backgroundColor: getColor, // equivalent to bg-[${getColor}]
-            display: "flex", // equivalent to flex
-            flexDirection: "column", // equivalent to flex-col
-            alignItems: "center", // equivalent to items-center
-            justifyContent: "center", // equivalent to justify-center
+            width: "25%",
+            backgroundColor: getColor,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <div className="mb-auto mt-5">
-            <Image src={Berani} width={250} height={250} />
+            <Image src={Berani} width={250} height={250} alt="Sponsor Logo" />
           </div>
           <div className="text-white">
             <Timer />
           </div>
           <div className="mt-auto mb-5">
-            <Image src={Nat} width={250} height={250} />
+            <Image src={Nat} width={250} height={250} alt="Sponsor 2 Logo" />
           </div>
         </div>
         {/* center side */}
         <div
           style={{
-            flex: "1", // equivalent to flex-1
-            backgroundColor: getColor2, // equivalent to bg-[#c84ce0]
-            display: "flex", // equivalent to flex
-            flexDirection: "column", // equivalent to flex-col
-            alignItems: "center", // equivalent to items-center
-            justifyContent: "center", // equivalent to justify-center
+            flex: "1",
+            backgroundColor: getColor2,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <div className="flex">
             <div className="mt-3 text-4xl font-medium item-start">
               {showPicture && showPicture[3] && showPicture[3].logo && (
-                <Image src={showPicture[3].logo} width={100} height={100} />
+                <Image
+                  src={showPicture[3].logo}
+                  width={100}
+                  height={100}
+                  alt="Competition Logo"
+                />
               )}
             </div>
           </div>
