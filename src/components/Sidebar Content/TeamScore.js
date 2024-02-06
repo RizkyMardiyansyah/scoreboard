@@ -97,11 +97,23 @@ const TeamScore = () => {
     if (type === "home") {
       const updatedMessagesHome = [...score.messagesHome];
       updatedMessagesHome.splice(index, 1);
-      setScore({ ...score, messagesHome: updatedMessagesHome });
+      const updatedMinutesHome = [...score.minutesHome];
+      updatedMinutesHome.splice(index, 1);
+      setScore({
+        ...score,
+        messagesHome: updatedMessagesHome,
+        minutesHome: updatedMinutesHome,
+      });
     } else {
       const updatedMessagesAway = [...score.messagesAway];
       updatedMessagesAway.splice(index, 1);
-      setScore({ ...score, messagesAway: updatedMessagesAway });
+      const updatedMinutesAway = [...score.minutesAway];
+      updatedMinutesAway.splice(index, 1);
+      setScore({
+        ...score,
+        messagesAway: updatedMessagesAway,
+        minutesAway: updatedMinutesAway,
+      });
     }
   };
 
@@ -263,7 +275,7 @@ const TeamScore = () => {
                       {/* Name input */}
                       <td className="border border-gray-300 px-4 py-2 flex items-center justify-center">
                         <input
-                          type="text"
+                          type="away"
                           name={`messageAway_${index}`}
                           id={`messageAway_${index}`}
                           value={message}
@@ -283,7 +295,7 @@ const TeamScore = () => {
                       {/* Minute input */}
                       <td className="border border-gray-300 px-4 py-2 text-center align-middle">
                         <input
-                          type="text"
+                          type="away"
                           name={`minutesAway_${index}`}
                           id={`minutesAway_${index}`}
                           value={score.minutesAway[index] || ""}
@@ -298,7 +310,7 @@ const TeamScore = () => {
                       {/* Delete button */}
                       <td className="border border-gray-300 px-4 py-2 text-center align-middle">
                         <button
-                          onClick={() => deleteMessage("home", index)}
+                          onClick={() => deleteMessage("away", index)}
                           className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 border border-red-700 rounded"
                         >
                           Delete

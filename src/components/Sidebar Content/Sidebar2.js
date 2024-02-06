@@ -13,6 +13,7 @@ import YellowPlayer from "../YellowPlayer";
 import Swal from "sweetalert2";
 import ColorPicker from "../ColorPicker";
 import ColorPicker2 from "../ColorPicker2";
+import getConfig from "next/config";
 
 const SideBar = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("Control");
@@ -39,6 +40,8 @@ const SideBar = () => {
   const [coachAway, setCoachAway] = useState(null);
   const [pageColor, setPageColor] = useState("#17192D");
   const [pageColor2, setPageColor2] = useState("#17192D");
+  const { publicRuntimeConfig } = getConfig();
+  const { IFRAME_URL } = publicRuntimeConfig;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -1783,7 +1786,7 @@ const SideBar = () => {
 
             <div className="mt-5 flex items-center justify-center">
               <iframe
-                src={`${process.env.IFRAME_URL}`}
+                src={IFRAME_URL}
                 title="Content from localhost:3000"
                 width="95%"
                 height="800"
@@ -1898,7 +1901,7 @@ const SideBar = () => {
 
             <div className="mt-5 flex items-center justify-center mb-5">
               <iframe
-                src={`${process.env.IFRAME_URL}`}
+                src={IFRAME_URL}
                 title="Content from localhost:3000"
                 width="95%"
                 height="800"
@@ -1984,7 +1987,7 @@ const SideBar = () => {
 
             <div className="mt-5 flex items-center justify-center">
               <iframe
-                src="http://localhost:3000/"
+                src={IFRAME_URL}
                 title="Content from localhost:3000"
                 width="95%"
                 height="800"
@@ -2087,7 +2090,7 @@ const SideBar = () => {
 
             <div className="mt-5 flex items-center justify-center">
               <iframe
-                src={`${process.env.IFRAME_URL}`}
+                src={IFRAME_URL}
                 title="Content from localhost:3000"
                 width="95%"
                 height="800"
