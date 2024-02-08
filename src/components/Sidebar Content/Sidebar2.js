@@ -9,11 +9,22 @@ import TimerButton from "../Timer/timerButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
-import YellowPlayer from "../YellowPlayer";
+import { Tab } from "@headlessui/react";
 import Swal from "sweetalert2";
-import ColorPicker from "../ColorPicker";
-import ColorPicker2 from "../ColorPicker2";
 import getConfig from "next/config";
+import { useUser, UserButton, SignedIn } from "@clerk/nextjs";
+import Link from "next/link";
+import GoalPlayer from "../Player Component/GoalPlayer";
+import Plus from "../../assets/Plus.png";
+import Play from "../../assets/PlayCircle.png";
+import PlayBlack from "../../assets/PlayCircleBlack.png";
+import Presentation from "../../assets/Presentation.png";
+import Timer from "../Timer/timer3";
+import { useStopwatch } from "../Timer/timerAdmin";
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 const SideBar = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState("Control");
@@ -42,6 +53,16 @@ const SideBar = () => {
   const [pageColor2, setPageColor2] = useState("#17192D");
   const { publicRuntimeConfig } = getConfig();
   const { IFRAME_URL } = publicRuntimeConfig;
+  const { user, isLoaded } = useUser();
+
+  const {
+    time,
+    isRunning,
+    startTimer,
+    pauseTimer,
+    handleStartFromZero,
+    handleStartFrom45,
+  } = useStopwatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -1697,17 +1718,15 @@ const SideBar = () => {
   const handleMenuItemClick = (menuItem) => {
     setSelectedMenuItem(menuItem);
   };
-
-  const handleColorChange = (color) => {
-    setPageColor(color);
-    localStorage.setItem("pageColor", color);
-    console.log(color); // Log the updated color
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
   };
-  const handleColorChange2 = (color) => {
-    setPageColor2(color);
-    localStorage.setItem("pageColor2", color);
-    console.log(color); // Log the updated color
-  };
+  // tabs
 
   const renderComponent = () => {
     switch (selectedMenuItem) {
@@ -1799,7 +1818,214 @@ const SideBar = () => {
       case "Control":
         return (
           <>
-            <div className="container flex mt-5">
+            <div className="flex mt-5">
+              <div className="w-1/4 bg-[#000000] p-4 mr-2 h-32 flex justify-center items-center shadow-lg border border-[#E4E4E7] rounded-lg">
+                <a
+                  href="/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cursor-pointer flex justify-center items-center flex-col"
+                >
+                  <div className="">
+                    <div className="flex justify-center items-center mb-3">
+                      <Image
+                        src={Presentation}
+                        alt="Presentation"
+                        width={40}
+                        height={40}
+                      />
+                    </div>
+                    <div className="text-white">View Board</div>
+                  </div>
+                </a>
+              </div>
+              <div className="w-1/4 bg-[#EAEAEA] p-4 mr-2 h-32 flex justify-center items-center shadow-lg border border-[#E4E4E7] rounded-lg">
+                <div className="">
+                  <div style={{ textAlign: "center" }}>
+                    <div id="reset-btn" style={{ fontSize: "60px" }}>
+                      <span className="text-black">{formatTime(time)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="w-1/4 bg-[#5AD8AE] p-4 mr-2 flex justify-center items-center rounded-lg shadow-lg cursor-pointer"
+                onClick={isRunning ? pauseTimer : startTimer}
+              >
+                {isRunning ? (
+                  "Pause"
+                ) : (
+                  <>
+                    <div>
+                      <div className="flex justify-center items-center mb-3">
+                        <Image src={Play} alt="play" width={40} height={40} />
+                      </div>
+                      <div className="flex justify-center items-center">
+                        Start
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+              <div
+                className="w-1/4 bg-[#5786E3] p-4 mr-2 flex justify-center items-center rounded-lg shadow-lg cursor-pointer"
+                onClick={handleStartFromZero}
+              >
+                <div className="">
+                  <div className="flex justify-center items-center mb-3">
+                    <Image src={Play} alt="play" width={40} height={40} />
+                  </div>
+                  <div>First Half</div>
+                </div>
+              </div>
+              <div
+                className="w-1/4 bg-[#FFCB82] p-4 mr-2 flex justify-center items-center rounded-lg shadow-lg cursor-pointer"
+                onClick={handleStartFrom45}
+              >
+                <div className="">
+                  <div className="flex justify-center items-center mb-3">
+                    <Image
+                      src={PlayBlack}
+                      alt="PlayBlack"
+                      width={40}
+                      height={40}
+                    />
+                  </div>
+                  <div>Second Half</div>
+                </div>
+              </div>
+            </div>
+            {/* tabs */}
+            <Tab.Group>
+              <div className="w-full max-w-md px-2 py-8 sm:px-0">
+                <Tab.List className="flex space-x-1 rounded-xl bg-[#EAEAEA] p-2">
+                  <Tab
+                    className={({ selected }) =>
+                      classNames(
+                        "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                        "focus:outline-none",
+                        selected
+                          ? "bg-white text-black shadow"
+                          : "text-black hover:bg-white/[0.12] hover:text-black"
+                      )
+                    }
+                  >
+                    Dashboard
+                  </Tab>
+                  <Tab
+                    className={({ selected }) =>
+                      classNames(
+                        "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                        "focus:outline-none",
+                        selected
+                          ? "bg-white text-black shadow"
+                          : "text-black hover:bg-white/[0.12] hover:text-black"
+                      )
+                    }
+                  >
+                    Goal Player
+                  </Tab>
+                  <Tab
+                    className={({ selected }) =>
+                      classNames(
+                        "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                        "focus:outline-none",
+                        selected
+                          ? "bg-white text-black shadow"
+                          : "text-black hover:bg-white/[0.12] hover:text-black"
+                      )
+                    }
+                  >
+                    Yellow Card
+                  </Tab>
+                  <Tab
+                    className={({ selected }) =>
+                      classNames(
+                        "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                        "focus:outline-none",
+                        selected
+                          ? "bg-white text-black shadow"
+                          : "text-black hover:bg-white/[0.12] hover:text-black"
+                      )
+                    }
+                  >
+                    Red Card
+                  </Tab>
+                </Tab.List>
+              </div>
+              <Tab.Panels>
+                <Tab.Panel
+                  className={classNames(
+                    "rounded-xl bg-white p-3",
+                    "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                  )}
+                >
+                  {" "}
+                  <div className="flex items-center justify-center mb-5 mr-2">
+                    <iframe
+                      className="rounded-lg"
+                      src={IFRAME_URL}
+                      title="Content from localhost:3000"
+                      width="100%"
+                      height="800"
+                    />
+                  </div>
+                </Tab.Panel>
+                <Tab.Panel
+                  className={classNames(
+                    "rounded-xl bg-white p-3",
+                    "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                  )}
+                >
+                  <GoalPlayer />
+                  <div className="flex items-center justify-center mb-5 mr-2">
+                    <iframe
+                      className="rounded-lg"
+                      src={IFRAME_URL}
+                      title="Content from localhost:3000"
+                      width="100%"
+                      height="800"
+                    />
+                  </div>
+                </Tab.Panel>
+                <Tab.Panel
+                  className={classNames(
+                    "rounded-xl bg-white p-3",
+                    "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                  )}
+                >
+                  <GoalPlayer />
+                  <div className="flex items-center justify-center mb-5 mr-2">
+                    <iframe
+                      className="rounded-lg"
+                      src={IFRAME_URL}
+                      title="Content from localhost:3000"
+                      width="100%"
+                      height="800"
+                    />
+                  </div>
+                </Tab.Panel>
+                <Tab.Panel
+                  className={classNames(
+                    "rounded-xl bg-white p-3",
+                    "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                  )}
+                >
+                  <GoalPlayer />
+                  <div className="flex items-center justify-center mb-5 mr-2">
+                    <iframe
+                      className="rounded-lg"
+                      src={IFRAME_URL}
+                      title="Content from localhost:3000"
+                      width="100%"
+                      height="800"
+                    />
+                  </div>
+                </Tab.Panel>
+              </Tab.Panels>
+            </Tab.Group>
+
+            {/* <div className="container flex mt-5">
               <div className="flex-auto w-64 ml-10">
                 <button
                   onClick={toggleComponent1}
@@ -1906,7 +2132,7 @@ const SideBar = () => {
                 width="95%"
                 height="800"
               />
-            </div>
+            </div> */}
           </>
         );
       case "TeamScore":
@@ -1998,7 +2224,7 @@ const SideBar = () => {
       default:
         return (
           <>
-            <div className="container flex">
+            {/* <div className="container flex">
               <div className="flex-auto w-64 ml-10">
                 <button
                   onClick={toggleComponent1}
@@ -2095,7 +2321,7 @@ const SideBar = () => {
                 width="95%"
                 height="800"
               />
-            </div>
+            </div> */}
           </>
         );
     }
@@ -2103,14 +2329,27 @@ const SideBar = () => {
   return (
     <>
       <div style={{ display: "flex", height: "100%", minHeight: "400px" }}>
-        <Sidebar backgroundColor="#050A31" width="200px">
+        <Sidebar backgroundColor="#ffffff" width="200px">
           <Menu>
+            <div className="">
+              {isLoaded && user ? (
+                <>
+                  <div className="border border-black flex justify-center items-center p-1 mt-2 mr-4 ml-4 mb-2 rounded-lg">
+                    <UserButton afterSignOutUrl="/" showName />
+                  </div>
+                </>
+              ) : (
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  <Link href="/login">Login</Link>
+                </button>
+              )}
+            </div>
             <MenuItem
               onClick={() => handleMenuItemClick("Control")}
               style={{
                 backgroundColor:
-                  selectedMenuItem === "Control" ? "#ffcccb" : "inherit",
-                color: selectedMenuItem === "Control" ? "black" : "#8ba1b7",
+                  selectedMenuItem === "Control" ? "#f3f3f3" : "inherit",
+                color: selectedMenuItem === "Control" ? "black" : "#000000",
               }}
             >
               Control
@@ -2120,41 +2359,44 @@ const SideBar = () => {
               onClick={() => handleMenuItemClick("FormationHome")}
               style={{
                 backgroundColor:
-                  selectedMenuItem === "FormationHome" ? "#ffcccb" : "inherit",
+                  selectedMenuItem === "FormationHome" ? "#F3F3F3" : "inherit",
                 color:
-                  selectedMenuItem === "FormationHome" ? "black" : "#8ba1b7",
+                  selectedMenuItem === "FormationHome" ? "black" : "#000000",
               }}
             >
               Formation Home
             </MenuItem>
+
             <MenuItem
               onClick={() => handleMenuItemClick("FormationAway")}
               style={{
                 backgroundColor:
-                  selectedMenuItem === "FormationAway" ? "#ffcccb" : "inherit",
+                  selectedMenuItem === "FormationAway" ? "#F3F3F3" : "inherit",
                 color:
-                  selectedMenuItem === "FormationAway" ? "black" : "#8ba1b7",
+                  selectedMenuItem === "FormationAway" ? "black" : "#000000",
               }}
             >
               {" "}
               Formation Away{" "}
             </MenuItem>
+
             <MenuItem
               onClick={() => handleMenuItemClick("TeamScore")}
               style={{
                 backgroundColor:
-                  selectedMenuItem === "TeamScore" ? "#ffcccb" : "inherit",
-                color: selectedMenuItem === "TeamScore" ? "black" : "#8ba1b7",
+                  selectedMenuItem === "TeamScore" ? "#F3F3F3" : "inherit",
+                color: selectedMenuItem === "TeamScore" ? "black" : "#000000",
               }}
             >
               Team & Score
             </MenuItem>
+
             <MenuItem
               onClick={() => handleMenuItemClick("Subtitution")}
               style={{
                 backgroundColor:
-                  selectedMenuItem === "Subtitution" ? "#ffcccb" : "inherit",
-                color: selectedMenuItem === "Subtitution" ? "black" : "#8ba1b7",
+                  selectedMenuItem === "Subtitution" ? "#F3F3F3" : "inherit",
+                color: selectedMenuItem === "Subtitution" ? "black" : "#000000",
               }}
             >
               Subtitution

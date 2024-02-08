@@ -57,7 +57,7 @@ const Stopwatch = () => {
   return (
     <div style={{ textAlign: "center" }}>
       <div id="reset-btn" style={{ fontSize: "70px" }}>
-        <span className="text-black">{formatTime(time)}</span>
+        <span className="text-white">{formatTime(time)}</span>
       </div>
     </div>
   );

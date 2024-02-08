@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Stopwatch = () => {
+export const useStopwatch = () => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [stopTime, setStopTime] = useState(90 * 60);
@@ -28,7 +28,7 @@ const Stopwatch = () => {
           localStorage.setItem("stopwatchTime", newTime);
 
           // Check if the time has reached the stop time
-          if (newTime == stopTime) {
+          if (newTime === stopTime) {
             pauseTimer();
           }
 
@@ -40,13 +40,9 @@ const Stopwatch = () => {
     return () => clearInterval(timer);
   }, [isRunning, stopTime]);
 
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
+  const startTimer = () => {
+    setIsRunning(true);
+    localStorage.setItem("stopwatchIsRunning", "true");
   };
 
   const pauseTimer = () => {
@@ -54,13 +50,28 @@ const Stopwatch = () => {
     localStorage.setItem("stopwatchIsRunning", "false");
   };
 
-  return (
-    <div style={{ textAlign: "center" }}>
-      <div id="reset-btn" style={{ fontSize: "60px" }}>
-        <span className="text-black">{formatTime(time)}</span>
-      </div>
-    </div>
-  );
-};
+  const handleStartFromZero = () => {
+    setIsRunning(false);
+    setTime(0);
+    setStopTime(45 * 60);
+    localStorage.setItem("stopwatchTime", String(0));
+    localStorage.setItem("stopwatchIsRunning", "false");
+  };
 
-export default Stopwatch;
+  const handleStartFrom45 = () => {
+    setIsRunning(false);
+    setTime(45 * 60);
+    setStopTime(90 * 60);
+    localStorage.setItem("stopwatchTime", String(45 * 60));
+    localStorage.setItem("stopwatchIsRunning", "false");
+  };
+
+  return {
+    time,
+    isRunning,
+    startTimer,
+    pauseTimer,
+    handleStartFromZero,
+    handleStartFrom45,
+  };
+};

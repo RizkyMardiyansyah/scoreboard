@@ -3,9 +3,11 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <ClerkProvider {...pageProps}>
-      <Component {...pageProps} />
-    </ClerkProvider>
+    <main className={``}>
+      <ClerkProvider {...pageProps}>
+        <Component {...pageProps} />
+      </ClerkProvider>
+    </main>
   );
 }
 

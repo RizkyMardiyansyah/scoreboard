@@ -17,6 +17,7 @@ import Nat from "../assets/nat.png";
 import axios from "axios";
 import SubtitutionPage from "../components/SubtitutionPage";
 import SubtitutionPageAway from "../components/SubtitutionPageAway";
+import Marquee from "react-fast-marquee";
 
 const Page = () => {
   const [showComponent1, setShowComponent1] = useState(false);
@@ -288,7 +289,7 @@ const Page = () => {
     <>
       <div className="flex h-screen">
         {/* left side */}
-        <div
+        {/* <div
           style={{
             width: "25%",
             backgroundColor: getColor,
@@ -307,18 +308,9 @@ const Page = () => {
           <div className="mt-auto mb-5">
             <Image src={Nat} width={250} height={250} alt="Sponsor 2 Logo" />
           </div>
-        </div>
+        </div> */}
         {/* center side */}
-        <div
-          style={{
-            flex: "1",
-            backgroundColor: getColor2,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <div className="flex-1 bg-[#2C2C2C] flex flex-col items-center justify-center">
           <div className="flex">
             <div className="mt-3 text-4xl font-medium item-start">
               {showPicture && showPicture[3] && showPicture[3].logo && (
@@ -331,8 +323,9 @@ const Page = () => {
               )}
             </div>
           </div>
+
           {/* show component */}
-          <div className="mt-auto w-full ">
+          <div className="m-auto w-full customFont font-medium">
             {showComponent1 && <Component1 />}
             {showComponent2 && <Component2 />}
             {showComponent3 && <Component3 />}
@@ -346,8 +339,12 @@ const Page = () => {
             {showComponent11 && <Component11 />}
             {showComponent12 && <Component12 />}
           </div>
-          <div className="mt-auto mb-4 text-center text-4xl font-medium">
-            <p>BRI Liga 1</p>
+          <div className="mt-auto w-full border border-white overflow-hidden">
+            <div className="px-4 py-2 bg-white">
+              <Marquee>
+                <span className="text-black">Running Text</span>
+              </Marquee>
+            </div>
           </div>
         </div>
       </div>

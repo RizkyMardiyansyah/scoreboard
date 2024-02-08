@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Timer from "./Timer/timer3";
 
 export default function Scoreboard() {
   const [team, setTeam] = useState(null);
@@ -50,26 +51,40 @@ export default function Scoreboard() {
   return (
     <Fragment>
       <div className="">
-        <div className="flex justify-around">
-          <div className="text-white text-center hometeam">
+        <div className="flex justify-evenly items-center">
+          <div className="text-white text-center hometeam ">
             <Image
               src={team.logo}
               width={200}
               height={200}
               alt="Home Team Logo"
             />
+            <div>
+              <p className="customFont text-xl  mt-3">{team.name}</p>
+              <p className="text-7xl customFont mt-5 ">{score.home}</p>
+              <div className="text-white flex flex-wrap ">
+                {chunkArray(score.messagesHome, 5).map((chunk, colIndex) => (
+                  <div key={colIndex} className="text-xl mt-2 mr-5 ml-9">
+                    {chunk.map((message, rowIndex) => (
+                      <div key={rowIndex}>{message}</div>
+                    ))}
+                  </div>
+                ))}
+                {chunkArray(score.minutesHome, 5).map((chunk, colIndex) => (
+                  <div key={colIndex} className="text-xl mt-2 mr-5 ">
+                    {chunk.map((message, rowIndex) => (
+                      <div key={rowIndex}>{message}</div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
-          <div className="text-white">
-            <p className="text-9xl teamAScore mt-5">{score.home}</p>
-          </div>
-
-          <div className="text-white">
-            <p className="text-9xl teamAScore mt-4">:</p>
-          </div>
-
-          <div className=" text-white">
-            <p className="text-9xl teamBScore mt-5">{score.away}</p>
+          <div className="text-white text-center mt-auto mb-auto">
+            <p className="text-xl">VS</p>
+            <p className="mt-5">First Half</p>
+            <Timer />
           </div>
 
           <div className="text-white text-center awayteam">
@@ -78,13 +93,34 @@ export default function Scoreboard() {
               width={200}
               height={200}
               alt="Away Team Logo"
-            />{" "}
+            />
+
+            <div>
+              <p className="customFont text-xl  mt-3"> {teamAway.name} </p>
+              <p className="text-7xl customFont mt-5 ">{score.away}</p>
+              <div className="text-white flex flex-wrap ">
+                {chunkArray(score.messagesAway, 5).map((chunk, colIndex) => (
+                  <div key={colIndex} className="text-xl mt-2 mr-5 ml-9">
+                    {chunk.map((message, rowIndex) => (
+                      <div key={rowIndex}>{message}</div>
+                    ))}
+                  </div>
+                ))}
+                {chunkArray(score.minutesAway, 5).map((chunk, colIndex) => (
+                  <div key={colIndex} className="text-xl mt-2 mr-5 ml-5">
+                    {chunk.map((message, rowIndex) => (
+                      <div key={rowIndex}>{message}</div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="text-white flex justify-evenly mt-5">
-        <div className="text-white flex flex-wrap ">
+      {/* <div className="text-white flex justify-evenly mt-5"> */}
+      {/* <div className="text-white flex flex-wrap ">
           {chunkArray(score.messagesHome, 5).map((chunk, colIndex) => (
             <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
               {chunk.map((message, rowIndex) => (
@@ -99,9 +135,9 @@ export default function Scoreboard() {
               ))}
             </div>
           ))}
-        </div>
+        </div> */}
 
-        <div className="text-white flex flex-wrap ">
+      {/* <div className="text-white flex flex-wrap ">
           {chunkArray(score.messagesAway, 5).map((chunk, colIndex) => (
             <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
               {chunk.map((message, rowIndex) => (
@@ -116,8 +152,8 @@ export default function Scoreboard() {
               ))}
             </div>
           ))}
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </Fragment>
   );
 }

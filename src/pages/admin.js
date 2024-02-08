@@ -8,8 +8,8 @@ import Sidebar from "../components/Sidebar Content/Sidebar2";
 const Admin = () => {
   return (
     <Fragment>
-      <Navbar />
-      <div className="bg-slate-300">
+      {/* <Navbar /> */}
+      <div className="bg-[#ffffff]">
         <Sidebar />
       </div>
     </Fragment>
