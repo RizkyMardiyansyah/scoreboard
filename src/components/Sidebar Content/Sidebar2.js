@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import Subtitutions from "../Subtitution";
+import Subtitutions from "./SubtitutionNew";
 import Control from "./Control";
-import TeamScore from "./TeamScore";
+import TeamScore from "./TeamScoreNew";
 import axios from "axios";
 import DropdownButton from "../Dropdown";
 import TimerButton from "../Timer/timerButton";
@@ -1726,8 +1726,8 @@ const SideBar = () => {
       "0"
     )}`;
   };
-  // tabs
 
+  // tabs
   const renderComponent = () => {
     switch (selectedMenuItem) {
       case "FormationHome":

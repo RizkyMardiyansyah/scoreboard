@@ -115,67 +115,100 @@ const DropdownComponent = () => {
   console.log(team[0].logo);
 
   return (
-    <div className="flex justify-around">
-      <div className="flex flex-col items-center">
-        <div>
-          <h1>Player Out</h1>
-          <select
-            onChange={(e) => handleSelectChange(e, "in")}
-            value={selectedPlayerIn}
-          >
-            <option value="">Select Player Out</option>
-            {teamOptions.slice(0, 11).map((player) => (
-              <option key={player._id} value={player.name}>
-                {player.name}
-              </option>
-            ))}
-          </select>
-        </div>
+    <>
+      0
+      <div className="flex justify-around">
+        <div className="flex flex-col items-center">
+          <div className="flex items-center bg-[#f0f0f0]">
+            <div className=" p-2 rounded mr-2">
+              <Image src={team[0].logo} width={100} height={100} />
+            </div>
 
-        <div>
-          <h1>Player In</h1>
-          <select
-            onChange={(e) => handleSelectChange(e, "out")}
-            value={selectedPlayerOut}
-          >
-            <option value="">Select Player In</option>
-            {teamOptions.slice(11).map((player) => (
-              <option key={player._id} value={player.name}>
-                {player.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <button
-          onClick={handleExchangePlayers}
-          className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full px-3 py-2 me-2 mt-2 text-sm  bg-blue-500 hover:bg-blue-700"
-        >
-          Subtitute Players
-        </button>
-
-        <div className="mt-auto mb-auto">
-          <Image src={team[0].logo} width={200} height={200} />
-        </div>
-      </div>
-
-      <div className="">
-        <h1>Starting Lineup</h1>
-        {teamOptions.slice(0, 11).map((player) => (
-          <div key={player._id} className={`${style.playerItem}`} tabIndex="0">
-            {player.name}
+            <div className="flex flex-col">
+              <div className="flex items-center">
+                <p className="font-semibold w-24">Team:</p>
+                <p>Borneo</p>
+              </div>
+              <div className="flex items-center">
+                <p className="font-semibold w-24">Formation:</p>
+                <p>4-3-3</p>
+              </div>
+              <div className="flex items-center">
+                <p className="font-semibold w-24">Coach:</p>
+                <p>STY</p>
+              </div>
+            </div>
           </div>
-        ))}
-      </div>
 
-      <div className="">
-        <h1>Bench Player</h1>
-        {teamOptions.slice(11).map((player) => (
-          <div key={player._id} className={`${style.playerItem}`} tabIndex="0">
-            {player.name}
+          <div>
+            <h1>Player Out</h1>
+            <select
+              onChange={(e) => handleSelectChange(e, "in")}
+              value={selectedPlayerIn}
+            >
+              <option value="">Select Player Out</option>
+              {teamOptions.slice(0, 11).map((player) => (
+                <option key={player._id} value={player.name}>
+                  {player.name}
+                </option>
+              ))}
+            </select>
           </div>
-        ))}
+
+          <div>
+            <h1>Player In</h1>
+            <select
+              onChange={(e) => handleSelectChange(e, "out")}
+              value={selectedPlayerOut}
+            >
+              <option value="">Select Player In</option>
+              {teamOptions.slice(11).map((player) => (
+                <option key={player._id} value={player.name}>
+                  {player.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button
+            onClick={handleExchangePlayers}
+            className="text-white 
+            bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full px-3 py-2 me-2 mt-2 text-sm  bg-blue-500 hover:bg-blue-700"
+          >
+            Subtitute Players
+          </button>
+
+          <div className="mt-auto mb-auto">
+            <Image src={team[0].logo} width={200} height={200} />
+          </div>
+        </div>
+
+        <div className="">
+          <h1>Starting Lineup</h1>
+          {teamOptions.slice(0, 11).map((player) => (
+            <div
+              key={player._id}
+              className={`${style.playerItem}`}
+              tabIndex="0"
+            >
+              {player.name}
+            </div>
+          ))}
+        </div>
+
+        <div className="">
+          <h1>Bench Player</h1>
+          {teamOptions.slice(11).map((player) => (
+            <div
+              key={player._id}
+              className={`${style.playerItem}`}
+              tabIndex="0"
+            >
+              {player.name}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
