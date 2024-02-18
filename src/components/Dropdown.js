@@ -14,7 +14,7 @@ const DropdownButton = ({ options, onSelect, label }) => {
     <div className="relative inline-block text-left">
       <button
         type="button"
-        className="inline-flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md focus:outline-none focus-visible:ring focus-visible:ring-blue-500 focus-visible:ring-opacity-75"
+        className="w-full border p-3 rounded-lg"
         onClick={() => setIsOpen(!isOpen)}
       >
         {label}

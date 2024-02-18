@@ -19,7 +19,7 @@ import Plus from "../../assets/Plus.png";
 import Play from "../../assets/PlayCircle.png";
 import PlayBlack from "../../assets/PlayCircleBlack.png";
 import Presentation from "../../assets/Presentation.png";
-import Timer from "../Timer/timer3";
+import Prematch from "./Prematch";
 import { useStopwatch } from "../Timer/timerAdmin";
 
 function classNames(...classes) {
@@ -1730,89 +1730,9 @@ const SideBar = () => {
   // tabs
   const renderComponent = () => {
     switch (selectedMenuItem) {
-      case "FormationHome":
-        return (
-          <>
-            <div className="mt-5">
-              <div className={``}>
-                <div className={`ml-9 `}>
-                  <h2>Formation Home</h2>
-                  <DropdownButton
-                    options={["4-4-2", "4-2-3-1", "4-3-3"]}
-                    onSelect={handleFormationSelect}
-                    label="Select Formation"
-                  />
+      case "Prematch":
+        return <Prematch />;
 
-                  <div className="mt-5 ">{renderSelectedForm()}</div>
-                  {selectedFormation && isFormVisible && (
-                    <div className="mt-5 ml-5 flex justify-center">
-                      <button
-                        onClick={handleToggleForm}
-                        className="mr-4 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
-                      >
-                        Hide Form
-                      </button>
-                      <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                        onClick={() => createPlayer(newPlayer)}
-                      >
-                        Add Player
-                      </button>
-                      <button
-                        className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                        onClick={handleClearAllForm}
-                      >
-                        Clear All
-                      </button>
-                      <button
-                        onClick={handleSubmit}
-                        className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  )}
-
-                  {data ? (
-                    <div className="mt-5">
-                      <form onSubmit={handleSubmitCoach}>
-                        <label>
-                          Coach:
-                          <input
-                            type="text"
-                            value={data.name || ""}
-                            onChange={handleCoachNameChange}
-                            placeholder={data[0].name}
-                          />
-                          <button
-                            type="submit"
-                            className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full px-3 py-2 me-2 ml-3 text-sm  bg-blue-500 hover:bg-blue-700"
-                          >
-                            Submit
-                          </button>
-                        </label>
-                      </form>
-                    </div>
-                  ) : (
-                    <p>Loading...</p>
-                  )}
-                  <div className="mt-5">
-                    Coach Name: {data ? data[0].name : "Loading..."}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-5 flex items-center justify-center">
-              <iframe
-                src={IFRAME_URL}
-                title="Content from localhost:3000"
-                width="95%"
-                height="800"
-              />
-            </div>
-          </>
-        );
       case "Subtitution":
         return <Subtitutions />;
       case "Control":
@@ -2221,6 +2141,89 @@ const SideBar = () => {
             </div>
           </>
         );
+      case "FormationHome":
+        return (
+          <>
+            <div className="mt-5">
+              <div className={``}>
+                <div className={`ml-9 `}>
+                  <h2>Formation Home</h2>
+                  <DropdownButton
+                    options={["4-4-2", "4-2-3-1", "4-3-3"]}
+                    onSelect={handleFormationSelect}
+                    label="Select Formation"
+                  />
+
+                  <div className="mt-5 ">{renderSelectedForm()}</div>
+                  {selectedFormation && isFormVisible && (
+                    <div className="mt-5 ml-5 flex justify-center">
+                      <button
+                        onClick={handleToggleForm}
+                        className="mr-4 bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
+                      >
+                        Hide Form
+                      </button>
+                      <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                        onClick={() => createPlayer(newPlayer)}
+                      >
+                        Add Player
+                      </button>
+                      <button
+                        className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                        onClick={handleClearAllForm}
+                      >
+                        Clear All
+                      </button>
+                      <button
+                        onClick={handleSubmit}
+                        className="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  )}
+
+                  {data ? (
+                    <div className="mt-5">
+                      <form onSubmit={handleSubmitCoach}>
+                        <label>
+                          Coach:
+                          <input
+                            type="text"
+                            value={data.name || ""}
+                            onChange={handleCoachNameChange}
+                            placeholder={data[0].name}
+                          />
+                          <button
+                            type="submit"
+                            className="text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full px-3 py-2 me-2 ml-3 text-sm  bg-blue-500 hover:bg-blue-700"
+                          >
+                            Submit
+                          </button>
+                        </label>
+                      </form>
+                    </div>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                  <div className="mt-5">
+                    Coach Name: {data ? data[0].name : "Loading..."}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 flex items-center justify-center">
+              <iframe
+                src={IFRAME_URL}
+                title="Content from localhost:3000"
+                width="95%"
+                height="800"
+              />
+            </div>
+          </>
+        );
       default:
         return (
           <>
@@ -2330,6 +2333,7 @@ const SideBar = () => {
     <>
       <div style={{ display: "flex", height: "100%", minHeight: "400px" }}>
         <Sidebar backgroundColor="#ffffff" width="200px">
+          {/* User Name */}
           <Menu>
             <div className="">
               {isLoaded && user ? (
@@ -2344,6 +2348,19 @@ const SideBar = () => {
                 </button>
               )}
             </div>
+
+            {/* Menu Item */}
+            <MenuItem
+              onClick={() => handleMenuItemClick("Prematch")}
+              style={{
+                backgroundColor:
+                  selectedMenuItem === "Prematch" ? "#f3f3f3" : "inherit",
+                color: selectedMenuItem === "Prematch" ? "black" : "#000000",
+              }}
+            >
+              Prematch Setup
+            </MenuItem>
+
             <MenuItem
               onClick={() => handleMenuItemClick("Control")}
               style={{

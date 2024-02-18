@@ -284,6 +284,7 @@ const Page = () => {
       document.body.style.overflow = "visible";
     };
   }, []);
+  // console.log(showPicture[2].logo);
 
   return (
     <>
@@ -313,9 +314,9 @@ const Page = () => {
         <div className="flex-1 bg-[#2C2C2C] flex flex-col items-center justify-center">
           <div className="flex">
             <div className="mt-3 text-4xl font-medium item-start">
-              {showPicture && showPicture[3] && showPicture[3].logo && (
+              {showPicture && showPicture[1] && showPicture[1].logo && (
                 <Image
-                  src={showPicture[3].logo}
+                  src={showPicture[1].logo}
                   width={100}
                   height={100}
                   alt="Competition Logo"

@@ -28,7 +28,7 @@ const DropdownComponent = () => {
       });
   }, []);
 
-  const handleSelectChange = (e) => {
+  const handleSelectChange = async (e) => {
     const selectedValue = e.target.value;
     setSelectedTeam(selectedValue);
 
@@ -37,36 +37,34 @@ const DropdownComponent = () => {
     );
 
     if (selectedTeamData) {
-      const updatedHomeData = [
-        {
-          name: selectedTeamData.name,
-          logo: selectedTeamData.logo,
-        },
-      ];
+      const updatedHomeData = {
+        name: selectedTeamData.name,
+        logo: selectedTeamData.logo,
+      };
 
       // Update the homeData state
-      setHomeData(updatedHomeData);
-      console.log(updatedHomeData[0]);
+      setHomeData([updatedHomeData]);
 
-      // Update the /home endpoint with the new data
-      axios
-        .put(
+      try {
+        // Update the home team data in the database
+        await axios.put(
           `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam/65a4c43b781814cf4206a691`,
-          updatedHomeData[0]
-        )
-        .then((response) => {
-          console.log(response.data.message);
-        })
-        .catch((error) => {
-          console.error("Error updating", error);
-        });
+          updatedHomeData
+        );
+        console.log("Home team data updated successfully");
+      } catch (error) {
+        console.error("Error updating home team data:", error);
+      }
     }
   };
 
   return (
     <div>
       <h1>Home Team</h1>
-      <select onChange={handleSelectChange}>
+      <select
+        onChange={handleSelectChange}
+        className="w-full border p-3 rounded-lg"
+      >
         <option value="">Select home team</option>
         {teamOptions.map((team) => (
           <option key={team.id} value={team.name}>

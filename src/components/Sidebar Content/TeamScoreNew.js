@@ -15,6 +15,7 @@ const TeamScore = () => {
   const [minuteAway, setMinuteAway] = useState("");
   const [buttons, setButtons] = useState([]);
   const [teamOptions, setTeamOptions] = useState([]);
+  const [teamOptionsAway, setTeamOptionsAway] = useState([]);
   const [selectedPlayerIn, setSelectedPlayerIn] = useState("");
 
   useEffect(() => {
@@ -42,6 +43,11 @@ const TeamScore = () => {
       .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`)
       .then((response) => {
         setTeamOptions(response.data);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`)
+      .then((response) => {
+        setTeamOptionsAway(response.data);
       });
   }, []);
   if (!score) return null;
@@ -224,6 +230,7 @@ const TeamScore = () => {
             </table>
           </div>
         </div>
+
         <div className="border border-gray-300 p-4 rounded-l-lg flex-grow mr-4">
           {/* Content of the first div */}
           <div className="flex items-center bg-[#f0f0f0]">
