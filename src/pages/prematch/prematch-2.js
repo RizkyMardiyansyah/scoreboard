@@ -13,6 +13,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import DropdownButton from "../../components/Dropdown";
 import Control from "../../components/Sidebar Content/Control";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const Prematch2 = () => {
   const [away, setAway] = useState([]);
@@ -787,10 +788,12 @@ const Prematch2 = () => {
     <>
       <div className="py-4">
         <div className="border-b flex ">
-          <div className="mb-4 font-bold text-xl">
-            <button className="ml-4 border p-1 mr-4 rounded-md">
-              <Image src={Back} width={20} height={20} />
-            </button>
+          <div className="mb-4 font-bold text-xl flex">
+            <Link href="/prematch/prematch-1">
+              <div className="ml-4 border p-1 mr-4 rounded-md">
+                <Image src={Back} width={20} height={20} />
+              </div>
+            </Link>
             Create New Match
           </div>
         </div>

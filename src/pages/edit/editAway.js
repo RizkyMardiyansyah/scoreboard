@@ -15,13 +15,11 @@ import Control from "../../components/Sidebar Content/Control";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const PremathFinal = () => {
+const Prematch2 = () => {
   const [away, setAway] = useState([]);
-  const [home, setHome] = useState([]);
   const [coach, setCoach] = useState(null);
   const [selectedFormation, setSelectedFormation] = useState(null);
   const [playerAway, setPlayerAway] = useState([]);
-  const [playerHome, setPlayerHome] = useState([]);
   const [showFormation442Away, setShowFormation442Away] = useState(false);
   const [showFormation4231Away, setShowFormation4231Away] = useState(false);
   const [showFormation433Away, setShowFormation433Away] = useState(false);
@@ -43,12 +41,7 @@ const PremathFinal = () => {
       const coachResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`
       );
-      setCoach(coachResponse.data);
-
-      const homeResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`
-      );
-      setHome(homeResponse.data[0]);
+      setCoach(coachResponse.data[1]);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -64,23 +57,18 @@ const PremathFinal = () => {
   }, []);
 
   useEffect(() => {
-    const fetchPlayers = async () => {
+    const fetchPlayerAway = async () => {
       try {
-        const responseAway = await axios.get(
+        const response = await axios.get(
           `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`
         );
-        const responseHome = await axios.get(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`
-        );
-
-        setPlayerAway(responseAway.data);
-        setPlayerHome(responseHome.data);
+        setPlayerAway(response.data);
       } catch (error) {
-        console.error("Error fetching player data:", error);
+        console.error("Error fetching player Away data:", error);
       }
     };
 
-    fetchPlayers();
+    fetchPlayerAway();
   }, []);
 
   const handleCoachNameChange = (event) => {
@@ -142,11 +130,11 @@ const PremathFinal = () => {
 
     if (result.isConfirmed) {
       try {
-        const promises = playerHome.map(async ({ _id, name, no, photo }) => {
+        const promises = playerAway.map(async ({ _id, name, no, photo }) => {
           // Update player data
           await axios.put(
-            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}`,
-            { name, no }
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${_id}`,
+            { name }
           );
 
           // Update player photo if it exists
@@ -155,7 +143,7 @@ const PremathFinal = () => {
             formData.append("file", photo);
 
             await axios.put(
-              `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}/photo`,
+              `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${_id}/photo`,
               formData,
               {
                 headers: {
@@ -229,7 +217,7 @@ const PremathFinal = () => {
     try {
       // Perform database update
       await axios.put(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam/65a4c43b781814cf4206a691`,
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam/65a4cbb0a5c2cc43008bbe79`,
         {
           formation: formation,
         }
@@ -801,80 +789,125 @@ const PremathFinal = () => {
       <div className="py-4">
         <div className="border-b flex ">
           <div className="mb-4 font-bold text-xl flex">
-            <Link href="/prematch/prematch-2">
+            <Link href="/prematch/prematch-1">
               <div className="ml-4 border p-1 mr-4 rounded-md">
                 <Image src={Back} width={20} height={20} />
               </div>
             </Link>
-            Create New Match
+            Edit Data
           </div>
         </div>
 
         <div className="px-3 py-6 ">
           <div className="flex">
             <div className="px-6 flex-col ">
-              <h1 className="text-xl font-bold">New Match</h1>
+              <h1 className="text-xl font-bold">Edit Match</h1>
               <h1>
                 Please provide complete and accurate information for all
                 required fields.
               </h1>
             </div>
             <div className="flex justify-end flex-grow h-10  px-6">
-              <Link href="/prematch/prematch-2">
-                <div className="mr-2 bg-[#F3F3F3] hover:bg-neutral-200 text-black font-bold py-2 px-4 border rounded w-36 flex justify-center">
-                  Back
-                </div>
-              </Link>
-
               <button
-                className="bg-[#5786E3] hover:bg-blue-600 text-white font-bold py-2 px-4 border rounded w-36"
+                className="bg-[#5786E3] hover:bg-blue-600 text-white font-bold py-2 px-4 border border-yellow-700 rounded w-36"
                 onClick={handleSubmit}
               >
-                Next
+                Finish
               </button>
             </div>
           </div>
 
           <div className="flex">
             <div className="px-6 py-6 flex-grow">
-              <div className="border rounded-md p-4 ">
-                <div className="flex ">
-                  <div className=" mr-2">
-                    <Image src={home.logo} width={100} height={100} />
-                  </div>
-                  {/* Text */}
-                  <div className="flex flex-col justify-center ml-9">
-                    <div className="flex">
-                      <p className="font-semibold w-24">Team:</p>
-                      <p className="">{home.name}</p>
-                    </div>
-                    <div className="flex mt-2">
-                      <p className="font-semibold w-24">Formation:</p>
-                      <p className="">{home.formation}</p>
-                    </div>
-                    <div className="flex mt-2">
-                      <p className="font-semibold w-24">Coach:</p>
-                      {/* <p className="ml-9">coach</p> */}
-                      {coach ? (
-                        <p className="">{coach[0].name}</p>
-                      ) : (
-                        <p>Loading...</p>
-                      )}
-                    </div>
-                    <div className="flex mt-2">
-                      <p className="font-semibold w-24">Player:</p>
-                      <ul>
-                        {playerHome.map((player, index) => (
-                          <li key={player.id}>{player.name}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+              <div className="border rounded-md p-5 ">
+                <h1 className="font-semibold text-xl">Away Team</h1>
+                <div className="mt-4">
+                  <h1 className="font-semibold">Select Team</h1>
+                  <SelectAwayTeam />
                 </div>
+                <div className="mt-4">
+                  <h1 className="font-semibold">Choose Formation</h1>
+                  <DropdownButton
+                    options={["4-4-2", "4-2-3-1", "4-3-3"]}
+                    onSelect={handleFormationSelect}
+                    label="Select Formation"
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <h1 className="font-semibold">Coach in Charge</h1>
+                  {coach ? (
+                    <div className="mt-2">
+                      <form>
+                        <input
+                          type="text"
+                          value={coach.name || ""}
+                          className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-gray-300 placeholder:text-gray-400 w-full"
+                          onChange={handleCoachNameChange}
+                          placeholder="Coach Name"
+                        />
+                      </form>
+                    </div>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                </div>
+
+                {/* OLD PLAYER */}
+                {/* <div className="mt-4 flex flex-col">
+                  <label htmlFor="playerName" className="font-semibold">
+                    Player Name
+                  </label>
+                  <div className="flex justify-between">
+                    <input
+                      name={`playerName`}
+                      placeholder="Player Name"
+                      type="text"
+                      className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-gray-300 placeholder:text-gray-400 mr-2 w-8/12"
+                    />
+                    <button className="bg-[#F3F3F3] hover:bg-neutral-300 text-black font-semibold py-2 px-4 rounded flex justify-center ">
+                      <Image
+                        src={Upload}
+                        width={20}
+                        height={20}
+                        className="mr-3"
+                      />
+                      Upload
+                    </button>
+
+                    <button className="bg-[#5786E3] hover:bg-blue-600 text-white font-semibold  py-2 px-4 border rounded flex justify-center">
+                      <Image
+                        src={Plus}
+                        width={20}
+                        height={20}
+                        className="mr-3"
+                      />
+                      Add Player
+                    </button>
+                  </div>
+                </div> */}
+
+                <div className="mt-5 ">{renderSelectedForm()}</div>
+                {selectedFormation && isFormVisible && (
+                  <div className="mt-5 ml-5 flex justify-center">
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                      onClick={() => createPlayer(newPlayer)}
+                    >
+                      Add Player
+                    </button>
+                    <button
+                      className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                      onClick={handleClearAllForm}
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
-            <div className="px-6 py-6 flex-grow">
+            <div className="px-6 py-6 flex-1">
               <div className="border rounded-md p-4 ">
                 <div className="flex ">
                   <div className=" mr-2">
@@ -888,37 +921,28 @@ const PremathFinal = () => {
                     </div>
                     <div className="flex mt-2">
                       <p className="font-semibold w-24">Formation:</p>
-                      <p className="">{away.formation}</p>
+                      <p className="">{selectedFormation}</p>
                     </div>
                     <div className="flex mt-2">
                       <p className="font-semibold w-24">Coach:</p>
                       {/* <p className="ml-9">coach</p> */}
                       {coach ? (
-                        <p className="">{coach[1].name}</p>
+                        <p className="">{coach.name}</p>
                       ) : (
                         <p>Loading...</p>
                       )}
                     </div>
-                    <div className="flex mt-2">
-                      <p className="font-semibold w-24">Player:</p>
-                      <ul>
-                        {playerAway.map((player, index) => (
-                          <li key={player.id}>{player.name}</li>
-                        ))}
-                      </ul>
-                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="mt-4 flex-1">
-              <div className=" bg-[#F3F3F3] rounded-md">
-                <p className="p-6 italic ">
-                  Note: Ensure your lineup reflects your strategy and
-                  preferences before the match begins. Need assistance? Contact
-                  support at support@example.com.
-                </p>
+              <div className="mt-4 ">
+                <div className=" bg-[#F3F3F3] rounded-md">
+                  <p className="p-6 italic ">
+                    Note: Ensure your lineup reflects your strategy and
+                    preferences before the match begins. Need assistance?
+                    Contact support at support@example.com.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -927,4 +951,4 @@ const PremathFinal = () => {
     </>
   );
 };
-export default PremathFinal;
+export default Prematch2;

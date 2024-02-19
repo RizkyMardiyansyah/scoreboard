@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import Subtitutions from "./SubtitutionNew";
 import Control from "./Control";
-import TeamScore from "./TeamScoreNew";
+import TeamScore from "./TeamScore";
 import axios from "axios";
 import DropdownButton from "../Dropdown";
-import TimerButton from "../Timer/timerButton";
+import Overview from "./Overview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
@@ -15,6 +15,8 @@ import getConfig from "next/config";
 import { useUser, UserButton, SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
 import GoalPlayer from "../Player Component/GoalPlayer";
+import YellowCard from "../Player Component/YellowCard";
+import RedCard from "../Player Component/RedCard";
 import Plus from "../../assets/Plus.png";
 import Play from "../../assets/PlayCircle.png";
 import PlayBlack from "../../assets/PlayCircleBlack.png";
@@ -31,6 +33,8 @@ const SideBar = () => {
   const [score, setScore] = useState(null);
   const [playerHome, setPlayerHome] = useState([]);
   const [playerAway, setPlayerAway] = useState([]);
+  const [teamHome, setTeamHome] = useState([]);
+  const [teamAway, setTeamAway] = useState([]);
   const [showForm1, setShowForm1] = useState(false);
   const [showForm2, setShowForm2] = useState(false);
   const [showForm3, setShowForm3] = useState(false);
@@ -49,8 +53,6 @@ const SideBar = () => {
   const [isFormVisibleAway, setIsFormVisibleAway] = useState(true);
   const [data, setData] = useState(null);
   const [coachAway, setCoachAway] = useState(null);
-  const [pageColor, setPageColor] = useState("#17192D");
-  const [pageColor2, setPageColor2] = useState("#17192D");
   const { publicRuntimeConfig } = getConfig();
   const { IFRAME_URL } = publicRuntimeConfig;
   const { user, isLoaded } = useUser();
@@ -107,6 +109,36 @@ const SideBar = () => {
     };
 
     fetchPlayerAway();
+  }, []);
+
+  useEffect(() => {
+    const fetchTeamHome = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`
+        );
+        setTeamHome(response.data[0]);
+      } catch (error) {
+        console.error("Error fetching Team home data:", error);
+      }
+    };
+
+    fetchTeamHome();
+  }, []);
+
+  useEffect(() => {
+    const fetchTeamAway = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam`
+        );
+        setTeamAway(response.data[0]);
+      } catch (error) {
+        console.error("Error fetching Team Away data:", error);
+      }
+    };
+
+    fetchTeamAway();
   }, []);
 
   useEffect(() => {
@@ -1732,12 +1764,12 @@ const SideBar = () => {
     switch (selectedMenuItem) {
       case "Prematch":
         return <Prematch />;
-
       case "Subtitution":
         return <Subtitutions />;
       case "Control":
         return (
           <>
+            {/* menu awal sperti timer, pause, play dsb */}
             <div className="flex mt-5">
               <div className="w-1/4 bg-[#000000] p-4 mr-2 h-32 flex justify-center items-center shadow-lg border border-[#E4E4E7] rounded-lg">
                 <a
@@ -1815,246 +1847,309 @@ const SideBar = () => {
                 </div>
               </div>
             </div>
+
             {/* tabs */}
-            <Tab.Group>
-              <div className="w-full max-w-md px-2 py-8 sm:px-0">
-                <Tab.List className="flex space-x-1 rounded-xl bg-[#EAEAEA] p-2">
-                  <Tab
-                    className={({ selected }) =>
-                      classNames(
-                        "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
-                        "focus:outline-none",
-                        selected
-                          ? "bg-white text-black shadow"
-                          : "text-black hover:bg-white/[0.12] hover:text-black"
-                      )
-                    }
-                  >
-                    Dashboard
-                  </Tab>
-                  <Tab
-                    className={({ selected }) =>
-                      classNames(
-                        "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
-                        "focus:outline-none",
-                        selected
-                          ? "bg-white text-black shadow"
-                          : "text-black hover:bg-white/[0.12] hover:text-black"
-                      )
-                    }
-                  >
-                    Goal Player
-                  </Tab>
-                  <Tab
-                    className={({ selected }) =>
-                      classNames(
-                        "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
-                        "focus:outline-none",
-                        selected
-                          ? "bg-white text-black shadow"
-                          : "text-black hover:bg-white/[0.12] hover:text-black"
-                      )
-                    }
-                  >
-                    Yellow Card
-                  </Tab>
-                  <Tab
-                    className={({ selected }) =>
-                      classNames(
-                        "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
-                        "focus:outline-none",
-                        selected
-                          ? "bg-white text-black shadow"
-                          : "text-black hover:bg-white/[0.12] hover:text-black"
-                      )
-                    }
-                  >
-                    Red Card
-                  </Tab>
-                </Tab.List>
-              </div>
-              <Tab.Panels>
-                <Tab.Panel
-                  className={classNames(
-                    "rounded-xl bg-white p-3",
-                    "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
-                  )}
-                >
-                  {" "}
-                  <div className="flex items-center justify-center mb-5 mr-2">
-                    <iframe
-                      className="rounded-lg"
-                      src={IFRAME_URL}
-                      title="Content from localhost:3000"
-                      width="100%"
-                      height="800"
-                    />
+            <div className="">
+              <Tab.Group>
+                <div className="w-full px-2 flex justify-between py-8 sm:px-0 border">
+                  <div className="border w-1/2">
+                    <Tab.List className="flex space-x-1 rounded-xl min-w-xl  bg-[#EAEAEA] p-2">
+                      <Tab
+                        className={({ selected }) =>
+                          classNames(
+                            "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                            "focus:outline-none",
+                            selected
+                              ? "bg-white text-black shadow"
+                              : "text-black hover:bg-white/[0.12] hover:text-black"
+                          )
+                        }
+                        onClick={() => {
+                          localStorage.setItem("showComponent", "1");
+                        }}
+                      >
+                        Dashboard
+                      </Tab>
+                      <Tab
+                        className={({ selected }) =>
+                          classNames(
+                            "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                            "focus:outline-none",
+                            selected
+                              ? "bg-white text-black shadow"
+                              : "text-black hover:bg-white/[0.12] hover:text-black"
+                          )
+                        }
+                      >
+                        Goal Player
+                      </Tab>
+                      <Tab
+                        className={({ selected }) =>
+                          classNames(
+                            "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                            "focus:outline-none",
+                            selected
+                              ? "bg-white text-black shadow"
+                              : "text-black hover:bg-white/[0.12] hover:text-black"
+                          )
+                        }
+                      >
+                        Yellow Card
+                      </Tab>
+                      <Tab
+                        className={({ selected }) =>
+                          classNames(
+                            "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                            "focus:outline-none",
+                            selected
+                              ? "bg-white text-black shadow"
+                              : "text-black hover:bg-white/[0.12] hover:text-black"
+                          )
+                        }
+                      >
+                        Red Card
+                      </Tab>
+                      <Tab
+                        className={({ selected }) =>
+                          classNames(
+                            "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                            "focus:outline-none",
+                            selected
+                              ? "bg-white text-black shadow"
+                              : "text-black hover:bg-white/[0.12] hover:text-black"
+                          )
+                        }
+                      >
+                        Update Score
+                      </Tab>
+                    </Tab.List>
                   </div>
-                </Tab.Panel>
-                <Tab.Panel
-                  className={classNames(
-                    "rounded-xl bg-white p-3",
-                    "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
-                  )}
-                >
-                  <GoalPlayer />
-                  <div className="flex items-center justify-center mb-5 mr-2">
-                    <iframe
-                      className="rounded-lg"
-                      src={IFRAME_URL}
-                      title="Content from localhost:3000"
-                      width="100%"
-                      height="800"
-                    />
-                  </div>
-                </Tab.Panel>
-                <Tab.Panel
-                  className={classNames(
-                    "rounded-xl bg-white p-3",
-                    "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
-                  )}
-                >
-                  <GoalPlayer />
-                  <div className="flex items-center justify-center mb-5 mr-2">
-                    <iframe
-                      className="rounded-lg"
-                      src={IFRAME_URL}
-                      title="Content from localhost:3000"
-                      width="100%"
-                      height="800"
-                    />
-                  </div>
-                </Tab.Panel>
-                <Tab.Panel
-                  className={classNames(
-                    "rounded-xl bg-white p-3",
-                    "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
-                  )}
-                >
-                  <GoalPlayer />
-                  <div className="flex items-center justify-center mb-5 mr-2">
-                    <iframe
-                      className="rounded-lg"
-                      src={IFRAME_URL}
-                      title="Content from localhost:3000"
-                      width="100%"
-                      height="800"
-                    />
-                  </div>
-                </Tab.Panel>
-              </Tab.Panels>
-            </Tab.Group>
+                  <div className="w-1/3">
+                    <Tab.List className="flex space-x-1 rounded-xl min-w-xl  bg-[#EAEAEA] p-2">
+                      <Tab
+                        className={({ selected }) =>
+                          classNames(
+                            "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                            "focus:outline-none",
+                            selected
+                              ? "bg-white text-black shadow"
+                              : "text-black hover:bg-white/[0.12] hover:text-black"
+                          )
+                        }
+                        onClick={() => {
+                          let showComponentValue;
 
-            {/* <div className="container flex mt-5">
-              <div className="flex-auto w-64 ml-10">
-                <button
-                  onClick={toggleComponent1}
-                  className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  Show Scoreboard
-                </button>
-                <button
-                  onClick={toggleComponent1Or3}
-                  className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  {showGoalPlayer ? "Hide Goal Player" : "Show Goal Player"}
-                </button>
+                          switch (teamHome.formation) {
+                            case "4-3-3":
+                              showComponentValue = "2";
+                              break;
+                            case "4-2-3-1":
+                              showComponentValue = "7";
+                              break;
+                            case "4-4-2":
+                              showComponentValue = "8";
+                              break;
+                            default:
+                              showComponentValue = "1"; // Default value if no match
+                              break;
+                          }
 
-                <button
-                  onClick={toggleComponent4}
-                  className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  {showYellowPlayer
-                    ? "Hide Yellow Player"
-                    : "Show Yellow Player"}
-                </button>
+                          // Set local storage item
+                          localStorage.setItem(
+                            "showComponent",
+                            showComponentValue
+                          );
+                        }}
+                      >
+                        Formation Home
+                      </Tab>
+                      <Tab
+                        className={({ selected }) =>
+                          classNames(
+                            "w-full rounded-lg py-2.5 text-sm font-medium leading-5",
+                            "focus:outline-none",
+                            selected
+                              ? "bg-white text-black shadow"
+                              : "text-black hover:bg-white/[0.12] hover:text-black"
+                          )
+                        }
+                        onClick={() => {
+                          let showComponentValue;
 
-                <button
-                  onClick={toggleComponent5}
-                  className="mr-3 mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                >
-                  {showRedPlayer ? "Hide Red Player" : "Show Red Card"}
-                </button>
-                <div className="flex mt-5">
-                  <ColorPicker2
-                    selectedColor={pageColor2}
-                    onColorChange={handleColorChange2}
-                  />
-                  <ColorPicker
-                    selectedColor={pageColor}
-                    onColorChange={handleColorChange}
-                  />
+                          switch (teamAway.formation) {
+                            case "4-3-3":
+                              showComponentValue = "6";
+                              break;
+                            case "4-2-3-1":
+                              showComponentValue = "9";
+                              break;
+                            case "4-4-2":
+                              showComponentValue = "10";
+                              break;
+                            default:
+                              showComponentValue = "1"; // Default value if no match
+                              break;
+                          }
+
+                          // Set local storage item
+                          localStorage.setItem(
+                            "showComponent",
+                            showComponentValue
+                          );
+                        }}
+                      >
+                        Formation Away
+                      </Tab>
+                    </Tab.List>
+                  </div>
                 </div>
-              </div>
+                <Tab.Panels>
+                  <Tab.Panel
+                    className={classNames(
+                      "rounded-xl bg-white p-3",
+                      "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                    )}
+                  >
+                    {" "}
+                    <div className="flex items-center justify-center mb-5 mr-2">
+                      <iframe
+                        className="rounded-lg"
+                        src={IFRAME_URL}
+                        title="Content from localhost:3000"
+                        width="100%"
+                        height="800"
+                      />
+                    </div>
+                  </Tab.Panel>
 
-              <div className="flex-auto w-32">
-                {showFormation4231Home && (
-                  <button
-                    onClick={toggleComponent7}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  <Tab.Panel
+                    className={classNames(
+                      "rounded-xl bg-white p-3",
+                      "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                    )}
                   >
-                    Formation 4231 Home
-                  </button>
-                )}
-                {showFormation442Home && (
-                  <button
-                    onClick={toggleComponent8}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                  >
-                    Formation 442 Home
-                  </button>
-                )}
-                {showFormation433Home && (
-                  <button
-                    onClick={toggleComponent2}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-                  >
-                    Formation 433 Home
-                  </button>
-                )}
+                    <GoalPlayer />
+                    <div className="flex items-center justify-center mb-5 mr-2">
+                      <iframe
+                        className="rounded-lg"
+                        src={IFRAME_URL}
+                        title="Content from localhost:3000"
+                        width="100%"
+                        height="800"
+                      />
+                    </div>
+                  </Tab.Panel>
 
-                {showFormation4231Away && (
-                  <button
-                    onClick={toggleComponent9}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                  <Tab.Panel
+                    className={classNames(
+                      "rounded-xl bg-white p-3",
+                      "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                    )}
                   >
-                    Formation 4231 Away
-                  </button>
-                )}
-                {showFormation442Away && (
-                  <button
-                    onClick={toggleComponent10}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                    <YellowCard />
+                    <div className="flex items-center justify-center mb-5 mr-2">
+                      <iframe
+                        className="rounded-lg"
+                        src={IFRAME_URL}
+                        title="Content from localhost:3000"
+                        width="100%"
+                        height="800"
+                      />
+                    </div>
+                  </Tab.Panel>
+                  <Tab.Panel
+                    className={classNames(
+                      "rounded-xl bg-white p-3",
+                      "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                    )}
                   >
-                    Formation 442 Away
-                  </button>
-                )}
-                {showFormation433Away && (
-                  <button
-                    onClick={toggleComponent6}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                    <RedCard />
+                    <div className="flex items-center justify-center mb-5 mr-2">
+                      <iframe
+                        className="rounded-lg"
+                        src={IFRAME_URL}
+                        title="Content from localhost:3000"
+                        width="100%"
+                        height="800"
+                      />
+                    </div>
+                  </Tab.Panel>
+
+                  <Tab.Panel
+                    className={classNames(
+                      "rounded-xl bg-white p-3",
+                      "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                    )}
                   >
-                    Formation 433 Away
-                  </button>
-                )}
-              </div>
+                    <TeamScore />
+                    <div className="flex items-center justify-center mb-5 mr-2">
+                      <iframe
+                        className="rounded-lg"
+                        src={IFRAME_URL}
+                        title="Content from localhost:3000"
+                        width="100%"
+                        height="800"
+                      />
+                    </div>
+                  </Tab.Panel>
+                </Tab.Panels>
+                {/* 2 */}
+                <Tab.Panels>
+                  <Tab.Panel
+                    className={classNames(
+                      "rounded-xl bg-white p-3",
+                      "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                    )}
+                  >
+                    {" "}
+                    <div className="flex items-center justify-center mb-5 mr-2">
+                      <iframe
+                        className="rounded-lg"
+                        src={IFRAME_URL}
+                        title="Content from localhost:3000"
+                        width="100%"
+                        height="800"
+                      />
+                    </div>
+                  </Tab.Panel>
+
+                  <Tab.Panel
+                    className={classNames(
+                      "rounded-xl bg-white p-3",
+                      "ring-white/60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2"
+                    )}
+                  >
+                    {" "}
+                    <div className="flex items-center justify-center mb-5 mr-2">
+                      <iframe
+                        className="rounded-lg"
+                        src={IFRAME_URL}
+                        title="Content from localhost:3000"
+                        width="100%"
+                        height="800"
+                      />
+                    </div>
+                  </Tab.Panel>
+                </Tab.Panels>
+              </Tab.Group>
+
+              {/* <Tab.Group>
+                <Tab.List>
+                  <Tab>Tab 1</Tab>
+                  <Tab>Tab 2</Tab>
+                  <Tab>Tab 3</Tab>
+                </Tab.List>
+                <Tab.Panels>
+                  <Tab.Panel>Content 1</Tab.Panel>
+                  <Tab.Panel>Content 2</Tab.Panel>
+                  <Tab.Panel>Content 3</Tab.Panel>
+                </Tab.Panels>
+              </Tab.Group> */}
             </div>
-            <TimerButton />
-
-            {showGoalPlayer && <YellowPlayer />}
-            {showYellowPlayer && <YellowPlayer />}
-            {showRedPlayer && <YellowPlayer />}
-
-            <div className="mt-5 flex items-center justify-center mb-5">
-              <iframe
-                src={IFRAME_URL}
-                title="Content from localhost:3000"
-                width="95%"
-                height="800"
-              />
-            </div> */}
           </>
         );
+      case "Overview":
+        return <Overview />;
       case "TeamScore":
         return <TeamScore />;
       case "FormationAway":
@@ -2338,8 +2433,9 @@ const SideBar = () => {
             <div className="">
               {isLoaded && user ? (
                 <>
-                  <div className="border border-black flex justify-center items-center p-1 mt-2 mr-4 ml-4 mb-2 rounded-lg">
-                    <UserButton afterSignOutUrl="/" showName />
+                  <div className="px-4 border border-gray flex justify-center items-center p-1 mt-2 mr-4 ml-4 mb-2 rounded-lg">
+                    <UserButton afterSignOutUrl="/" className="mr-2" />
+                    <span className="text-black ml-3">{`${user.firstName} ${user.lastName}`}</span>
                   </div>
                 </>
               ) : (
@@ -2358,7 +2454,18 @@ const SideBar = () => {
                 color: selectedMenuItem === "Prematch" ? "black" : "#000000",
               }}
             >
-              Prematch Setup
+              Match Setup
+            </MenuItem>
+
+            <MenuItem
+              onClick={() => handleMenuItemClick("Overview")}
+              style={{
+                backgroundColor:
+                  selectedMenuItem === "Overview" ? "#F3F3F3" : "inherit",
+                color: selectedMenuItem === "Overview" ? "black" : "#000000",
+              }}
+            >
+              Overview
             </MenuItem>
 
             <MenuItem
@@ -2373,6 +2480,18 @@ const SideBar = () => {
             </MenuItem>
 
             <MenuItem
+              onClick={() => handleMenuItemClick("Subtitution")}
+              style={{
+                backgroundColor:
+                  selectedMenuItem === "Subtitution" ? "#F3F3F3" : "inherit",
+                color: selectedMenuItem === "Subtitution" ? "black" : "#000000",
+              }}
+            >
+              Subtitution
+            </MenuItem>
+
+            {/* unused tabs */}
+            {/* <MenuItem
               onClick={() => handleMenuItemClick("FormationHome")}
               style={{
                 backgroundColor:
@@ -2406,18 +2525,7 @@ const SideBar = () => {
               }}
             >
               Team & Score
-            </MenuItem>
-
-            <MenuItem
-              onClick={() => handleMenuItemClick("Subtitution")}
-              style={{
-                backgroundColor:
-                  selectedMenuItem === "Subtitution" ? "#F3F3F3" : "inherit",
-                color: selectedMenuItem === "Subtitution" ? "black" : "#000000",
-              }}
-            >
-              Subtitution
-            </MenuItem>
+            </MenuItem> */}
           </Menu>
         </Sidebar>
 

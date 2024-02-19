@@ -5,7 +5,7 @@ import Back from "../../assets/caret-left.png";
 import axios from "axios";
 import Upload from "../../assets/UploadSimple.png";
 import Plus from "../../assets/PlusWhite.png";
-import SelectAwayTeam from "../../components/SelectAwayTeam";
+import SelectHomeTeam from "../../components/SelectHomeTeam";
 import SelectFormationHome from "../../components/SelectFormationHome";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,16 +15,14 @@ import Control from "../../components/Sidebar Content/Control";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-const PremathFinal = () => {
-  const [away, setAway] = useState([]);
+const Prematch1 = () => {
   const [home, setHome] = useState([]);
   const [coach, setCoach] = useState(null);
   const [selectedFormation, setSelectedFormation] = useState(null);
-  const [playerAway, setPlayerAway] = useState([]);
   const [playerHome, setPlayerHome] = useState([]);
-  const [showFormation442Away, setShowFormation442Away] = useState(false);
-  const [showFormation4231Away, setShowFormation4231Away] = useState(false);
-  const [showFormation433Away, setShowFormation433Away] = useState(false);
+  const [showFormation442Home, setShowFormation442Home] = useState(false);
+  const [showFormation4231Home, setShowFormation4231Home] = useState(false);
+  const [showFormation433Home, setShowFormation433Home] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(true);
   const [showForm1, setShowForm1] = useState(false);
   const [showForm2, setShowForm2] = useState(false);
@@ -34,21 +32,16 @@ const PremathFinal = () => {
   const fetchData = async () => {
     try {
       // Fetch home team data
-      const awayResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam`
+      const homeResponse = await axios.get(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`
       );
-      setAway(awayResponse.data[0]);
+      setHome(homeResponse.data[0]);
 
       // Fetch coach data
       const coachResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`
       );
-      setCoach(coachResponse.data);
-
-      const homeResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`
-      );
-      setHome(homeResponse.data[0]);
+      setCoach(coachResponse.data[0]);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -64,23 +57,18 @@ const PremathFinal = () => {
   }, []);
 
   useEffect(() => {
-    const fetchPlayers = async () => {
+    const fetchPlayerHome = async () => {
       try {
-        const responseAway = await axios.get(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`
-        );
-        const responseHome = await axios.get(
+        const response = await axios.get(
           `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`
         );
-
-        setPlayerAway(responseAway.data);
-        setPlayerHome(responseHome.data);
+        setPlayerHome(response.data);
       } catch (error) {
-        console.error("Error fetching player data:", error);
+        console.error("Error fetching player home data:", error);
       }
     };
 
-    fetchPlayers();
+    fetchPlayerHome();
   }, []);
 
   const handleCoachNameChange = (event) => {
@@ -93,7 +81,7 @@ const PremathFinal = () => {
     // Make an HTTP request to update the coach's name in the database
     axios
       .put(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach/65aa2055672025c87a76f5d3`,
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach/65aa203d672025c87a76f5d0`,
         {
           name: newName,
         }
@@ -108,9 +96,9 @@ const PremathFinal = () => {
 
   //  formation
   const handleInputChange = (e, index) => {
-    const updatedPlayerAway = [...playerAway];
-    updatedPlayerAway[index].name = e.target.value;
-    setPlayerAway(updatedPlayerAway);
+    const updatedPlayerHome = [...playerHome];
+    updatedPlayerHome[index].name = e.target.value;
+    setPlayerHome(updatedPlayerHome);
   };
   const newPlayer = {
     name: "",
@@ -229,7 +217,7 @@ const PremathFinal = () => {
     try {
       // Perform database update
       await axios.put(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam/65a4c43b781814cf4206a691`,
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam/65a4c43b781814cf4206a691`,
         {
           formation: formation,
         }
@@ -245,32 +233,32 @@ const PremathFinal = () => {
     setIsFormVisible(true);
 
     // Toggle the respective form visibility based on the button clicked
-    setShowFormation4231Away(false);
-    setShowFormation442Away(false);
-    setShowFormation433Away(false);
+    setShowFormation4231Home(false);
+    setShowFormation442Home(false);
+    setShowFormation433Home(false);
     if (formation === "4-4-2") {
-      setShowFormation442Away(true);
+      setShowFormation442Home(true);
       setShowForm1(true);
       setShowForm2(false);
       setShowForm3(false);
     } else if (formation === "4-2-3-1") {
-      setShowFormation4231Away(true);
+      setShowFormation4231Home(true);
       setShowForm1(false);
       setShowForm2(true);
       setShowForm3(false);
     } else if (formation === "4-3-3") {
-      setShowFormation433Away(true);
+      setShowFormation433Home(true);
       setShowForm1(false);
       setShowForm2(false);
       setShowForm3(true);
     }
     const stateProps = {
-      showFormation442Away,
-      setShowFormation442Away,
-      showFormation4231Away,
-      setShowFormation4231Away,
-      showFormation433Away,
-      setShowFormation433Away,
+      showFormation442Home,
+      setShowFormation442Home,
+      showFormation4231Home,
+      setShowFormation4231Home,
+      showFormation433Home,
+      setShowFormation433Home,
     };
     return <Control {...stateProps} />;
   };
@@ -280,15 +268,15 @@ const PremathFinal = () => {
     }
 
     if (selectedFormation === "4-4-2") {
-      return renderForms442Away();
+      return renderForms442();
     } else if (selectedFormation === "4-2-3-1") {
-      return renderForms4231Away();
+      return renderForms4231();
     } else if (selectedFormation === "4-3-3") {
-      return renderForms433Away();
+      return renderForms433();
     }
     return null; // Return null if no formation is selected
   };
-  const renderForms442Away = () => {
+  const renderForms442 = () => {
     const getPlayerPosition = (index) => {
       const positions = [
         "GK",
@@ -334,11 +322,11 @@ const PremathFinal = () => {
         try {
           // Delete player from the API
           await axios.delete(
-            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${playerId}`
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}`
           );
 
           // Update state to remove the deleted player
-          setPlayerAway(playerAway.filter((player) => player._id !== playerId));
+          setPlayerHome(playerHome.filter((player) => player._id !== playerId));
 
           // Show success message
           Swal.fire({
@@ -360,16 +348,16 @@ const PremathFinal = () => {
 
     const handleFileChange = async (e, index) => {
       try {
-        const newPlayerAway = [...playerAway];
+        const newPlayerHome = [...playerHome];
         const file = e.target.files[0];
 
         // You may want to perform additional checks on the file, e.g., size, type, etc.
 
         // Update the corresponding player's photo property
-        newPlayerAway[index].photo = file;
+        newPlayerHome[index].photo = file;
 
         // Update the state with the new array
-        setPlayerAway(newPlayerAway);
+        setPlayerHome(newPlayerHome);
 
         // Prepare FormData to send the file to the server
         const formData = new FormData();
@@ -377,7 +365,7 @@ const PremathFinal = () => {
 
         // Make a PUT request to update the player's photo on the server
         await axios.put(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${newPlayerAway[index]._id}/photo`,
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${newPlayerHome[index]._id}/photo`,
           formData,
           {
             headers: {
@@ -389,29 +377,56 @@ const PremathFinal = () => {
         console.error("Error handling file change:", error);
       }
     };
-    // console.log("Player Photo:", playerHome[15].photo);
+    const handleClearFormClick = (index) => {
+      setPlayerHome((prevPlayerHome) => {
+        // Create a new array with the same length as playerHome
+        const newPlayerHome = prevPlayerHome.map((player, i) => {
+          if (i === index) {
+            // Reset the player data for the clicked row, including clearing the photo
+            return { ...player, photo: null, name: "", no: "0" };
+          }
+          return player;
+        });
+
+        // Return the new array to update the state
+        return newPlayerHome;
+      });
+
+      // Also, update the server-side data to remove the photo information
+      const playerId = playerHome[index]._id;
+      axios
+        .put(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photo`,
+          { photo: null }
+        )
+        .then(() => {
+          console.log("Server photo data cleared successfully!");
+        })
+        .catch((error) => {
+          console.error("Error clearing server photo data:", error);
+        });
+    };
 
     return (
       <div className="mt-4 border rounded-md">
-        <table className="table-auto w-full">
+        <table className="table-auto w-full ">
           <thead>
-            <tr>
+            <tr className="">
               <th className="px-4 py-2">Position</th>
               <th className="px-4 py-2">Player Name</th>
-
               <th className="px-4 py-2">Photo</th>
               <th className="px-4 py-2">Delete</th>
             </tr>
           </thead>
-          <tbody>
-            {playerAway.map((player, index) => (
+          <tbody className="">
+            {playerHome.map((player, index) => (
               // console.log("Player Photo:", player.photo);
               <tr key={player.id}>
-                <td className="px-4 py-2 flex justify-center">
+                <td className="px-4 py-2 flex items-center justify-center">
                   {getPlayerPosition(index)}
                 </td>
                 <td className="px-4 py-2">
-                  <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
+                  <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                     <input
                       type="text"
                       value={player.name}
@@ -425,29 +440,53 @@ const PremathFinal = () => {
                   {player.photo ? (
                     <>
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${player._id}/photo`}
+                        key={player.photo ? player.photo : "default"}
+                        src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
-                        className="flex justify-center"
+                        className="flex items-center justify-center"
                       />
                     </>
                   ) : (
-                    <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
-                      <input
-                        type="file"
-                        onChange={(e) => handleFileChange(e, index)}
-                        className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                    <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
+                      <label
+                        htmlFor="fileInput"
+                        className="relative bg-[#F3F3F3] hover:bg-neutral-300 text-black font-semibold py-2 px-4 rounded flex items-center justify-center cursor-pointer"
+                      >
+                        <Image
+                          src={Upload}
+                          width={20}
+                          height={20}
+                          className="mr-3"
+                        />
+                        Upload
+                        <input
+                          id="fileInput"
+                          type="file"
+                          onChange={(e) => handleFileChange(e, index)}
+                          className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                        />
+                      </label>
                     </div>
                   )}
                 </td>
-                <td className="px-4 py-2 flex justify-center">
+                <td className="px-4 py-2 flex items-center justify-center">
+                  {index >= 11 && (
+                    <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                      onClick={() => handleDeleteClick(player._id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  )}
+                </td>
+                <td className="px-4 py-2 flex items-center justify-center">
                   <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                    onClick={() => handleDeleteClick(player._id)}
+                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 border border-yellow-700 rounded"
+                    onClick={() => handleClearFormClick(index)}
                   >
-                    <FontAwesomeIcon icon={faTrash} />
+                    Clear Form
                   </button>
                 </td>
               </tr>
@@ -457,7 +496,7 @@ const PremathFinal = () => {
       </div>
     );
   };
-  const renderForms4231Away = () => {
+  const renderForms4231 = () => {
     const getPlayerPosition = (index) => {
       const positions = [
         "GK",
@@ -503,11 +542,11 @@ const PremathFinal = () => {
         try {
           // Delete player from the API
           await axios.delete(
-            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${playerId}`
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}`
           );
 
           // Update state to remove the deleted player
-          setPlayerAway(playerAway.filter((player) => player._id !== playerId));
+          setPlayerHome(playerHome.filter((player) => player._id !== playerId));
 
           // Show success message
           Swal.fire({
@@ -529,16 +568,16 @@ const PremathFinal = () => {
 
     const handleFileChange = async (e, index) => {
       try {
-        const newPlayerAway = [...playerAway];
+        const newPlayerHome = [...playerHome];
         const file = e.target.files[0];
 
         // You may want to perform additional checks on the file, e.g., size, type, etc.
 
         // Update the corresponding player's photo property
-        newPlayerAway[index].photo = file;
+        newPlayerHome[index].photo = file;
 
         // Update the state with the new array
-        setPlayerAway(newPlayerAway);
+        setPlayerHome(newPlayerHome);
 
         // Prepare FormData to send the file to the server
         const formData = new FormData();
@@ -546,7 +585,7 @@ const PremathFinal = () => {
 
         // Make a PUT request to update the player's photo on the server
         await axios.put(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${newPlayerAway[index]._id}/photo`,
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${newPlayerHome[index]._id}/photo`,
           formData,
           {
             headers: {
@@ -558,29 +597,56 @@ const PremathFinal = () => {
         console.error("Error handling file change:", error);
       }
     };
-    // console.log("Player Photo:", playerHome[15].photo);
+    const handleClearFormClick = (index) => {
+      setPlayerHome((prevPlayerHome) => {
+        // Create a new array with the same length as playerHome
+        const newPlayerHome = prevPlayerHome.map((player, i) => {
+          if (i === index) {
+            // Reset the player data for the clicked row, including clearing the photo
+            return { ...player, photo: null, name: "", no: "0" };
+          }
+          return player;
+        });
+
+        // Return the new array to update the state
+        return newPlayerHome;
+      });
+
+      // Also, update the server-side data to remove the photo information
+      const playerId = playerHome[index]._id;
+      axios
+        .put(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photo`,
+          { photo: null }
+        )
+        .then(() => {
+          console.log("Server photo data cleared successfully!");
+        })
+        .catch((error) => {
+          console.error("Error clearing server photo data:", error);
+        });
+    };
 
     return (
       <div className="mt-4 border rounded-md">
-        <table className="table-auto w-full">
+        <table className="table-auto w-full ">
           <thead>
-            <tr>
+            <tr className="">
               <th className="px-4 py-2">Position</th>
               <th className="px-4 py-2">Player Name</th>
-
               <th className="px-4 py-2">Photo</th>
               <th className="px-4 py-2">Delete</th>
             </tr>
           </thead>
-          <tbody>
-            {playerAway.map((player, index) => (
+          <tbody className="">
+            {playerHome.map((player, index) => (
               // console.log("Player Photo:", player.photo);
               <tr key={player.id}>
-                <td className="px-4 py-2 flex justify-center">
+                <td className="px-4 py-2 flex items-center justify-center">
                   {getPlayerPosition(index)}
                 </td>
                 <td className="px-4 py-2">
-                  <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
+                  <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                     <input
                       type="text"
                       value={player.name}
@@ -594,29 +660,53 @@ const PremathFinal = () => {
                   {player.photo ? (
                     <>
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${player._id}/photo`}
+                        key={player.photo ? player.photo : "default"}
+                        src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
-                        className="flex justify-center"
+                        className="flex items-center justify-center"
                       />
                     </>
                   ) : (
-                    <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
-                      <input
-                        type="file"
-                        onChange={(e) => handleFileChange(e, index)}
-                        className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                    <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
+                      <label
+                        htmlFor="fileInput"
+                        className="relative bg-[#F3F3F3] hover:bg-neutral-300 text-black font-semibold py-2 px-4 rounded flex items-center justify-center cursor-pointer"
+                      >
+                        <Image
+                          src={Upload}
+                          width={20}
+                          height={20}
+                          className="mr-3"
+                        />
+                        Upload
+                        <input
+                          id="fileInput"
+                          type="file"
+                          onChange={(e) => handleFileChange(e, index)}
+                          className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                        />
+                      </label>
                     </div>
                   )}
                 </td>
-                <td className="px-4 py-2 flex justify-center">
+                <td className="px-4 py-2 flex items-center justify-center">
+                  {index >= 11 && (
+                    <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                      onClick={() => handleDeleteClick(player._id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  )}
+                </td>
+                <td className="px-4 py-2 flex items-center justify-center">
                   <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                    onClick={() => handleDeleteClick(player._id)}
+                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 border border-yellow-700 rounded"
+                    onClick={() => handleClearFormClick(index)}
                   >
-                    <FontAwesomeIcon icon={faTrash} />
+                    Clear Form
                   </button>
                 </td>
               </tr>
@@ -626,7 +716,7 @@ const PremathFinal = () => {
       </div>
     );
   };
-  const renderForms433Away = () => {
+  const renderForms433 = () => {
     const getPlayerPosition = (index) => {
       const positions = [
         "GK",
@@ -672,11 +762,11 @@ const PremathFinal = () => {
         try {
           // Delete player from the API
           await axios.delete(
-            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${playerId}`
+            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}`
           );
 
           // Update state to remove the deleted player
-          setPlayerAway(playerAway.filter((player) => player._id !== playerId));
+          setPlayerHome(playerHome.filter((player) => player._id !== playerId));
 
           // Show success message
           Swal.fire({
@@ -698,16 +788,16 @@ const PremathFinal = () => {
 
     const handleFileChange = async (e, index) => {
       try {
-        const newPlayerAway = [...playerAway];
+        const newPlayerHome = [...playerHome];
         const file = e.target.files[0];
 
         // You may want to perform additional checks on the file, e.g., size, type, etc.
 
         // Update the corresponding player's photo property
-        newPlayerAway[index].photo = file;
+        newPlayerHome[index].photo = file;
 
         // Update the state with the new array
-        setPlayerAway(newPlayerAway);
+        setPlayerHome(newPlayerHome);
 
         // Prepare FormData to send the file to the server
         const formData = new FormData();
@@ -715,7 +805,7 @@ const PremathFinal = () => {
 
         // Make a PUT request to update the player's photo on the server
         await axios.put(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${newPlayerAway[index]._id}/photo`,
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${newPlayerHome[index]._id}/photo`,
           formData,
           {
             headers: {
@@ -727,29 +817,56 @@ const PremathFinal = () => {
         console.error("Error handling file change:", error);
       }
     };
-    // console.log("Player Photo:", playerHome[15].photo);
+    const handleClearFormClick = (index) => {
+      setPlayerHome((prevPlayerHome) => {
+        // Create a new array with the same length as playerHome
+        const newPlayerHome = prevPlayerHome.map((player, i) => {
+          if (i === index) {
+            // Reset the player data for the clicked row, including clearing the photo
+            return { ...player, photo: null, name: "", no: "0" };
+          }
+          return player;
+        });
+
+        // Return the new array to update the state
+        return newPlayerHome;
+      });
+
+      // Also, update the server-side data to remove the photo information
+      const playerId = playerHome[index]._id;
+      axios
+        .put(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photo`,
+          { photo: null }
+        )
+        .then(() => {
+          console.log("Server photo data cleared successfully!");
+        })
+        .catch((error) => {
+          console.error("Error clearing server photo data:", error);
+        });
+    };
 
     return (
       <div className="mt-4 border rounded-md">
-        <table className="table-auto w-full">
+        <table className="table-auto w-full ">
           <thead>
-            <tr>
+            <tr className="">
               <th className="px-4 py-2">Position</th>
               <th className="px-4 py-2">Player Name</th>
-
               <th className="px-4 py-2">Photo</th>
               <th className="px-4 py-2">Delete</th>
             </tr>
           </thead>
-          <tbody>
-            {playerAway.map((player, index) => (
+          <tbody className="">
+            {playerHome.map((player, index) => (
               // console.log("Player Photo:", player.photo);
               <tr key={player.id}>
-                <td className="px-4 py-2 flex justify-center">
+                <td className="px-4 py-2 flex items-center justify-center">
                   {getPlayerPosition(index)}
                 </td>
                 <td className="px-4 py-2">
-                  <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
+                  <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
                     <input
                       type="text"
                       value={player.name}
@@ -763,29 +880,53 @@ const PremathFinal = () => {
                   {player.photo ? (
                     <>
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${player._id}/photo`}
+                        key={player.photo ? player.photo : "default"}
+                        src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
-                        className="flex justify-center"
+                        className="flex items-center justify-center"
                       />
                     </>
                   ) : (
-                    <div className="relative mt-2 rounded-md shadow-sm flex justify-center">
-                      <input
-                        type="file"
-                        onChange={(e) => handleFileChange(e, index)}
-                        className="rounded-md border-0 py-1.5 pl-3 pr-10 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                      />
+                    <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
+                      <label
+                        htmlFor="fileInput"
+                        className="relative bg-[#F3F3F3] hover:bg-neutral-300 text-black font-semibold py-2 px-4 rounded flex items-center justify-center cursor-pointer"
+                      >
+                        <Image
+                          src={Upload}
+                          width={20}
+                          height={20}
+                          className="mr-3"
+                        />
+                        Upload
+                        <input
+                          id="fileInput"
+                          type="file"
+                          onChange={(e) => handleFileChange(e, index)}
+                          className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                        />
+                      </label>
                     </div>
                   )}
                 </td>
-                <td className="px-4 py-2 flex justify-center">
+                <td className="px-4 py-2 flex items-center justify-center">
+                  {index >= 11 && (
+                    <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                      onClick={() => handleDeleteClick(player._id)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                  )}
+                </td>
+                <td className="px-4 py-2 flex items-center justify-center">
                   <button
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                    onClick={() => handleDeleteClick(player._id)}
+                    className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 border border-yellow-700 rounded"
+                    onClick={() => handleClearFormClick(index)}
                   >
-                    <FontAwesomeIcon icon={faTrash} />
+                    Clear Form
                   </button>
                 </td>
               </tr>
@@ -801,42 +942,125 @@ const PremathFinal = () => {
       <div className="py-4">
         <div className="border-b flex ">
           <div className="mb-4 font-bold text-xl flex">
-            <Link href="/prematch/prematch-2">
+            <Link href="/admin">
               <div className="ml-4 border p-1 mr-4 rounded-md">
                 <Image src={Back} width={20} height={20} />
               </div>
             </Link>
-            Create New Match
+            Edit Match
           </div>
         </div>
 
         <div className="px-3 py-6 ">
           <div className="flex">
             <div className="px-6 flex-col ">
-              <h1 className="text-xl font-bold">New Match</h1>
+              <h1 className="text-xl font-bold">Edit Match</h1>
               <h1>
                 Please provide complete and accurate information for all
                 required fields.
               </h1>
             </div>
             <div className="flex justify-end flex-grow h-10  px-6">
-              <Link href="/prematch/prematch-2">
-                <div className="mr-2 bg-[#F3F3F3] hover:bg-neutral-200 text-black font-bold py-2 px-4 border rounded w-36 flex justify-center">
-                  Back
-                </div>
-              </Link>
-
               <button
-                className="bg-[#5786E3] hover:bg-blue-600 text-white font-bold py-2 px-4 border rounded w-36"
+                className="bg-[#5786E3] hover:bg-blue-600 text-white font-bold py-2 px-4 border border-yellow-700 rounded w-36"
                 onClick={handleSubmit}
               >
-                Next
+                Finish
               </button>
             </div>
           </div>
 
           <div className="flex">
             <div className="px-6 py-6 flex-grow">
+              <div className="border rounded-md p-5 ">
+                <h1 className="font-semibold text-xl">Home Team</h1>
+                <div className="mt-4">
+                  <h1 className="font-semibold">Select Team</h1>
+                  <SelectHomeTeam />
+                </div>
+                <div className="mt-4">
+                  <h1 className="font-semibold">Choose Formation</h1>
+                  <DropdownButton
+                    options={["4-4-2", "4-2-3-1", "4-3-3"]}
+                    onSelect={handleFormationSelect}
+                    label="Select Formation"
+                  />
+                </div>
+
+                <div className="mt-4">
+                  <h1 className="font-semibold">Coach in Charge</h1>
+                  {coach ? (
+                    <div className="mt-2">
+                      <form>
+                        <input
+                          type="text"
+                          value={coach.name || ""}
+                          className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-gray-300 placeholder:text-gray-400 w-full"
+                          onChange={handleCoachNameChange}
+                          placeholder="Coach Name"
+                        />
+                      </form>
+                    </div>
+                  ) : (
+                    <p>Loading...</p>
+                  )}
+                </div>
+
+                {/* OLD PLAYER */}
+                {/* <div className="mt-4 flex flex-col">
+                  <label htmlFor="playerName" className="font-semibold">
+                    Player Name
+                  </label>
+                  <div className="flex justify-between">
+                    <input
+                      name={`playerName`}
+                      placeholder="Player Name"
+                      type="text"
+                      className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-gray-300 placeholder:text-gray-400 mr-2 w-8/12"
+                    />
+                    <button className="bg-[#F3F3F3] hover:bg-neutral-300 text-black font-semibold py-2 px-4 rounded flex justify-center ">
+                      <Image
+                        src={Upload}
+                        width={20}
+                        height={20}
+                        className="mr-3"
+                      />
+                      Upload
+                    </button>
+
+                    <button className="bg-[#5786E3] hover:bg-blue-600 text-white font-semibold  py-2 px-4 border rounded flex justify-center">
+                      <Image
+                        src={Plus}
+                        width={20}
+                        height={20}
+                        className="mr-3"
+                      />
+                      Add Player
+                    </button>
+                  </div>
+                </div> */}
+
+                <div className="mt-5 ">{renderSelectedForm()}</div>
+                {selectedFormation && isFormVisible && (
+                  <div className="mt-5 ml-5 flex justify-center">
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                      onClick={() => createPlayer(newPlayer)}
+                    >
+                      Add Player
+                    </button>
+                    <button
+                      className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                      onClick={handleClearAllForm}
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="px-6 py-6 flex-1">
               <div className="border rounded-md p-4 ">
                 <div className="flex ">
                   <div className=" mr-2">
@@ -850,75 +1074,28 @@ const PremathFinal = () => {
                     </div>
                     <div className="flex mt-2">
                       <p className="font-semibold w-24">Formation:</p>
-                      <p className="">{home.formation}</p>
+                      <p className="">{selectedFormation}</p>
                     </div>
                     <div className="flex mt-2">
                       <p className="font-semibold w-24">Coach:</p>
                       {/* <p className="ml-9">coach</p> */}
                       {coach ? (
-                        <p className="">{coach[0].name}</p>
+                        <p className="">{coach.name}</p>
                       ) : (
                         <p>Loading...</p>
                       )}
                     </div>
-                    <div className="flex mt-2">
-                      <p className="font-semibold w-24">Player:</p>
-                      <ul>
-                        {playerHome.map((player, index) => (
-                          <li key={player.id}>{player.name}</li>
-                        ))}
-                      </ul>
-                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-
-            <div className="px-6 py-6 flex-grow">
-              <div className="border rounded-md p-4 ">
-                <div className="flex ">
-                  <div className=" mr-2">
-                    <Image src={away.logo} width={100} height={100} />
-                  </div>
-                  {/* Text */}
-                  <div className="flex flex-col justify-center ml-9">
-                    <div className="flex">
-                      <p className="font-semibold w-24">Team:</p>
-                      <p className="">{away.name}</p>
-                    </div>
-                    <div className="flex mt-2">
-                      <p className="font-semibold w-24">Formation:</p>
-                      <p className="">{away.formation}</p>
-                    </div>
-                    <div className="flex mt-2">
-                      <p className="font-semibold w-24">Coach:</p>
-                      {/* <p className="ml-9">coach</p> */}
-                      {coach ? (
-                        <p className="">{coach[1].name}</p>
-                      ) : (
-                        <p>Loading...</p>
-                      )}
-                    </div>
-                    <div className="flex mt-2">
-                      <p className="font-semibold w-24">Player:</p>
-                      <ul>
-                        {playerAway.map((player, index) => (
-                          <li key={player.id}>{player.name}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+              <div className="mt-4 ">
+                <div className=" bg-[#F3F3F3] rounded-md">
+                  <p className="p-6 italic ">
+                    Note: Ensure your lineup reflects your strategy and
+                    preferences before the match begins. Need assistance?
+                    Contact support at support@example.com.
+                  </p>
                 </div>
-              </div>
-            </div>
-
-            <div className="mt-4 flex-1">
-              <div className=" bg-[#F3F3F3] rounded-md">
-                <p className="p-6 italic ">
-                  Note: Ensure your lineup reflects your strategy and
-                  preferences before the match begins. Need assistance? Contact
-                  support at support@example.com.
-                </p>
               </div>
             </div>
           </div>
@@ -927,4 +1104,4 @@ const PremathFinal = () => {
     </>
   );
 };
-export default PremathFinal;
+export default Prematch1;

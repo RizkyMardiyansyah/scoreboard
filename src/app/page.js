@@ -12,8 +12,9 @@ import Image from "next/image";
 import YellowCard from "../components/YellowCard";
 import RedCard from "../components/RedCard";
 import Timer from "../components/Timer/timer3";
-import Berani from "../assets/berani.png";
-import Nat from "../assets/nat.png";
+import Sponsor1 from "../assets/sponsor1.png";
+import Sponsor2 from "../assets/sponsor2.png";
+import Sponsor3 from "../assets/sponsor3.png";
 import axios from "axios";
 import SubtitutionPage from "../components/SubtitutionPage";
 import SubtitutionPageAway from "../components/SubtitutionPageAway";
@@ -343,7 +344,90 @@ const Page = () => {
           <div className="mt-auto w-full border border-white overflow-hidden">
             <div className="px-4 py-2 bg-white">
               <Marquee>
-                <span className="text-black">Running Text</span>
+                <Image
+                  src={Sponsor1}
+                  alt="Sponsor1"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor2}
+                  alt="Sponsor2"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor3}
+                  alt="Sponsor3"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor1}
+                  alt="Sponsor1"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor2}
+                  alt="Sponsor2"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor3}
+                  alt="Sponsor3"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor1}
+                  alt="Sponsor1"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor2}
+                  alt="Sponsor2"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor3}
+                  alt="Sponsor3"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor1}
+                  alt="Sponsor1"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor2}
+                  alt="Sponsor2"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
+                <Image
+                  src={Sponsor3}
+                  alt="Sponsor3"
+                  width={125}
+                  height={125}
+                  className="mr-2"
+                />
               </Marquee>
             </div>
           </div>

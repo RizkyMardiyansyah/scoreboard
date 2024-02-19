@@ -5,13 +5,13 @@ import Back from "../../assets/caret-left.png";
 import axios from "axios";
 import Upload from "../../assets/UploadSimple.png";
 import Plus from "../../assets/PlusWhite.png";
-import SelectAwayTeam from "../../components/SelectAwayTeam";
-import SelectFormationHome from "../../components/SelectFormationHome";
+import SelectAwayTeam from "../SelectAwayTeam";
+import SelectFormationHome from "../SelectFormationHome";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import DropdownButton from "../../components/Dropdown";
-import Control from "../../components/Sidebar Content/Control";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import DropdownButton from "../Dropdown";
+import Control from "./Control";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -799,46 +799,22 @@ const PremathFinal = () => {
   return (
     <>
       <div className="py-4">
-        <div className="border-b flex ">
-          <div className="mb-4 font-bold text-xl flex">
-            <Link href="/prematch/prematch-2">
-              <div className="ml-4 border p-1 mr-4 rounded-md">
-                <Image src={Back} width={20} height={20} />
-              </div>
-            </Link>
-            Create New Match
-          </div>
-        </div>
-
         <div className="px-3 py-6 ">
           <div className="flex">
             <div className="px-6 flex-col ">
-              <h1 className="text-xl font-bold">New Match</h1>
+              <h1 className="text-xl font-bold">Overview</h1>
               <h1>
                 Please provide complete and accurate information for all
                 required fields.
               </h1>
             </div>
-            <div className="flex justify-end flex-grow h-10  px-6">
-              <Link href="/prematch/prematch-2">
-                <div className="mr-2 bg-[#F3F3F3] hover:bg-neutral-200 text-black font-bold py-2 px-4 border rounded w-36 flex justify-center">
-                  Back
-                </div>
-              </Link>
-
-              <button
-                className="bg-[#5786E3] hover:bg-blue-600 text-white font-bold py-2 px-4 border rounded w-36"
-                onClick={handleSubmit}
-              >
-                Next
-              </button>
-            </div>
           </div>
 
-          <div className="flex">
+          <div className="flex ">
             <div className="px-6 py-6 flex-grow">
               <div className="border rounded-md p-4 ">
                 <div className="flex ">
+                  {/* logo */}
                   <div className=" mr-2">
                     <Image src={home.logo} width={100} height={100} />
                   </div>
@@ -870,6 +846,15 @@ const PremathFinal = () => {
                       </ul>
                     </div>
                   </div>
+                  {/* edit */}
+                  <div className="ml-auto flex">
+                    <Link href="/edit/editHome">
+                      <FontAwesomeIcon
+                        icon={faPenToSquare}
+                        className="hover:pointer"
+                      />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
@@ -877,6 +862,7 @@ const PremathFinal = () => {
             <div className="px-6 py-6 flex-grow">
               <div className="border rounded-md p-4 ">
                 <div className="flex ">
+                  {/* logo */}
                   <div className=" mr-2">
                     <Image src={away.logo} width={100} height={100} />
                   </div>
@@ -908,17 +894,16 @@ const PremathFinal = () => {
                       </ul>
                     </div>
                   </div>
+                  {/* edit */}
+                  <div className="ml-auto flex">
+                    <Link href="/edit/editAway">
+                      <FontAwesomeIcon
+                        icon={faPenToSquare}
+                        className="hover:pointer"
+                      />
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div className="mt-4 flex-1">
-              <div className=" bg-[#F3F3F3] rounded-md">
-                <p className="p-6 italic ">
-                  Note: Ensure your lineup reflects your strategy and
-                  preferences before the match begins. Need assistance? Contact
-                  support at support@example.com.
-                </p>
               </div>
             </div>
           </div>

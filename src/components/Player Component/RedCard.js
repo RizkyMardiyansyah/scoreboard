@@ -23,7 +23,7 @@ const MyComponent = () => {
   }, []);
 
   const handleButtonClick = async (buttonData) => {
-    localStorage.setItem("showComponent", "3");
+    localStorage.setItem("showComponent", "5");
     console.log(`Button "${buttonData.no}" clicked`);
     console.log(`Button "${buttonData.name}" clicked`);
 

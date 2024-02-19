@@ -44,10 +44,15 @@ export default function Scoreboard() {
   function chunkArray(array, chunkSize) {
     return Array.from(
       { length: Math.ceil(array.length / chunkSize) },
-      (v, index) =>
+      (_, index) =>
         array.slice(index * chunkSize, index * chunkSize + chunkSize)
     );
   }
+  const messagesChunks = chunkArray(score.messagesHome, 5);
+  const minutesChunks = chunkArray(score.minutesHome, 5);
+  const messagesChunksAway = chunkArray(score.messagesAway, 5);
+  const minutesChunksAway = chunkArray(score.minutesAway, 5);
+  const stopwatchTime = localStorage.getItem("stopwatchTime");
   return (
     <Fragment>
       <div className="">
@@ -60,30 +65,18 @@ export default function Scoreboard() {
               alt="Home Team Logo"
             />
             <div>
-              <p className="customFont text-xl  mt-3">{team.name}</p>
+              <p className="customFont text-xl mt-3">{team.name}</p>
               <p className="text-7xl customFont mt-5 ">{score.home}</p>
-              <div className="text-white flex flex-wrap ">
-                {chunkArray(score.messagesHome, 5).map((chunk, colIndex) => (
-                  <div key={colIndex} className="text-xl mt-2 mr-5 ml-9">
-                    {chunk.map((message, rowIndex) => (
-                      <div key={rowIndex}>{message}</div>
-                    ))}
-                  </div>
-                ))}
-                {chunkArray(score.minutesHome, 5).map((chunk, colIndex) => (
-                  <div key={colIndex} className="text-xl mt-2 mr-5 ">
-                    {chunk.map((message, rowIndex) => (
-                      <div key={rowIndex}>{message}</div>
-                    ))}
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
 
-          <div className="text-white text-center mt-auto mb-auto">
+          <div className="text-white text-center mt-auto">
             <p className="text-xl">VS</p>
-            <p className="mt-5">First Half</p>
+            {stopwatchTime && parseInt(stopwatchTime) < 2701 ? (
+              <p className="mt-5">First Half</p>
+            ) : (
+              <p className="mt-5">Second Half</p>
+            )}
             <Timer />
           </div>
 
@@ -96,64 +89,126 @@ export default function Scoreboard() {
             />
 
             <div>
-              <p className="customFont text-xl  mt-3"> {teamAway.name} </p>
+              <p className="customFont text-xl mt-3"> {teamAway.name} </p>
               <p className="text-7xl customFont mt-5 ">{score.away}</p>
-              <div className="text-white flex flex-wrap ">
-                {chunkArray(score.messagesAway, 5).map((chunk, colIndex) => (
-                  <div key={colIndex} className="text-xl mt-2 mr-5 ml-9">
-                    {chunk.map((message, rowIndex) => (
-                      <div key={rowIndex}>{message}</div>
-                    ))}
-                  </div>
-                ))}
-                {chunkArray(score.minutesAway, 5).map((chunk, colIndex) => (
-                  <div key={colIndex} className="text-xl mt-2 mr-5 ml-5">
-                    {chunk.map((message, rowIndex) => (
-                      <div key={rowIndex}>{message}</div>
-                    ))}
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* <div className="text-white flex justify-evenly mt-5"> */}
-      {/* <div className="text-white flex flex-wrap ">
-          {chunkArray(score.messagesHome, 5).map((chunk, colIndex) => (
-            <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
-              {chunk.map((message, rowIndex) => (
-                <div key={rowIndex}>{message}</div>
-              ))}
+      <div className="flex justify-around py-5 px-5">
+        <div className="text-white flex flex-wrap">
+          {[
+            ...Array(Math.max(messagesChunks.length, minutesChunks.length)),
+          ].map((_, rowIndex) => (
+            <div key={rowIndex} className="text-xl mt-4 mr-6 ">
+              <div className="flex gap-4 min-w-32">
+                <div className="w-1/2">
+                  {messagesChunks[rowIndex] && messagesChunks[rowIndex][0]}
+                </div>
+                <div className="w-1/2">
+                  {minutesChunks[rowIndex] && minutesChunks[rowIndex][0]}
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  {messagesChunks[rowIndex] && messagesChunks[rowIndex][1]}
+                </div>
+                <div className="w-1/2">
+                  {minutesChunks[rowIndex] && minutesChunks[rowIndex][1]}
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  {messagesChunks[rowIndex] && messagesChunks[rowIndex][2]}
+                </div>
+                <div className="w-1/2">
+                  {minutesChunks[rowIndex] && minutesChunks[rowIndex][2]}
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  {messagesChunks[rowIndex] && messagesChunks[rowIndex][3]}
+                </div>
+                <div className="w-1/2">
+                  {minutesChunks[rowIndex] && minutesChunks[rowIndex][3]}
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  {messagesChunks[rowIndex] && messagesChunks[rowIndex][4]}
+                </div>
+                <div className="w-1/2">
+                  {minutesChunks[rowIndex] && minutesChunks[rowIndex][4]}
+                </div>
+              </div>
             </div>
           ))}
-          {chunkArray(score.minutesHome, 5).map((chunk, colIndex) => (
-            <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
-              {chunk.map((message, rowIndex) => (
-                <div key={rowIndex}>{message}</div>
-              ))}
-            </div>
-          ))}
-        </div> */}
+        </div>
 
-      {/* <div className="text-white flex flex-wrap ">
-          {chunkArray(score.messagesAway, 5).map((chunk, colIndex) => (
-            <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
-              {chunk.map((message, rowIndex) => (
-                <div key={rowIndex}>{message}</div>
-              ))}
+        <div className="opacity-0">test</div>
+
+        <div className="text-white flex flex-wrap">
+          {[
+            ...Array(
+              Math.max(messagesChunksAway.length, minutesChunksAway.length)
+            ),
+          ].map((_, rowIndex) => (
+            <div key={rowIndex} className="text-xl mt-4 mr-6">
+              <div className="flex gap-4 min-w-32">
+                <div className="w-1/2">
+                  {messagesChunksAway[rowIndex] &&
+                    messagesChunksAway[rowIndex][0]}
+                </div>
+                <div className="w-1/2 ">
+                  {minutesChunksAway[rowIndex] &&
+                    minutesChunksAway[rowIndex][0]}
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  {messagesChunksAway[rowIndex] &&
+                    messagesChunksAway[rowIndex][1]}
+                </div>
+                <div className="w-1/2">
+                  {minutesChunksAway[rowIndex] &&
+                    minutesChunksAway[rowIndex][1]}
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  {messagesChunksAway[rowIndex] &&
+                    messagesChunksAway[rowIndex][2]}
+                </div>
+                <div className="w-1/2">
+                  {minutesChunksAway[rowIndex] &&
+                    minutesChunksAway[rowIndex][2]}
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  {messagesChunksAway[rowIndex] &&
+                    messagesChunksAway[rowIndex][3]}
+                </div>
+                <div className="w-1/2">
+                  {minutesChunksAway[rowIndex] &&
+                    minutesChunksAway[rowIndex][3]}
+                </div>
+              </div>
+              <div className="flex gap-4">
+                <div className="w-1/2">
+                  {messagesChunksAway[rowIndex] &&
+                    messagesChunksAway[rowIndex][4]}
+                </div>
+                <div className="w-1/2">
+                  {minutesChunksAway[rowIndex] &&
+                    minutesChunksAway[rowIndex][4]}
+                </div>
+              </div>
             </div>
           ))}
-          {chunkArray(score.minutesAway, 5).map((chunk, colIndex) => (
-            <div key={colIndex} className="text-3xl mt-2 mr-5 ml-5">
-              {chunk.map((message, rowIndex) => (
-                <div key={rowIndex}>{message}</div>
-              ))}
-            </div>
-          ))}
-        </div> */}
-      {/* </div> */}
+        </div>
+      </div>
     </Fragment>
   );
 }
