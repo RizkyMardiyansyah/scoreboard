@@ -7,7 +7,7 @@ import axios from "axios";
 import DropdownButton from "../Dropdown";
 import Overview from "./Overview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePause, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { Tab } from "@headlessui/react";
 import Swal from "sweetalert2";
@@ -1805,7 +1805,17 @@ const SideBar = () => {
                 onClick={isRunning ? pauseTimer : startTimer}
               >
                 {isRunning ? (
-                  "Pause"
+                  <div>
+                    <div className="flex justify-center items-center mb-3">
+                      <FontAwesomeIcon
+                        icon={faCirclePause}
+                        className="fa-2xl"
+                      />
+                    </div>
+                    <div className="flex justify-center items-center">
+                      Pause
+                    </div>
+                  </div>
                 ) : (
                   <>
                     <div>
@@ -1851,8 +1861,8 @@ const SideBar = () => {
             {/* tabs */}
             <div className="">
               <Tab.Group>
-                <div className="w-full px-2 flex justify-between py-8 sm:px-0 border">
-                  <div className="border w-1/2">
+                <div className="w-full px-2 flex justify-between py-8 sm:px-0 ">
+                  <div className=" w-1/2">
                     <Tab.List className="flex space-x-1 rounded-xl min-w-xl  bg-[#EAEAEA] p-2">
                       <Tab
                         className={({ selected }) =>
