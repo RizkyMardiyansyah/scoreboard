@@ -566,7 +566,6 @@ const PremathFinal = () => {
             <tr>
               <th className="px-4 py-2">Position</th>
               <th className="px-4 py-2">Player Name</th>
-
               <th className="px-4 py-2">Photo</th>
               <th className="px-4 py-2">Delete</th>
             </tr>
@@ -735,7 +734,6 @@ const PremathFinal = () => {
             <tr>
               <th className="px-4 py-2">Position</th>
               <th className="px-4 py-2">Player Name</th>
-
               <th className="px-4 py-2">Photo</th>
               <th className="px-4 py-2">Delete</th>
             </tr>
@@ -795,6 +793,79 @@ const PremathFinal = () => {
     );
   };
 
+  const positions442 = [
+    "GK",
+    "LB",
+    "CB",
+    "CB",
+    "RB",
+    "LM",
+    "CM",
+    "CM",
+    "RM",
+    "CF",
+    "CF",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10",
+    "S11",
+  ];
+  const positions4231 = [
+    "GK",
+    "LB",
+    "CB",
+    "CB",
+    "RB",
+    "CM",
+    "CM",
+    "LW",
+    "AM",
+    "RW",
+    "CF",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10",
+    "S11",
+  ];
+  const positions433 = [
+    "GK",
+    "LB",
+    "CB",
+    "CB",
+    "RB",
+    "DM",
+    "CM",
+    "CM",
+    "LW",
+    "RW",
+    "CF",
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10",
+    "S11",
+  ];
+
   return (
     <>
       <div className="py-4">
@@ -838,11 +909,48 @@ const PremathFinal = () => {
                     </div>
                     <div className="flex mt-2">
                       <p className="font-semibold w-24">Player:</p>
-                      <ul>
+                      {/* old list */}
+                      {/* <ul>
                         {playerHome.map((player, index) => (
                           <li key={player.id}>{player.name}</li>
                         ))}
-                      </ul>
+                      </ul> */}
+
+                      {home.formation === "4-3-3" && (
+                        // Render content for formation 4-3-3
+                        <ul>
+                          {playerHome.map((player, index) => (
+                            <div key={player.id} className="flex">
+                              <p className="w-12">{positions433[index]}</p>
+                              <p>{player.name}</p>
+                            </div>
+                          ))}
+                        </ul>
+                      )}
+
+                      {home.formation === "4-2-3-1" && (
+                        // Render content for formation 4-2-3-1
+                        <ul>
+                          {playerHome.map((player, index) => (
+                            <div key={player.id} className="flex">
+                              <p className="w-12">{positions4231[index]}</p>
+                              <p>{player.name}</p>
+                            </div>
+                          ))}
+                        </ul>
+                      )}
+
+                      {home.formation === "4-4-2" && (
+                        // Render content for formation 4-4-2
+                        <ul>
+                          {playerHome.map((player, index) => (
+                            <div key={player.id} className="flex">
+                              <p className="w-12">{positions442[index]}</p>
+                              <p>{player.name}</p>
+                            </div>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   </div>
                   {/* edit */}
@@ -886,11 +994,48 @@ const PremathFinal = () => {
                     </div>
                     <div className="flex mt-2">
                       <p className="font-semibold w-24">Player:</p>
-                      <ul>
+                      {/* old list */}
+                      {/* <ul>
                         {playerAway.map((player, index) => (
                           <li key={player.id}>{player.name}</li>
                         ))}
-                      </ul>
+                      </ul> */}
+
+                      {away.formation === "4-3-3" && (
+                        // Render content for formation 4-3-3
+                        <ul>
+                          {playerAway.map((player, index) => (
+                            <div key={player.id} className="flex">
+                              <p className="w-12">{positions433[index]}</p>
+                              <p>{player.name}</p>
+                            </div>
+                          ))}
+                        </ul>
+                      )}
+
+                      {away.formation === "4-2-3-1" && (
+                        // Render content for formation 4-2-3-1
+                        <ul>
+                          {playerAway.map((player, index) => (
+                            <div key={player.id} className="flex">
+                              <p className="w-12">{positions4231[index]}</p>
+                              <p>{player.name}</p>
+                            </div>
+                          ))}
+                        </ul>
+                      )}
+
+                      {away.formation === "4-4-2" && (
+                        // Render content for formation 4-4-2
+                        <ul>
+                          {playerAway.map((player, index) => (
+                            <div key={player.id} className="flex">
+                              <p className="w-12">{positions442[index]}</p>
+                              <p>{player.name}</p>
+                            </div>
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   </div>
                   {/* edit */}
