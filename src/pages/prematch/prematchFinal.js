@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import "react-tabs/style/react-tabs.css";
 import Back from "../../assets/caret-left.png";
 import axios from "axios";
 import Upload from "../../assets/UploadSimple.png";
