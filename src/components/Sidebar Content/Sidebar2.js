@@ -7,7 +7,11 @@ import axios from "axios";
 import DropdownButton from "../Dropdown";
 import Overview from "./Overview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCirclePause, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCirclePause,
+  faCirclePlay,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { Tab } from "@headlessui/react";
 import Swal from "sweetalert2";
@@ -140,7 +144,10 @@ const SideBar = () => {
                   <>
                     <div>
                       <div className="flex justify-center items-center mb-3">
-                        <Image src={Play} alt="play" width={40} height={40} />
+                        <FontAwesomeIcon
+                          icon={faCirclePlay}
+                          className="fa-2xl"
+                        />
                       </div>
                       <div className="flex justify-center items-center">
                         Start
@@ -156,7 +163,7 @@ const SideBar = () => {
               >
                 <div className="">
                   <div className="flex justify-center items-center mb-3">
-                    <Image src={Play} alt="play" width={40} height={40} />
+                    <FontAwesomeIcon icon={faCirclePlay} className="fa-2xl" />
                   </div>
                   <div>First Half</div>
                 </div>
@@ -168,12 +175,7 @@ const SideBar = () => {
               >
                 <div className="">
                   <div className="flex justify-center items-center mb-3">
-                    <Image
-                      src={PlayBlack}
-                      alt="PlayBlack"
-                      width={40}
-                      height={40}
-                    />
+                    <FontAwesomeIcon icon={faCirclePlay} className="fa-2xl" />
                   </div>
                   <div>Second Half</div>
                 </div>
@@ -182,6 +184,7 @@ const SideBar = () => {
 
             {/* tabs */}
             <div className="">
+              {/* tabs List */}
               <Tab.Group>
                 <div className="w-full px-2 flex justify-between py-8 sm:px-0 ">
                   {/* dashboard, red, yellow, goal, score */}
@@ -252,6 +255,9 @@ const SideBar = () => {
                               : "text-black hover:bg-white/[0.12] hover:text-black"
                           )
                         }
+                        onClick={() => {
+                          localStorage.setItem("showComponent", "1");
+                        }}
                       >
                         Update Score
                       </Tab>
@@ -337,6 +343,7 @@ const SideBar = () => {
                     </Tab.List>
                   </div>
                 </div>
+                {/* Tabs Content */}
                 <Tab.Panels>
                   <Tab.Panel
                     className={classNames(
@@ -391,6 +398,7 @@ const SideBar = () => {
                       />
                     </div>
                   </Tab.Panel>
+
                   <Tab.Panel
                     className={classNames(
                       "rounded-xl bg-white p-3",
@@ -487,9 +495,9 @@ const SideBar = () => {
             <div className="">
               {isLoaded && user ? (
                 <>
-                  <div className="px-4 border border-gray flex justify-center items-center p-1 mt-2 mr-4 ml-4 mb-2 rounded-lg">
+                  <div className="border border-gray flex justify-center items-center rounded-lg mt-2 mb-2 py-2">
                     <UserButton afterSignOutUrl="/" className="mr-2" />
-                    <span className="text-black ml-3">{`${user.firstName} ${user.lastName}`}</span>
+                    <span className="text-black ml-3 text-sm">{`${user.firstName} ${user.lastName}`}</span>
                   </div>
                 </>
               ) : (

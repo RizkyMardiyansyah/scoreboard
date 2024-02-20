@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import Arrow from "../../assets/ArrowsClockwise.png";
+import getConfig from "next/config";
 
 const SubtitutionNew = () => {
   const [home, setHome] = useState([]);
   const [away, setAway] = useState([]);
+  const [coach, setCoach] = useState([]);
+  const [coachAway, setCoachAway] = useState([]);
   const [score, setScore] = useState([]);
   const [selectedPlayerIn, setSelectedPlayerIn] = useState("");
   const [selectedPlayerOut, setSelectedPlayerOut] = useState("");
@@ -16,6 +19,8 @@ const SubtitutionNew = () => {
   const [teamOptions, setTeamOptions] = useState([]);
   const [teamOptionsAway, setTeamOptionsAway] = useState([]);
   const [buttons, setButtons] = useState([]);
+  const { publicRuntimeConfig } = getConfig();
+  const { IFRAME_URL } = publicRuntimeConfig;
 
   useEffect(() => {
     axios
@@ -42,6 +47,16 @@ const SubtitutionNew = () => {
       .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway`)
       .then((response) => {
         setTeamOptionsAway(response.data);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`)
+      .then((response) => {
+        setCoach(response.data[0]);
+      });
+    axios
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`)
+      .then((response) => {
+        setCoachAway(response.data[1]);
       });
   }, []);
 
@@ -239,11 +254,11 @@ const SubtitutionNew = () => {
               </div>
               <div className="flex items-center">
                 <p className="font-semibold w-24">Formation:</p>
-                <p>4-3-3</p>
+                <p>{home.formation}</p>
               </div>
               <div className="flex items-center">
                 <p className="font-semibold w-24">Coach:</p>
-                <p>STY</p>
+                <p> {coach.name} </p>
               </div>
             </div>
           </div>
@@ -349,15 +364,15 @@ const SubtitutionNew = () => {
             <div className="flex flex-col">
               <div className="flex items-center">
                 <p className="font-semibold w-24">Team:</p>
-                <p>Bali United</p>
+                <p>{away.name} </p>
               </div>
               <div className="flex items-center">
                 <p className="font-semibold w-24">Formation:</p>
-                <p>4-4-2</p>
+                <p>{away.formation}</p>
               </div>
               <div className="flex items-center">
                 <p className="font-semibold w-24">Coach:</p>
-                <p>Yeb</p>
+                <p>{coachAway.name}</p>
               </div>
             </div>
           </div>
@@ -395,6 +410,7 @@ const SubtitutionNew = () => {
               </select>
             </div>
           </div>
+
           <button
             onClick={handleExchangePlayersAway}
             className="w-full text-white 
@@ -451,6 +467,16 @@ const SubtitutionNew = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="flex items-center justify-center mb-5 mr-2">
+        <iframe
+          className="rounded-lg"
+          src={IFRAME_URL}
+          title="Content from localhost:3000"
+          width="100%"
+          height="800"
+        />
       </div>
     </>
   );

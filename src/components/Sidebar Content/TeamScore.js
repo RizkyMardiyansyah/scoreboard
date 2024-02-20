@@ -46,6 +46,12 @@ const TeamScore = () => {
       minuteHome,
       minuteAway,
     });
+
+    localStorage.setItem("messagesHome", JSON.stringify(score.messagesHome));
+    localStorage.setItem("minutesHome", JSON.stringify(score.minutesHome));
+    localStorage.setItem("messagesAway", JSON.stringify(score.messagesAway));
+    localStorage.setItem("minutesAway", JSON.stringify(score.minutesAway));
+
     axios
       .put(`${process.env.NEXT_PUBLIC_DATABASE_URL}/score/${score._id}`, {
         ...score,

@@ -4,6 +4,7 @@ const Stopwatch = () => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [stopTime, setStopTime] = useState(90 * 60);
+  const stopwatchTime = localStorage.getItem("stopwatchTime");
 
   useEffect(() => {
     const storedTime = localStorage.getItem("stopwatchTime");
@@ -56,7 +57,13 @@ const Stopwatch = () => {
 
   return (
     <div style={{ textAlign: "center" }}>
-      <div id="reset-btn" style={{ fontSize: "70px" }}>
+      <div
+        id="reset-btn"
+        style={{
+          fontSize: "70px",
+          opacity: parseInt(stopwatchTime) === 5400 ? 0 : 1,
+        }}
+      >
         <span className="text-white">{formatTime(time)}</span>
       </div>
     </div>

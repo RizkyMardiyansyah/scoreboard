@@ -349,84 +349,84 @@ const Page = () => {
                   alt="Sponsor1"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor2}
                   alt="Sponsor2"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor3}
                   alt="Sponsor3"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor1}
                   alt="Sponsor1"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor2}
                   alt="Sponsor2"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor3}
                   alt="Sponsor3"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor1}
                   alt="Sponsor1"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor2}
                   alt="Sponsor2"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor3}
                   alt="Sponsor3"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor1}
                   alt="Sponsor1"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor2}
                   alt="Sponsor2"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
                 <Image
                   src={Sponsor3}
                   alt="Sponsor3"
                   width={125}
                   height={125}
-                  className="mr-2"
+                  className="mr-7"
                 />
               </Marquee>
             </div>
