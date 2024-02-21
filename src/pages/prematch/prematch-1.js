@@ -477,7 +477,7 @@ const Prematch1 = () => {
                 <td className="px-4 py-2">
                   {player.photo ? (
                     <>
-                      <Image
+                      <img
                         key={player.photo ? player.photo : "default"}
                         src={`${
                           process.env.NEXT_PUBLIC_DATABASE_URL
