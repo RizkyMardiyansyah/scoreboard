@@ -27,6 +27,7 @@ const Prematch1 = () => {
   const [showForm2, setShowForm2] = useState(false);
   const [showForm3, setShowForm3] = useState(false);
   const router = useRouter();
+  const [imageKey, setImageKey] = useState(0);
 
   const fetchData = async () => {
     try {
@@ -69,6 +70,10 @@ const Prematch1 = () => {
 
     fetchPlayerHome();
   }, []);
+
+  const refetchImage = () => {
+    setImageKey((prevKey) => prevKey + 1);
+  };
 
   const handleCoachNameChange = (event) => {
     const newName = event.target.value;
@@ -476,7 +481,7 @@ const Prematch1 = () => {
                         key={player.photo ? player.photo : "default"}
                         src={`${
                           process.env.NEXT_PUBLIC_DATABASE_URL
-                        }/playerHome/${player._id}/photo?${Math.random()}`}
+                        }/playerHome/${player._id}/photo?${Date.now()}`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
