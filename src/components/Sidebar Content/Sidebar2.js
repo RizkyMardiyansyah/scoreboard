@@ -69,6 +69,52 @@ const SideBar = () => {
     fetchData("score", (data) => setScore(data[0]), "score");
   }, []);
 
+  const clearHomeTeamData = async () => {
+    const homeTeamId = "65a4c43b781814cf4206a691";
+    const updatedData = {
+      name: "",
+      logo: "",
+      formation: "",
+    };
+    const coach = {
+      name: "",
+    };
+    const emptyScore = {
+      messagesHome: [],
+      messagesAway: [],
+      minutesAway: [],
+      minutesHome: [],
+    };
+
+    try {
+      // Send a PUT request to update the homeTeam data with empty values
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam/${homeTeamId}`,
+        updatedData
+      );
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/awayTeam/65a4cbb0a5c2cc43008bbe79`,
+        updatedData
+      );
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach/65aa203d672025c87a76f5d0`,
+        coach
+      );
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach/65aa2055672025c87a76f5d3`,
+        coach
+      );
+      await axios.put(
+        `${process.env.NEXT_PUBLIC_DATABASE_URL}/score/65b3543eba1432d9d3e02d56`,
+        emptyScore
+      );
+
+      console.log("Data cleared successfully!");
+    } catch (error) {
+      console.error("Error updating data for homeTeam:", error.message);
+    }
+  };
+
   const handleMenuItemClick = (menuItem) => {
     setSelectedMenuItem(menuItem);
   };
@@ -181,7 +227,7 @@ const SideBar = () => {
                 </div>
               </div>
             </div>
-
+            <button onClick={clearHomeTeamData}>Clear</button>
             {/* tabs */}
             <div className="">
               {/* tabs List */}
@@ -482,7 +528,7 @@ const SideBar = () => {
       case "TeamScore":
         return <TeamScore />;
       default:
-        return;
+        return <Prematch />;
     }
   };
 
@@ -521,33 +567,58 @@ const SideBar = () => {
 
             <MenuItem
               onClick={() => handleMenuItemClick("Overview")}
-              style={{
-                backgroundColor:
-                  selectedMenuItem === "Overview" ? "#F3F3F3" : "inherit",
-                color: selectedMenuItem === "Overview" ? "black" : "#000000",
-              }}
+              disabled={teamHome.name === ""}
+              style={
+                !teamHome.name
+                  ? undefined
+                  : {
+                      backgroundColor:
+                        selectedMenuItem === "Overview" ? "#F3F3F3" : "inherit",
+                      color:
+                        selectedMenuItem === "Overview" ? "black" : "#000000",
+                      cursor: "pointer",
+                    }
+              }
             >
               Overview
             </MenuItem>
 
             <MenuItem
               onClick={() => handleMenuItemClick("Control")}
-              style={{
-                backgroundColor:
-                  selectedMenuItem === "Control" ? "#f3f3f3" : "inherit",
-                color: selectedMenuItem === "Control" ? "black" : "#000000",
-              }}
+              disabled={teamHome.name === ""}
+              style={
+                !teamHome.name
+                  ? undefined
+                  : {
+                      backgroundColor:
+                        selectedMenuItem === "Control" ? "#F3F3F3" : "inherit",
+                      color:
+                        selectedMenuItem === "Control" ? "black" : "#000000",
+                      cursor: "pointer",
+                    }
+              }
             >
               Control
             </MenuItem>
 
             <MenuItem
               onClick={() => handleMenuItemClick("Subtitution")}
-              style={{
-                backgroundColor:
-                  selectedMenuItem === "Subtitution" ? "#F3F3F3" : "inherit",
-                color: selectedMenuItem === "Subtitution" ? "black" : "#000000",
-              }}
+              disabled={teamHome.name === ""}
+              style={
+                !teamHome.name
+                  ? undefined
+                  : {
+                      backgroundColor:
+                        selectedMenuItem === "Subtitution"
+                          ? "#F3F3F3"
+                          : "inherit",
+                      color:
+                        selectedMenuItem === "Subtitution"
+                          ? "black"
+                          : "#000000",
+                      cursor: "pointer",
+                    }
+              }
             >
               Subtitution
             </MenuItem>

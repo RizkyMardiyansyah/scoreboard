@@ -1,5 +1,3 @@
-import SelectPlayerIn from "../SelectPlayerIn";
-import SelectPlayerInAway from "../SelectPlayerInAway";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
@@ -18,7 +16,6 @@ const SubtitutionNew = () => {
   const [selectedPlayerOutAway, setSelectedPlayerOutAway] = useState("");
   const [teamOptions, setTeamOptions] = useState([]);
   const [teamOptionsAway, setTeamOptionsAway] = useState([]);
-  const [buttons, setButtons] = useState([]);
   const { publicRuntimeConfig } = getConfig();
   const { IFRAME_URL } = publicRuntimeConfig;
 

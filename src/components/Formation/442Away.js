@@ -43,7 +43,7 @@ const Formation4231 = ({ players }) => {
         <div className={styles.parentContainer}>
           <div className={styles.footballPitch}>
             <div className={`${styles.player} ${styles.goalkeeper}`}>
-              <div className={styles.playerCircle}>GK</div>
+              <div className={styles.playerCircle}>{playerAway[0]?.no}</div>
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[0]?.name}</span>
               ) : (
@@ -51,7 +51,7 @@ const Formation4231 = ({ players }) => {
               )}
             </div>
             <div className={`${styles.player} ${styles.defender1}`}>
-              <div className={styles.playerCircle}>DL</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[0]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[1]?.name}</span>
               ) : (
@@ -59,7 +59,7 @@ const Formation4231 = ({ players }) => {
               )}
             </div>
             <div className={`${styles.player} ${styles.defender2}`}>
-              <div className={styles.playerCircle}>DC</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[2]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[2]?.name}</span>
               ) : (
@@ -67,7 +67,7 @@ const Formation4231 = ({ players }) => {
               )}
             </div>
             <div className={`${styles.player} ${styles.defender3}`}>
-              <div className={styles.playerCircle}>DC</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[3]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[3]?.name}</span>
               ) : (
@@ -75,7 +75,7 @@ const Formation4231 = ({ players }) => {
               )}
             </div>
             <div className={`${styles.player} ${styles.defender4}`}>
-              <div className={styles.playerCircle}>DR</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[4]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[4]?.name}</span>
               ) : (
@@ -84,7 +84,7 @@ const Formation4231 = ({ players }) => {
             </div>
 
             <div className={`${styles.player} ${styles.mid2}`}>
-              <div className={styles.playerCircle}>MC</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[5]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[5]?.name}</span>
               ) : (
@@ -92,7 +92,7 @@ const Formation4231 = ({ players }) => {
               )}
             </div>
             <div className={`${styles.player} ${styles.mid3}`}>
-              <div className={styles.playerCircle}>MC</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[6]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[6]?.name}</span>
               ) : (
@@ -101,7 +101,7 @@ const Formation4231 = ({ players }) => {
             </div>
 
             <div className={`${styles.player} ${styles.mid4}`}>
-              <div className={styles.playerCircle}>MR</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[7]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[7]?.name}</span>
               ) : (
@@ -110,7 +110,7 @@ const Formation4231 = ({ players }) => {
             </div>
 
             <div className={`${styles.player} ${styles.mid1}`}>
-              <div className={styles.playerCircle}>ML</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[8]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[8]?.name}</span>
               ) : (
@@ -118,7 +118,7 @@ const Formation4231 = ({ players }) => {
               )}
             </div>
             <div className={`${styles.player} ${styles.striker1}`}>
-              <div className={styles.playerCircle}>ST</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[9]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>{playerAway[9]?.name}</span>
               ) : (
@@ -127,7 +127,7 @@ const Formation4231 = ({ players }) => {
             </div>
 
             <div className={`${styles.player} ${styles.striker3}`}>
-              <div className={styles.playerCircle}>ST</div>{" "}
+              <div className={styles.playerCircle}>{playerAway[10]?.no}</div>{" "}
               {playerAway.length > 0 ? (
                 <span className={styles.playerName}>
                   {playerAway[10]?.name}

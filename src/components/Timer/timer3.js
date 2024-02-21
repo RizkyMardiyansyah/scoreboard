@@ -61,7 +61,6 @@ const Stopwatch = () => {
         id="reset-btn"
         style={{
           fontSize: "70px",
-          opacity: parseInt(stopwatchTime) === 5400 ? 0 : 1,
         }}
       >
         <span className="text-white">{formatTime(time)}</span>

@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Timer from "./Timer/timer3";
+import DefaultLogo from "../assets/defaultLogo.png";
 
 export default function Scoreboard() {
   const [team, setTeam] = useState(null);
@@ -59,13 +60,16 @@ export default function Scoreboard() {
         <div className="flex justify-evenly items-center">
           <div className="text-white text-center hometeam ">
             <Image
-              src={team.logo}
+              src={team.logo || DefaultLogo}
               width={200}
               height={200}
               alt="Home Team Logo"
             />
             <div>
-              <p className="customFont text-xl mt-3">{team.name}</p>
+              <p className="customFont text-xl mt-3">
+                {" "}
+                {team.name ? team.name : "Please Select Team"}
+              </p>
               <p className="text-7xl customFont mt-5 ">{score.home}</p>
             </div>
           </div>
@@ -74,28 +78,25 @@ export default function Scoreboard() {
             <p className="text-xl">VS</p>
             {stopwatchTime && parseInt(stopwatchTime) < 2700 ? (
               <p className="mt-5">First Half</p>
-            ) : stopwatchTime && parseInt(stopwatchTime) === 2700 ? (
-              <p className="mt-5">Half Time</p>
-            ) : stopwatchTime && parseInt(stopwatchTime) < 5400 ? (
+            ) : parseInt(stopwatchTime) >= 2700 &&
+              parseInt(stopwatchTime) <= 5400 ? (
               <p className="mt-5">Second Half</p>
-            ) : stopwatchTime && parseInt(stopwatchTime) === 5400 ? (
-              <p className="mt-5">Full Time</p>
             ) : null}
-            <Timer
-              className={parseInt(stopwatchTime) === 5400 ? "opacity-0" : ""}
-            />
+            <Timer />
           </div>
 
           <div className="text-white text-center awayteam">
             <Image
-              src={teamAway.logo}
+              src={teamAway.logo || DefaultLogo}
               width={200}
               height={200}
               alt="Away Team Logo"
             />
 
             <div>
-              <p className="customFont text-xl mt-3"> {teamAway.name} </p>
+              <p className="customFont text-xl mt-3">
+                {teamAway.name ? teamAway.name : "Please Select Team"}
+              </p>
               <p className="text-7xl customFont mt-5 ">{score.away}</p>
             </div>
           </div>

@@ -99,23 +99,59 @@ const Prematch1 = () => {
     updatedPlayerHome[index].name = e.target.value;
     setPlayerHome(updatedPlayerHome);
   };
+
+  const handleNoChange = (e, index) => {
+    const { value } = e.target;
+    setPlayerHome((prevPlayerHome) => {
+      const updatedPlayerHome = [...prevPlayerHome];
+      updatedPlayerHome[index] = { ...updatedPlayerHome[index], no: value };
+      return updatedPlayerHome;
+    });
+  };
+
   const newPlayer = {
     name: "",
     no: "",
 
     photo: null, // Assuming you want to upload a photo
   };
-  const handleClearAllForm = () => {
-    // Reset the state values for all players in the array to their initial state or empty values
-    setPlayerHome((prevPlayerHome) =>
-      prevPlayerHome.map((player) => ({
-        ...player,
-        name: "",
-        no: "",
-        photo: null,
-      }))
-    );
+  const handleClearAllForm = async () => {
+    try {
+      // Create an array to store all the promises for clearing photos
+      const clearPhotoPromises = [];
+
+      // Iterate over each player in the array
+      const updatedPlayerHome = await Promise.all(
+        playerHome.map(async (player) => {
+          // Clear the photo on the server if it exists
+          if (player.photo) {
+            const clearPhotoPromise = axios.put(
+              `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photoDelete`
+            );
+            clearPhotoPromises.push(clearPhotoPromise);
+          }
+          // Reset the player data to empty values
+          return {
+            ...player,
+            name: "",
+            no: "",
+            photo: null,
+          };
+        })
+      );
+
+      // Wait for all photo deletion promises to resolve
+      await Promise.all(clearPhotoPromises);
+
+      // Update the state with the new array of players
+      setPlayerHome(updatedPlayerHome);
+
+      console.log("All player data cleared successfully!");
+    } catch (error) {
+      console.error("Error clearing player data:", error);
+    }
   };
+
   const handleSubmit = async () => {
     // Show SweetAlert confirmation popup
     const result = await Swal.fire({
@@ -137,20 +173,6 @@ const Prematch1 = () => {
           );
 
           // Update player photo if it exists
-          if (photo) {
-            const formData = new FormData();
-            formData.append("file", photo);
-
-            await axios.put(
-              `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}/photo`,
-              formData,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-            );
-          }
         });
 
         await Promise.all(promises);
@@ -376,13 +398,14 @@ const Prematch1 = () => {
         console.error("Error handling file change:", error);
       }
     };
+
     const handleClearFormClick = (index) => {
       setPlayerHome((prevPlayerHome) => {
         // Create a new array with the same length as playerHome
         const newPlayerHome = prevPlayerHome.map((player, i) => {
           if (i === index) {
             // Reset the player data for the clicked row, including clearing the photo
-            return { ...player, photo: null, name: "", no: "0" };
+            return { ...player, photo: null, name: "", no: "" };
           }
           return player;
         });
@@ -391,18 +414,17 @@ const Prematch1 = () => {
         return newPlayerHome;
       });
 
-      // Also, update the server-side data to remove the photo information
+      // Also, directly delete the photo from the server
       const playerId = playerHome[index]._id;
       axios
         .put(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photo`,
-          { photo: null }
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photoDelete`
         )
         .then(() => {
-          console.log("Server photo data cleared successfully!");
+          console.log("Server photo deleted successfully!");
         })
         .catch((error) => {
-          console.error("Error clearing server photo data:", error);
+          console.error("Error deleting server photo:", error);
         });
     };
 
@@ -413,6 +435,7 @@ const Prematch1 = () => {
             <tr className="">
               <th className="px-4 py-2">Position</th>
               <th className="px-4 py-2">Player Name</th>
+              <th className="px-4 py-2">Player Number</th>
               <th className="px-4 py-2">Photo</th>
               <th className="px-4 py-2">Delete</th>
             </tr>
@@ -430,7 +453,18 @@ const Prematch1 = () => {
                       type="text"
                       value={player.name}
                       onChange={(e) => handleInputChange(e, index)}
-                      className="rounded-md border-0 py-1.5 pl-7 pr-20 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="rounded-md border-0 py-1.5 pl-7 text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </td>
+
+                <td className="px-4 ">
+                  <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
+                    <input
+                      type="text"
+                      value={player.no}
+                      onChange={(e) => handleNoChange(e, index)}
+                      className="rounded-md border-0 py-1.5 pl-7  text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </td>
@@ -440,7 +474,9 @@ const Prematch1 = () => {
                     <>
                       <Image
                         key={player.photo ? player.photo : "default"}
-                        src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
+                        src={`${
+                          process.env.NEXT_PUBLIC_DATABASE_URL
+                        }/playerHome/${player._id}/photo?${Math.random()}`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
@@ -602,7 +638,7 @@ const Prematch1 = () => {
         const newPlayerHome = prevPlayerHome.map((player, i) => {
           if (i === index) {
             // Reset the player data for the clicked row, including clearing the photo
-            return { ...player, photo: null, name: "", no: "0" };
+            return { ...player, photo: null, name: "", no: "" };
           }
           return player;
         });
@@ -611,18 +647,17 @@ const Prematch1 = () => {
         return newPlayerHome;
       });
 
-      // Also, update the server-side data to remove the photo information
+      // Also, directly delete the photo from the server
       const playerId = playerHome[index]._id;
       axios
         .put(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photo`,
-          { photo: null }
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photoDelete`
         )
         .then(() => {
-          console.log("Server photo data cleared successfully!");
+          console.log("Server photo deleted successfully!");
         })
         .catch((error) => {
-          console.error("Error clearing server photo data:", error);
+          console.error("Error deleting server photo:", error);
         });
     };
 
@@ -633,6 +668,7 @@ const Prematch1 = () => {
             <tr className="">
               <th className="px-4 py-2">Position</th>
               <th className="px-4 py-2">Player Name</th>
+              <th className="px-4 py-2">Player Number</th>
               <th className="px-4 py-2">Photo</th>
               <th className="px-4 py-2">Delete</th>
             </tr>
@@ -655,12 +691,25 @@ const Prematch1 = () => {
                   </div>
                 </td>
 
+                <td className="px-4 ">
+                  <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
+                    <input
+                      type="text"
+                      value={player.no}
+                      onChange={(e) => handleNoChange(e, index)}
+                      className="rounded-md border-0 py-1.5 pl-7  text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </td>
+
                 <td className="px-4 py-2">
                   {player.photo ? (
                     <>
                       <Image
                         key={player.photo ? player.photo : "default"}
-                        src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
+                        src={`${
+                          process.env.NEXT_PUBLIC_DATABASE_URL
+                        }/playerHome/${player._id}/photo?${Math.random()}`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
@@ -822,7 +871,7 @@ const Prematch1 = () => {
         const newPlayerHome = prevPlayerHome.map((player, i) => {
           if (i === index) {
             // Reset the player data for the clicked row, including clearing the photo
-            return { ...player, photo: null, name: "", no: "0" };
+            return { ...player, photo: null, name: "", no: "" };
           }
           return player;
         });
@@ -831,18 +880,17 @@ const Prematch1 = () => {
         return newPlayerHome;
       });
 
-      // Also, update the server-side data to remove the photo information
+      // Also, directly delete the photo from the server
       const playerId = playerHome[index]._id;
       axios
         .put(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photo`,
-          { photo: null }
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photoDelete`
         )
         .then(() => {
-          console.log("Server photo data cleared successfully!");
+          console.log("Server photo deleted successfully!");
         })
         .catch((error) => {
-          console.error("Error clearing server photo data:", error);
+          console.error("Error deleting server photo:", error);
         });
     };
 
@@ -853,6 +901,7 @@ const Prematch1 = () => {
             <tr className="">
               <th className="px-4 py-2">Position</th>
               <th className="px-4 py-2">Player Name</th>
+              <th className="px-4 py-2">Player Number</th>
               <th className="px-4 py-2">Photo</th>
               <th className="px-4 py-2">Delete</th>
             </tr>
@@ -875,12 +924,25 @@ const Prematch1 = () => {
                   </div>
                 </td>
 
+                <td className="px-4 ">
+                  <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
+                    <input
+                      type="text"
+                      value={player.no}
+                      onChange={(e) => handleNoChange(e, index)}
+                      className="rounded-md border-0 py-1.5 pl-7  text-black ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </td>
+
                 <td className="px-4 py-2">
                   {player.photo ? (
                     <>
                       <Image
                         key={player.photo ? player.photo : "default"}
-                        src={`${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photo`}
+                        src={`${
+                          process.env.NEXT_PUBLIC_DATABASE_URL
+                        }/playerHome/${player._id}/photo?${Math.random()}`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
@@ -970,7 +1032,7 @@ const Prematch1 = () => {
           </div>
 
           <div className="flex">
-            <div className="px-6 py-6 flex-grow">
+            <div className="px-6 py-6 flex-grow w-2/5">
               <div className="border rounded-md p-5 ">
                 <h1 className="font-semibold text-xl">Home Team</h1>
                 <div className="mt-4">

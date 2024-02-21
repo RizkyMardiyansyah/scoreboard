@@ -141,34 +141,8 @@ const PremathFinal = () => {
 
     if (result.isConfirmed) {
       try {
-        const promises = playerHome.map(async ({ _id, name, no, photo }) => {
-          // Update player data
-          await axios.put(
-            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}`,
-            { name, no }
-          );
-
-          // Update player photo if it exists
-          if (photo) {
-            const formData = new FormData();
-            formData.append("file", photo);
-
-            await axios.put(
-              `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}/photo`,
-              formData,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              }
-            );
-          }
-        });
-
-        await Promise.all(promises);
-
         Swal.fire({
-          title: "All players updated successfully!",
+          title: "Complete",
           icon: "success",
         });
         console.log("All players updated successfully!");
@@ -901,7 +875,7 @@ const PremathFinal = () => {
                 className="bg-[#5786E3] hover:bg-blue-600 text-white font-bold py-2 px-4 border rounded w-36"
                 onClick={handleSubmit}
               >
-                Next
+                Finish
               </button>
             </div>
           </div>

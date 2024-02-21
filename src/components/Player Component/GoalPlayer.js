@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import Swal from "sweetalert2";
 
 const MyComponent = () => {
   const [buttons, setButtons] = useState([]);
@@ -80,139 +81,165 @@ const MyComponent = () => {
   };
 
   const handleButtonClick = async (buttonData) => {
-    localStorage.setItem("showComponent", "3");
+    // Show SweetAlert confirmation popup
+    const result = await Swal.fire({
+      title: "Confirmation",
+      text: "Are you sure you want to perform this action?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "Cancel",
+    });
 
-    try {
-      // Try fetching playerHome URL
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`
+    // Check if the user confirmed the action
+    if (result.isConfirmed) {
+      localStorage.setItem("showComponent", "3");
+
+      try {
+        // Try fetching playerHome URL
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`
+        );
+
+        // If successful (status code 200), use playerHome URL
+        const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`;
+        localStorage.setItem("playerPhotoUrl", photoUrl);
+      } catch (error) {
+        // If server responds with 404 or any other error, use playerAway URL
+        const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${buttonData._id}/photo`;
+        localStorage.setItem("playerPhotoUrl", photoUrl);
+      }
+
+      localStorage.setItem("clickedButton", buttonData.name);
+
+      // HOME
+      let messagesHome = localStorage.getItem("messagesHome");
+      messagesHome = messagesHome ? JSON.parse(messagesHome) : [];
+      messagesHome.push(buttonData.name);
+      localStorage.setItem("messagesHome", JSON.stringify(messagesHome));
+      let minutesHome = localStorage.getItem("minutesHome");
+      minutesHome = minutesHome ? JSON.parse(minutesHome) : [];
+
+      // AWAY
+      let messagesAway = localStorage.getItem("messagesAway");
+      messagesAway = messagesAway ? JSON.parse(messagesAway) : [];
+
+      localStorage.setItem("messagesAway", JSON.stringify(messagesAway));
+      let minutesAway = localStorage.getItem("minutesAway");
+      minutesAway = minutesAway ? JSON.parse(minutesAway) : [];
+
+      const stopwatchTimeSeconds = parseInt(
+        localStorage.getItem("stopwatchTime")
       );
+      const newMinute = Math.floor(stopwatchTimeSeconds / 60);
 
-      // If successful (status code 200), use playerHome URL
-      const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`;
-      localStorage.setItem("playerPhotoUrl", photoUrl);
-    } catch (error) {
-      // If server responds with 404 or any other error, use playerAway URL
-      const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${buttonData._id}/photo`;
-      localStorage.setItem("playerPhotoUrl", photoUrl);
-    }
+      // Push the new minute to the minutesHome array
+      minutesHome.push(`${newMinute}'`);
 
-    localStorage.setItem("clickedButton", buttonData.name);
+      // Save the updated minutesHome array to localStorage
+      localStorage.setItem("minutesHome", JSON.stringify(minutesHome));
 
-    // HOME
-    let messagesHome = localStorage.getItem("messagesHome");
-    messagesHome = messagesHome ? JSON.parse(messagesHome) : [];
-    messagesHome.push(buttonData.name);
-    localStorage.setItem("messagesHome", JSON.stringify(messagesHome));
-    let minutesHome = localStorage.getItem("minutesHome");
-    minutesHome = minutesHome ? JSON.parse(minutesHome) : [];
+      try {
+        // Send POST request with updated messagesHome array
+        await axios.put(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/score/65b3543eba1432d9d3e02d56`,
+          {
+            messagesHome: messagesHome,
+            minutesHome: minutesHome,
+            messagesAway: messagesAway,
+            minutesAway: minutesAway,
+          }
+        );
 
-    // AWAY
-    let messagesAway = localStorage.getItem("messagesAway");
-    messagesAway = messagesAway ? JSON.parse(messagesAway) : [];
-
-    localStorage.setItem("messagesAway", JSON.stringify(messagesAway));
-    let minutesAway = localStorage.getItem("minutesAway");
-    minutesAway = minutesAway ? JSON.parse(minutesAway) : [];
-
-    const stopwatchTimeSeconds = parseInt(
-      localStorage.getItem("stopwatchTime")
-    );
-    const newMinute = Math.floor(stopwatchTimeSeconds / 60);
-
-    // Push the new minute to the minutesHome array
-    minutesHome.push(newMinute);
-
-    // Save the updated minutesHome array to localStorage
-    localStorage.setItem("minutesHome", JSON.stringify(minutesHome));
-
-    try {
-      // Send POST request with updated messagesHome array
-      await axios.put(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/score/65b3543eba1432d9d3e02d56`,
-        {
-          messagesHome: messagesHome,
-          minutesHome: minutesHome,
-          messagesAway: messagesAway,
-          minutesAway: minutesAway,
-        }
-      );
-
-      console.log("Data posted successfully");
-    } catch (error) {
-      console.error("Error posting data:", error.message);
+        console.log("Data posted successfully");
+      } catch (error) {
+        console.error("Error posting data:", error.message);
+      }
     }
   };
 
   const handleButtonClickAway = async (buttonData) => {
-    localStorage.setItem("showComponent", "3");
+    // Show SweetAlert confirmation popup
+    const result = await Swal.fire({
+      title: "Confirmation",
+      text: "Are you sure you want to proceed?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
 
-    try {
-      // Try fetching playerHome URL
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`
+    // Check if the user confirmed
+    if (result.isConfirmed) {
+      localStorage.setItem("showComponent", "3");
+
+      try {
+        // Try fetching playerHome URL
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`
+        );
+
+        // If successful (status code 200), use playerHome URL
+        const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`;
+        localStorage.setItem("playerPhotoUrl", photoUrl);
+      } catch (error) {
+        // If server responds with 404 or any other error, use playerAway URL
+        const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${buttonData._id}/photo`;
+        localStorage.setItem("playerPhotoUrl", photoUrl);
+      }
+
+      localStorage.setItem("clickedButton", buttonData.name);
+
+      // HOME
+      let messagesHome = localStorage.getItem("messagesHome");
+      messagesHome = messagesHome ? JSON.parse(messagesHome) : [];
+
+      localStorage.setItem("messagesHome", JSON.stringify(messagesHome));
+      let minutesHome = localStorage.getItem("minutesHome");
+      minutesHome = minutesHome ? JSON.parse(minutesHome) : [];
+
+      // Retrieve existing messagesHome array or initialize an empty array
+      let messagesAway = localStorage.getItem("messagesAway");
+      messagesAway = messagesAway ? JSON.parse(messagesAway) : [];
+
+      // Push the new clickedButton to the messagesAway array
+      messagesAway.push(buttonData.name);
+
+      // Save the updated messagesAway array to localStorage
+      localStorage.setItem("messagesAway", JSON.stringify(messagesAway));
+
+      // minutes
+      let minutesAway = localStorage.getItem("minutesAway");
+      minutesAway = minutesAway ? JSON.parse(minutesAway) : [];
+
+      // Get stopwatchTimeSeconds and convert to minutes
+      const stopwatchTimeSeconds = parseInt(
+        localStorage.getItem("stopwatchTime")
       );
+      const newMinute = Math.floor(stopwatchTimeSeconds / 60);
 
-      // If successful (status code 200), use playerHome URL
-      const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${buttonData._id}/photo`;
-      localStorage.setItem("playerPhotoUrl", photoUrl);
-    } catch (error) {
-      // If server responds with 404 or any other error, use playerAway URL
-      const photoUrl = `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerAway/${buttonData._id}/photo`;
-      localStorage.setItem("playerPhotoUrl", photoUrl);
-    }
+      // Push the new minute to the minutesAway array
+      minutesAway.push(`${newMinute}'`);
 
-    localStorage.setItem("clickedButton", buttonData.name);
+      // Save the updated minutesAway array to localStorage
+      localStorage.setItem("minutesAway", JSON.stringify(minutesAway));
 
-    // HOME
-    let messagesHome = localStorage.getItem("messagesHome");
-    messagesHome = messagesHome ? JSON.parse(messagesHome) : [];
+      try {
+        // Send POST request with updated messagesAway array
+        await axios.put(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/score/65b3543eba1432d9d3e02d56`,
+          {
+            messagesHome: messagesHome,
+            minutesHome: minutesHome,
+            messagesAway: messagesAway,
+            minutesAway: minutesAway,
+          }
+        );
 
-    localStorage.setItem("messagesHome", JSON.stringify(messagesHome));
-    let minutesHome = localStorage.getItem("minutesHome");
-    minutesHome = minutesHome ? JSON.parse(minutesHome) : [];
-
-    // Retrieve existing messagesHome array or initialize an empty array
-    let messagesAway = localStorage.getItem("messagesAway");
-    messagesAway = messagesAway ? JSON.parse(messagesAway) : [];
-
-    // Push the new clickedButton to the messagesAway array
-    messagesAway.push(buttonData.name);
-
-    // Save the updated messagesAway array to localStorage
-    localStorage.setItem("messagesAway", JSON.stringify(messagesAway));
-
-    // minutes
-    let minutesAway = localStorage.getItem("minutesAway");
-    minutesAway = minutesAway ? JSON.parse(minutesAway) : [];
-
-    // Get stopwatchTimeSeconds and convert to minutes
-    const stopwatchTimeSeconds = parseInt(
-      localStorage.getItem("stopwatchTime")
-    );
-    const newMinute = Math.floor(stopwatchTimeSeconds / 60);
-
-    // Push the new minute to the minutesAway array
-    minutesAway.push(newMinute);
-
-    // Save the updated minutesAway array to localStorage
-    localStorage.setItem("minutesAway", JSON.stringify(minutesAway));
-
-    try {
-      // Send POST request with updated messagesAway array
-      await axios.put(
-        `${process.env.NEXT_PUBLIC_DATABASE_URL}/score/65b3543eba1432d9d3e02d56`,
-        {
-          messagesHome: messagesHome,
-          minutesHome: minutesHome,
-          messagesAway: messagesAway,
-          minutesAway: minutesAway,
-        }
-      );
-
-      console.log("Data posted successfully");
-    } catch (error) {
-      console.error("Error posting data:", error.message);
+        console.log("Data posted successfully");
+      } catch (error) {
+        console.error("Error posting data:", error.message);
+      }
     }
   };
 
@@ -245,7 +272,7 @@ const MyComponent = () => {
           {teamHome.length > 0 ? (
             <div className="text-black text-xl flex justify-center items-center h-16">
               <div className="mt-auto mb-auto">
-                <img src={teamHome[0].logo} width={50} height={50} />
+                <Image src={teamHome[0].logo} width={50} height={50} />
               </div>
               {teamHome[0].name}
             </div>
