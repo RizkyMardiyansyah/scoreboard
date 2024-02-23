@@ -227,7 +227,7 @@ const SideBar = () => {
                 </div>
               </div>
             </div>
-            <button onClick={clearHomeTeamData}>Clear</button>
+            {/* <button onClick={clearHomeTeamData}>Clear</button> */}
             {/* tabs */}
             <div className="">
               {/* tabs List */}
