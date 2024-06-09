@@ -6,7 +6,7 @@ const poppins = Poppins({ weight: "400", subsets: ["latin"] });
 function MyApp({ Component, pageProps }) {
   return (
     <main className={poppins.className}>
-      <ClerkProvider {...pageProps}>
+      <ClerkProvider {...pageProps} publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}>
         <Component {...pageProps} />
       </ClerkProvider>
     </main>

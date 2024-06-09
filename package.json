@@ -25,7 +25,7 @@
     "react-pro-sidebar": "^1.1.0-alpha.2",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.21.1",
-    "sweetalert2": "^11.10.2",
+    "sweetalert2": "^11.6.13",
     "universal-cookie": "^7.0.1"
   },
   "devDependencies": {
