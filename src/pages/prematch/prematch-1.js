@@ -479,9 +479,7 @@ const Prematch1 = () => {
                     <>
                       <Image
                         key={player.photo ? player.photo : "default"}
-                        src={`${
-                          process.env.NEXT_PUBLIC_DATABASE_URL
-                        }/playerHome/${player._id}/photo?${Date.now()}`}
+                      src={`https://i.imghippo.com/files/playerHome/${player._id}/photo?${Math.random()}`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
@@ -712,9 +710,7 @@ const Prematch1 = () => {
                     <>
                       <Image
                         key={player.photo ? player.photo : "default"}
-                        src={`${
-                          process.env.NEXT_PUBLIC_DATABASE_URL
-                        }/playerHome/${player._id}/photo?${Math.random()}`}
+                       src={`https://i.imghippo.com/files/playerHome/${player._id}/photo?${Math.random()}`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
@@ -945,9 +941,7 @@ const Prematch1 = () => {
                     <>
                       <Image
                         key={player.photo ? player.photo : "default"}
-                        src={`${
-                          process.env.NEXT_PUBLIC_DATABASE_URL
-                        }/playerHome/${player._id}/photo?${Math.random()}`}
+                       src={`https://i.imghippo.com/files/playerHome/${player._id}/photo?${Math.random()}`}
                         alt={`Player ${player.name}`}
                         width={45}
                         height={45}
