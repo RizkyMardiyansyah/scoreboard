@@ -13,7 +13,7 @@ const Control = () => {
       ? localStorage.setItem("showComponent", "3")
       : localStorage.setItem("showComponent", "1");
   };
-  const toggleComponent1 = () => {
+  const   toggleComponent1 = () => {
     localStorage.getItem("showComponent") === "1"
       ? localStorage.setItem("showComponent", "1")
       : localStorage.setItem("showComponent", "1");
