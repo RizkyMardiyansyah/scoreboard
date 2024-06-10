@@ -3,7 +3,6 @@ const nextConfig = {
   images: {
     domains: [
       "i.imghippo.com",
-      "www.imghippo.com",
       "localhost",
       "3.0.18.58",
       "54.179.147.74",
