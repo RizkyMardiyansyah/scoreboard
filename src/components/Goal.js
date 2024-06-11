@@ -16,7 +16,16 @@ const Goal = () => {
           </div>
           <div>
             <div className="text-white text-center">{clickedButton}</div>
-            <Image src={clickedButtonPhoto} width={200} height={200} />
+            <Image
+                        key={player.photo ? player.photo : "default"}
+                        src={`${
+                          process.env.NEXT_PUBLIC_DATABASE_URL
+                        }/playerAway/${player._id}/photo?${Math.random()}`}
+                        alt={`Player ${player.name}`}
+                        width={45}
+                        height={45}
+                        className="flex items-center justify-center"
+                      />
           </div>
         </div>
       </div>
