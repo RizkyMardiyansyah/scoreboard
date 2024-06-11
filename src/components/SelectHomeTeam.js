@@ -61,17 +61,30 @@ const DropdownComponent = () => {
   return (
     <div>
       <h1>Home Team</h1>
-      <select
-        onChange={handleSelectChange}
-        className="w-full border p-3 rounded-lg"
-      >
-        <option value="">Select home team</option>
-        {teamOptions.map((team) => (
-          <option key={team.id} value={team.name}>
-            {team.name}
-          </option>
-        ))}
-      </select>
+      {teamOptions.length > 0 ? (
+          <select
+              onChange={handleSelectChange}
+              className="w-full border p-3 rounded-lg"
+          >
+            {teamOptions.map((team) => (
+                <option key={team.id} value={team.name}>
+                  {team.name}
+                </option>
+            ))}
+          </select>
+      ) : (
+          <select
+              onChange={handleSelectChange}
+              className="w-full border p-3 rounded-lg"
+          >
+            <option value="">Select a team</option>
+            {teamOptions.map((team) => (
+                <option key={team.id} value={team.name}>
+                  {team.name}
+                </option>
+            ))}
+          </select>
+      )}
     </div>
   );
 };
