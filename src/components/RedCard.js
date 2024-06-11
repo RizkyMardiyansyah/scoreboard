@@ -16,7 +16,7 @@ const RedCard = () => {
           </div>
           <div>
             <div className="text-white text-center">{clickedButton}</div>
-            <Image src={clickedButtonPhoto} width={250} height={250} />
+            <img src={clickedButtonPhoto} width={250} height={250} />
           </div>
         </div>
       </div>

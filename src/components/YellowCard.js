@@ -33,7 +33,7 @@ const YellowCard = () => {
           </div>
           <div>
             <div className="text-white text-center">{clickedButton}</div>
-            <Image src={clickedButtonPhoto} width={200} height={200} />
+            <img src={clickedButtonPhoto} width={200} height={200} />
           </div>
         </div>
       </div>
