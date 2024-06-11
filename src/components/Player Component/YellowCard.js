@@ -76,7 +76,7 @@ const MyComponent = () => {
           {teamHome.length > 0 ? (
             <div className="text-black text-xl flex justify-center items-center h-16">
               <div className="mt-auto mb-auto">
-                <img src={teamHome[0].logo} width={50} height={50} />
+                <Image src={teamHome[0].logo} width={50} height={50} />
               </div>
               {teamHome[0].name}
             </div>
@@ -107,8 +107,9 @@ const MyComponent = () => {
         <div className="box w-full border border-gray-300">
           {teamAway.length > 0 ? (
             <div className="text-black text-xl flex justify-center items-center h-16">
+              
               <div className="mt-auto mb-auto">
-                <img src={teamAway[0].logo} width={50} height={50} />
+                <Image src={teamAway  [0].logo} width={50} height={50} />
               </div>
               {teamAway[0].name}
             </div>

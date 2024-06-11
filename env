@@ -1,4 +1,4 @@
-NEXT_PUBLIC_DATABASE_URL = http://localhost:8000
+NEXT_PUBLIC_DATABASE_URL = https://env-1388548.user.cloudjkt01.com  
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = pk_test_cGVhY2VmdWwtbmV3dC0zMi5jbGVyay5hY2NvdW50cy5kZXYk
 CLERK_SECRET_KEY = sk_test_y3TmZv7MV0BnxK5u8DNLvEdrTkWHwvQmPpcNYxidQo
 
