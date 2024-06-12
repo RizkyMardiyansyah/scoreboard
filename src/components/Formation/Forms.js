@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 
-const Forms = (positions, playerHome, setPlayerHome) => {
+const Forms = (positions, playerHome, setPlayerHome, url) => {
 
     const getPlayerPosition = (index) => {
 
@@ -44,7 +44,7 @@ const Forms = (positions, playerHome, setPlayerHome) => {
             try {
                 // Delete player from the API
                 await axios.delete(
-                    `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}`
+                    `${process.env.NEXT_PUBLIC_DATABASE_URL}/${url}/${playerId}`
                 );
 
                 // Update state to remove the deleted player

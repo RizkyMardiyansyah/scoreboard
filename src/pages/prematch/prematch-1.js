@@ -26,6 +26,7 @@ const Prematch1 = () => {
   const router = useRouter();
   const [imageKey, setImageKey] = useState(0);
 
+  const url = 'playerHome';
   const fetchData = async () => {
     try {
       // Fetch home team data
@@ -296,7 +297,7 @@ const Prematch1 = () => {
       "4-3-3": ["GK", "LB", "CB", "CB", "RB", "DM", "CM", "CM", "LW", "RW", "CF", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"]
     };
 
-    return Forms(formationMap[selectedFormation] || [], playerHome, setPlayerHome);
+    return Forms(formationMap[selectedFormation] || [], playerHome, setPlayerHome, url);
 
   };
 
