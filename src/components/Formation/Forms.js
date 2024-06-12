@@ -6,10 +6,25 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTrash} from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 
-const Forms = (positions, playerHome) => {
+const Forms = (positions, playerHome, setPlayerHome) => {
+
     const getPlayerPosition = (index) => {
 
         return positions[index] || "";
+    };
+    const handleInputChange = (e, index) => {
+        const updatedPlayerHome = [...playerHome];
+        updatedPlayerHome[index].name = e.target.value;
+        setPlayerHome(updatedPlayerHome);
+    };
+
+    const handleNoChange = (e, index) => {
+        const {value} = e.target;
+        setPlayerHome((prevPlayerHome) => {
+            const updatedPlayerHome = [...prevPlayerHome];
+            updatedPlayerHome[index] = {...updatedPlayerHome[index], no: value};
+            return updatedPlayerHome;
+        });
     };
 
     const handleDeleteClick = async (playerId) => {
@@ -69,6 +84,7 @@ const Forms = (positions, playerHome) => {
             // Prepare FormData to send the file to the server
             const formData = new FormData();
             formData.append("file", file);
+            console.log(formData.file);
 
             // Make a PUT request to update the player's photo on the server
             await axios.put(
@@ -87,20 +103,18 @@ const Forms = (positions, playerHome) => {
 
     const handleClearFormClick = (index) => {
         setPlayerHome((prevPlayerHome) => {
-            // Create a new array with the same length as playerHome
             const newPlayerHome = prevPlayerHome.map((player, i) => {
                 if (i === index) {
                     // Reset the player data for the clicked row, including clearing the photo
-                    return { ...player, photo: null, name: "", no: "" };
+                    return {...player, photo: null, name: "", no: ""};
                 }
                 return player;
             });
 
+
             // Return the new array to update the state
             return newPlayerHome;
         });
-
-        // Also, directly delete the photo from the server
         const playerId = playerHome[index]._id;
         axios
             .put(
@@ -116,7 +130,7 @@ const Forms = (positions, playerHome) => {
 
     // transform image to data URI from buffer
     const transformedPlayerHome = playerHome.map(player => {
-        if(!player.photo)  return player
+        if (!player.photo) return player
         const data = new Buffer.from(player.photo.data).toString('base64')
         return {
             ...player,
@@ -205,7 +219,7 @@ const Forms = (positions, playerHome) => {
                                     className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
                                     onClick={() => handleDeleteClick(player._id)}
                                 >
-                                    <FontAwesomeIcon icon={faTrash} />
+                                    <FontAwesomeIcon icon={faTrash}/>
                                 </button>
                             )}
                         </td>
