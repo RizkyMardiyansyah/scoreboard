@@ -9,6 +9,9 @@ import Control from "../../components/Sidebar Content/Control";
 import {useRouter} from "next/router";
 import Link from "next/link";
 import Forms from "../../components/Formation/Forms";
+import Upload from "../../assets/UploadSimple.png";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
 
 
 const Prematch1 = () => {
@@ -27,14 +30,14 @@ const Prematch1 = () => {
   const [imageKey, setImageKey] = useState(0);
 
   const url = 'playerHome';
+
   const fetchData = async () => {
     try {
-      // Fetch home team data
-      const homeResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`
+      const teamResponse = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/team`
       );
-      setHome(homeResponse.data[0]);
-
+      //
+      setHome(teamResponse.data);
       // Fetch coach data
       const coachResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`
@@ -44,7 +47,6 @@ const Prematch1 = () => {
       console.error("Error fetching data:", error);
     }
   };
-
   useEffect(() => {
     // Fetch initial data when the component mounts
     fetchData();
@@ -97,27 +99,6 @@ const Prematch1 = () => {
   };
 
   //  formation
-  const handleInputChange = (e, index) => {
-    const updatedPlayerHome = [...playerHome];
-    updatedPlayerHome[index].name = e.target.value;
-    setPlayerHome(updatedPlayerHome);
-  };
-
-  const handleNoChange = (e, index) => {
-    const { value } = e.target;
-    setPlayerHome((prevPlayerHome) => {
-      const updatedPlayerHome = [...prevPlayerHome];
-      updatedPlayerHome[index] = { ...updatedPlayerHome[index], no: value };
-      return updatedPlayerHome;
-    });
-  };
-
-  const newPlayer = {
-    name: "",
-    no: "",
-
-    photo: null, // Assuming you want to upload a photo
-  };
   const handleClearAllForm = async () => {
     try {
       // Create an array to store all the promises for clearing photos
@@ -300,16 +281,13 @@ const Prematch1 = () => {
     return Forms(formationMap[selectedFormation] || [], playerHome, setPlayerHome, url);
 
   };
-
-
-
   return (
       <>
         <div className="py-4">
-          <div className="border-b flex ">
-            <div className="mb-4 font-bold text-xl flex">
+          <div className="flex border-b ">
+            <div className="flex mb-4 text-xl font-bold">
               <Link href="/admin">
-                <div className="ml-4 border p-1 mr-4 rounded-md">
+                <div className="p-1 ml-4 mr-4 border rounded-md">
                   <Image src={Back} width={20} height={20} />
                 </div>
               </Link>
@@ -319,14 +297,14 @@ const Prematch1 = () => {
 
           <div className="px-3 py-6 ">
             <div className="flex">
-              <div className="px-6 flex-col ">
+              <div className="flex-col px-6 ">
                 <h1 className="text-xl font-bold">New Match</h1>
                 <h1>
                   Please provide complete and accurate information for all
                   required fields.
                 </h1>
               </div>
-              <div className="flex justify-end flex-grow h-10  px-6">
+              <div className="flex justify-end flex-grow h-10 px-6">
                 <button
                     className="bg-[#5786E3] hover:bg-blue-600 text-white font-bold py-2 px-4 border border-yellow-700 rounded w-36"
                     onClick={handleSubmit}
@@ -337,9 +315,9 @@ const Prematch1 = () => {
             </div>
 
             <div className="flex">
-              <div className="px-6 py-6 flex-grow w-2/5">
-                <div className="border rounded-md p-5 ">
-                  <h1 className="font-semibold text-xl">Home Team</h1>
+              <div className="flex-grow w-2/5 px-6 py-6">
+                <div className="p-5 border rounded-md ">
+                  <h1 className="text-xl font-semibold">Home Team</h1>
                   <div className="mt-4">
                     <h1 className="font-semibold">Select Team</h1>
                     <SelectHomeTeam />
@@ -372,51 +350,17 @@ const Prematch1 = () => {
                     )}
                   </div>
 
-                  {/* OLD PLAYER */}
-                  {/* <div className="mt-4 flex flex-col">
-                  <label htmlFor="playerName" className="font-semibold">
-                    Player Name
-                  </label>
-                  <div className="flex justify-between">
-                    <input
-                      name={`playerName`}
-                      placeholder="Player Name"
-                      type="text"
-                      className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-gray-300 placeholder:text-gray-400 mr-2 w-8/12"
-                    />
-                    <button className="bg-[#F3F3F3] hover:bg-neutral-300 text-black font-semibold py-2 px-4 rounded flex justify-center ">
-                      <Image
-                        src={Upload}
-                        width={20}
-                        height={20}
-                        className="mr-3"
-                      />
-                      Upload
-                    </button>
-
-                    <button className="bg-[#5786E3] hover:bg-blue-600 text-white font-semibold  py-2 px-4 border rounded flex justify-center">
-                      <Image
-                        src={Plus}
-                        width={20}
-                        height={20}
-                        className="mr-3"
-                      />
-                      Add Player
-                    </button>
-                  </div>
-                </div> */}
-
                   <div className="mt-5 ">{renderSelectedForm()}</div>
                   {selectedFormation && isFormVisible && (
-                      <div className="mt-5 ml-5 flex justify-center">
+                      <div className="flex justify-center mt-5 ml-5">
                         <button
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+                            className="px-4 py-2 font-bold text-white bg-blue-500 border border-blue-700 rounded hover:bg-blue-700"
                             onClick={() => createPlayer(newPlayer)}
                         >
                           Add Player
                         </button>
                         <button
-                            className="mr-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                            className="px-4 py-2 mr-4 font-bold text-white bg-red-500 border border-red-700 rounded hover:bg-red-700"
                             onClick={handleClearAllForm}
                         >
                           Clear All
@@ -425,34 +369,38 @@ const Prematch1 = () => {
                   )}
                 </div>
               </div>
-
-              <div className="px-6 py-6 flex-1">
-                <div className="border rounded-md p-4 ">
-                  <div className="flex ">
-                    <div className=" mr-2">
-                      <Image src={home.logo} width={100} height={100} />
-                    </div>
-                    {/* Text */}
-                    <div className="flex flex-col justify-center ml-9">
+              <div className="flex-1 px-6 py-6">
+                <div className="p-4 border rounded-md ">
+                  {home.length > 0 && (
                       <div className="flex">
-                        <p className="font-semibold w-24">Team:</p>
-                        <p className="">{home.name}</p>
+                        <div className="mr-2 ">
+                          <Image
+                              src={`data:image/png;base64,${Buffer.from(home[0].logo.data).toString('base64')}`}
+                              width={100}
+                              height={100}
+                          />
+                        </div>
+                        {/* Text */}
+                        <div className="flex flex-col justify-center ml-9">
+                          <div className="flex">
+                            <p className="w-24 font-semibold">Team:</p>
+                            <p className="">{home[0].name}</p>
+                          </div>
+                          <div className="flex mt-2">
+                            <p className="w-24 font-semibold">Formation:</p>
+                            <p className="">{selectedFormation}</p>
+                          </div>
+                          <div className="flex mt-2">
+                            <p className="w-24 font-semibold">Coach:</p>
+                            {coach ? (
+                                <p className="">{coach.name}</p>
+                            ) : (
+                                <p>Loading...</p>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex mt-2">
-                        <p className="font-semibold w-24">Formation:</p>
-                        <p className="">{selectedFormation}</p>
-                      </div>
-                      <div className="flex mt-2">
-                        <p className="font-semibold w-24">Coach:</p>
-                        {/* <p className="ml-9">coach</p> */}
-                        {coach ? (
-                            <p className="">{coach.name}</p>
-                        ) : (
-                            <p>Loading...</p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+                  )}
                 </div>
                 <div className="mt-4 ">
                   <div className=" bg-[#F3F3F3] rounded-md">
