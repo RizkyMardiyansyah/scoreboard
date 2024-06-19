@@ -1,18 +1,16 @@
 import Image from "next/image";
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Back from "../../assets/caret-left.png";
 import axios from "axios";
 import SelectHomeTeam from "../../components/SelectHomeTeam";
 import Swal from "sweetalert2";
 import DropdownButton from "../../components/Dropdown";
 import Control from "../../components/Sidebar Content/Control";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Forms from "../../components/Formation/Forms";
 import Upload from "../../assets/UploadSimple.png";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTrash} from "@fortawesome/free-solid-svg-icons";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Prematch1 = () => {
   const [home, setHome] = useState([]);
@@ -28,51 +26,32 @@ const Prematch1 = () => {
   const [showForm3, setShowForm3] = useState(false);
   const router = useRouter();
   const [imageKey, setImageKey] = useState(0);
+  const [selectedHomeTeam, setSelectedHomeTeam] = useState('');
 
   const url = 'playerHome';
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const fetchData = async () => {
     try {
       const teamResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_DATABASE_URL}/team`
       );
-      //
       setHome(teamResponse.data);
-      // Fetch coach data
+
       const coachResponse = await axios.get(
           `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach`
       );
       setCoach(coachResponse.data[0]);
+
+      const playerResponse = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/player`
+      );
+      setPlayerHome(playerResponse.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
-  };
-  useEffect(() => {
-    // Fetch initial data when the component mounts
-    fetchData();
-
-    const intervalId = setInterval(fetchData, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  useEffect(() => {
-    const fetchPlayerHome = async () => {
-      try {
-        const response = await axios.get(
-            `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`
-        );
-        setPlayerHome(response.data);
-      } catch (error) {
-        console.error("Error fetching player home data:", error);
-      }
-    };
-
-    fetchPlayerHome();
-  }, []);
-
-  const refetchImage = () => {
-    setImageKey((prevKey) => prevKey + 1);
   };
 
   const handleCoachNameChange = (event) => {
@@ -82,7 +61,6 @@ const Prematch1 = () => {
       name: newName,
     }));
 
-    // Make an HTTP request to update the coach's name in the database
     axios
         .put(
             `${process.env.NEXT_PUBLIC_DATABASE_URL}/coach/65aa203d672025c87a76f5d0`,
@@ -98,23 +76,18 @@ const Prematch1 = () => {
         });
   };
 
-  //  formation
   const handleClearAllForm = async () => {
     try {
-      // Create an array to store all the promises for clearing photos
       const clearPhotoPromises = [];
 
-      // Iterate over each player in the array
       const updatedPlayerHome = await Promise.all(
           playerHome.map(async (player) => {
-            // Clear the photo on the server if it exists
             if (player.photo) {
               const clearPhotoPromise = axios.put(
-                  `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photoDelete`
+                  `${process.env.NEXT_PUBLIC_DATABASE_URL}/player/${player._id}/photoDelete`
               );
               clearPhotoPromises.push(clearPhotoPromise);
             }
-            // Reset the player data to empty values
             return {
               ...player,
               name: "",
@@ -124,10 +97,7 @@ const Prematch1 = () => {
           })
       );
 
-      // Wait for all photo deletion promises to resolve
       await Promise.all(clearPhotoPromises);
-
-      // Update the state with the new array of players
       setPlayerHome(updatedPlayerHome);
 
       console.log("All player data cleared successfully!");
@@ -137,7 +107,6 @@ const Prematch1 = () => {
   };
 
   const handleSubmit = async () => {
-    // Show SweetAlert confirmation popup
     const result = await Swal.fire({
       title: "Update All Players?",
       text: "Are you sure you want to update all players?",
@@ -149,14 +118,11 @@ const Prematch1 = () => {
 
     if (result.isConfirmed) {
       try {
-        const promises = playerHome.map(async ({ _id, name, no, photo }) => {
-          // Update player data
+        const promises = playerHome.map(async ({ _id, name, no }) => {
           await axios.put(
-              `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}`,
+              `${process.env.NEXT_PUBLIC_DATABASE_URL}/player/${_id}`,
               { name, no }
           );
-
-          // Update player photo if it exists
         });
 
         await Promise.all(promises);
@@ -176,6 +142,7 @@ const Prematch1 = () => {
       }
     }
   };
+
   const createPlayer = async (newPlayer) => {
     try {
       if (!newPlayer) {
@@ -183,44 +150,45 @@ const Prematch1 = () => {
         return;
       }
 
-      // Create a new FormData object
       const formData = new FormData();
-
-      // Append key-value pairs to the FormData object
       formData.append("name", newPlayer.name);
       formData.append("no", newPlayer.no);
       formData.append("Position", newPlayer.Position || "");
 
-      // If there's a photo, append it to FormData
       if (newPlayer.photo) {
         formData.append("file", newPlayer.photo);
       }
 
-      // Make a POST request using Axios
       const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`,
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/player`,
           formData
       );
 
       const createdPlayer = response.data;
 
-      // Fetch the updated list of players
       const updatedResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/player`
       );
       const updatedPlayers = updatedResponse.data;
 
-      // Update state with the new list of players
       setPlayerHome(updatedPlayers);
     } catch (error) {
       console.error("Error creating player:", error);
     }
   };
+
+  const filterPlayersByHomeTeam = (teamName) => {
+    if (!teamName) {
+      return;
+    }
+    const filteredPlayers = playerHome.filter(player => player.team === teamName);
+    setPlayerHome(filteredPlayers);
+  };
+
   const handleFormationSelect = async (formation) => {
-    setSelectedFormation(formation); // Update selected formation in state
+    setSelectedFormation(formation);
 
     try {
-      // Perform database update
       await axios.put(
           `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam/65a4c43b781814cf4206a691`,
           {
@@ -231,13 +199,11 @@ const Prematch1 = () => {
       console.log("Formation saved to database:", formation);
     } catch (error) {
       console.error("Error saving formation to database:", error);
-      // Handle error if necessary
     }
 
     setSelectedFormation(formation);
     setIsFormVisible(true);
 
-    // Toggle the respective form visibility based on the button clicked
     setShowFormation4231Home(false);
     setShowFormation442Home(false);
     setShowFormation433Home(false);
@@ -257,34 +223,43 @@ const Prematch1 = () => {
       setShowForm2(false);
       setShowForm3(true);
     }
-    const stateProps = {
-      showFormation442Home,
-      setShowFormation442Home,
-      showFormation4231Home,
-      setShowFormation4231Home,
-      showFormation433Home,
-      setShowFormation433Home,
-    };
-    return <Control {...stateProps} />;
+    filterPlayersByHomeTeam(selectedHomeTeam);
   };
+
   const renderSelectedForm = () => {
     if (!isFormVisible) {
       return null;
     }
 
     const formationMap = {
-      "4-4-2": ["GK", "LB", "CB", "CB", "RB", "LM", "CM", "CM", "RM", "CF", "CF", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"],
-      "4-2-3-1": ["GK", "LB", "CB", "CB", "RB", "CM", "CM", "LW", "AM", "RW", "CF", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"],
-      "4-3-3": ["GK", "LB", "CB", "CB", "RB", "DM", "CM", "CM", "LW", "RW", "CF", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"]
+      "4-4-2": [
+        "GK", "LB", "CB", "CB", "RB", "LM", "CM", "CM", "RM", "CF",
+        "CF", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9",
+        "S10", "S11"
+      ],
+      "4-2-3-1": [
+        "GK", "LB", "CB", "CB", "RB", "CM", "CM", "LW", "AM", "RW",
+        "CF", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9",
+        "S10", "S11"
+      ],
+      "4-3-3": [
+        "GK", "LB", "CB", "CB", "RB", "DM", "CM", "CM", "LW", "RW",
+        "CF", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9",
+        "S10", "S11"
+      ]
     };
 
-    return Forms(formationMap[selectedFormation] || [], playerHome, setPlayerHome, url);
-
+    return Forms(
+        formationMap[selectedFormation] || [],
+        playerHome,
+        setPlayerHome,
+        url
+    );
   };
   return (
       <>
         <div className="py-4">
-          <div className="flex border-b ">
+          <div className="flex border-b">
             <div className="flex mb-4 text-xl font-bold">
               <Link href="/admin">
                 <div className="p-1 ml-4 mr-4 border rounded-md">
@@ -295,14 +270,11 @@ const Prematch1 = () => {
             </div>
           </div>
 
-          <div className="px-3 py-6 ">
+          <div className="px-3 py-6">
             <div className="flex">
-              <div className="flex-col px-6 ">
+              <div className="flex-col px-6">
                 <h1 className="text-xl font-bold">New Match</h1>
-                <h1>
-                  Please provide complete and accurate information for all
-                  required fields.
-                </h1>
+                  <h1>Please provide complete and accurate information for all required fields.</h1>
               </div>
               <div className="flex justify-end flex-grow h-10 px-6">
                 <button
@@ -316,7 +288,7 @@ const Prematch1 = () => {
 
             <div className="flex">
               <div className="flex-grow w-2/5 px-6 py-6">
-                <div className="p-5 border rounded-md ">
+                <div className="p-5 border rounded-md">
                   <h1 className="text-xl font-semibold">Home Team</h1>
                   <div className="mt-4">
                     <h1 className="font-semibold">Select Team</h1>
@@ -338,7 +310,7 @@ const Prematch1 = () => {
                           <form>
                             <input
                                 type="text"
-                                // value={coach.name || ""}
+                                value={coach.name || ""}
                                 className="rounded-md border-0 py-1.5 pl-2 text-black ring-1 ring-gray-300 placeholder:text-gray-400 w-full"
                                 onChange={handleCoachNameChange}
                                 placeholder="Coach Name"
@@ -350,7 +322,7 @@ const Prematch1 = () => {
                     )}
                   </div>
 
-                  <div className="mt-5 ">{renderSelectedForm()}</div>
+                  <div className="mt-5">{renderSelectedForm()}</div>
                   {selectedFormation && isFormVisible && (
                       <div className="flex justify-center mt-5 ml-5">
                         <button
@@ -370,30 +342,31 @@ const Prematch1 = () => {
                 </div>
               </div>
               <div className="flex-1 px-6 py-6">
-                <div className="p-4 border rounded-md ">
+                <div className="p-4 border rounded-md">
                   {home.length > 0 && (
                       <div className="flex">
-                        <div className="mr-2 ">
+                        <div className="mr-2">
                           <Image
-                              src={`data:image/png;base64,${Buffer.from(home[0].logo.data).toString('base64')}`}
+                              src={`data:image/png;base64,${Buffer.from(
+                                  home[0].logo.data
+                              ).toString("base64")}`}
                               width={100}
                               height={100}
                           />
                         </div>
-                        {/* Text */}
                         <div className="flex flex-col justify-center ml-9">
                           <div className="flex">
                             <p className="w-24 font-semibold">Team:</p>
-                            <p className="">{home[0].name}</p>
+                            <p>{home[0].name}</p>
                           </div>
                           <div className="flex mt-2">
                             <p className="w-24 font-semibold">Formation:</p>
-                            <p className="">{selectedFormation}</p>
+                            <p>{selectedFormation}</p>
                           </div>
                           <div className="flex mt-2">
                             <p className="w-24 font-semibold">Coach:</p>
                             {coach ? (
-                                <p className="">{coach.name}</p>
+                                <p>{coach.name}</p>
                             ) : (
                                 <p>Loading...</p>
                             )}
@@ -402,12 +375,10 @@ const Prematch1 = () => {
                       </div>
                   )}
                 </div>
-                <div className="mt-4 ">
-                  <div className=" bg-[#F3F3F3] rounded-md">
-                    <p className="p-6 italic ">
-                      Note: Ensure your lineup reflects your strategy and
-                      preferences before the match begins. Need assistance?
-                      Contact support at support@example.com.
+                <div className="mt-4">
+                  <div className="bg-[#F3F3F3] rounded-md">
+                    <p className="p-6 italic">
+                      Note: Ensure your lineup reflects your strategy and preferences before the match begins. Need assistance? Contact support at support@example.com.
                     </p>
                   </div>
                 </div>
@@ -416,6 +387,7 @@ const Prematch1 = () => {
           </div>
         </div>
       </>
-  );
+);
 };
+
 export default Prematch1;
