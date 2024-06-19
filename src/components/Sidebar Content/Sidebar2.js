@@ -26,6 +26,7 @@ import PlayBlack from "../../assets/PlayCircleBlack.png";
 import Presentation from "../../assets/Presentation.png";
 import Prematch from "./Prematch";
 import { useStopwatch } from "../Timer/timerAdmin";
+import NewTeam from "./NewTeam";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -527,6 +528,8 @@ const SideBar = () => {
         return <Overview />;
       case "TeamScore":
         return <TeamScore />;
+      case "NewTeam":
+        return <NewTeam/>;
       default:
         return <Prematch />;
     }
@@ -621,6 +624,27 @@ const SideBar = () => {
               }
             >
               Subtitution
+            </MenuItem>
+            <MenuItem
+                onClick={() => handleMenuItemClick("NewTeam")}
+                disabled={teamHome.name === ""}
+                style={
+                  !teamHome.name
+                      ? undefined
+                      : {
+                        backgroundColor:
+                            selectedMenuItem === "NewTeam"
+                                ? "#F3F3F3"
+                                : "inherit",
+                        color:
+                            selectedMenuItem === "NewTeam"
+                                ? "black"
+                                : "#000000",
+                        cursor: "pointer",
+                      }
+                }
+            >
+              New Team
             </MenuItem>
           </Menu>
         </Sidebar>

@@ -11,6 +11,7 @@ const DropdownComponent = () => {
     axios
       .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/team`)
       .then((response) => {
+        console.log(response.data);
         setTeamOptions(response.data);
       })
       .catch((error) => {
@@ -19,7 +20,7 @@ const DropdownComponent = () => {
 
     // Fetch home data from the API
     axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`)
+      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/team`)
       .then((response) => {
         setHomeData(response.data);
       })

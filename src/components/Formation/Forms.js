@@ -139,7 +139,7 @@ const Forms = (positions, playerHome, setPlayerHome, url) => {
     })
     return (
         <div className="mt-4 border rounded-md">
-            <table className="table-auto w-full ">
+            <table className="w-full table-auto ">
                 <thead>
                 <tr className="">
                     <th className="px-4 py-2">Position</th>
@@ -151,13 +151,12 @@ const Forms = (positions, playerHome, setPlayerHome, url) => {
                 </thead>
                 <tbody className="">
                 {transformedPlayerHome.map((player, index) => (
-                    // console.log("Player Photo:", player.photo);
                     <tr key={player.id}>
-                        <td className="px-4 py-2 flex items-center justify-center">
+                        <td className="flex items-center justify-center px-4 py-2">
                             {getPlayerPosition(index)}
                         </td>
                         <td className="px-4 py-2">
-                            <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
+                            <div className="relative flex items-center justify-center mt-2 rounded-md shadow-sm">
                                 <input
                                     type="text"
                                     value={player.name}
@@ -168,7 +167,7 @@ const Forms = (positions, playerHome, setPlayerHome, url) => {
                         </td>
 
                         <td className="px-4 ">
-                            <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
+                            <div className="relative flex items-center justify-center mt-2 rounded-md shadow-sm">
                                 <input
                                     type="text"
                                     value={player.no}
@@ -191,7 +190,7 @@ const Forms = (positions, playerHome, setPlayerHome, url) => {
                                     />
                                 </>
                             ) : (
-                                <div className="relative mt-2 rounded-md shadow-sm flex items-center justify-center">
+                                <div className="relative flex items-center justify-center mt-2 rounded-md shadow-sm">
                                     <label
                                         htmlFor="fileInput"
                                         className="relative bg-[#F3F3F3] hover:bg-neutral-300 text-black font-semibold py-2 px-4 rounded flex items-center justify-center cursor-pointer"
@@ -207,25 +206,25 @@ const Forms = (positions, playerHome, setPlayerHome, url) => {
                                             id="fileInput"
                                             type="file"
                                             onChange={(e) => handleFileChange(e, index)}
-                                            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                         />
                                     </label>
                                 </div>
                             )}
                         </td>
-                        <td className="px-4 py-2 flex items-center justify-center">
+                        <td className="flex items-center justify-center px-4 py-2">
                             {index >= 11 && (
                                 <button
-                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                                    className="px-4 py-2 font-bold text-white bg-red-500 border border-red-700 rounded hover:bg-red-700"
                                     onClick={() => handleDeleteClick(player._id)}
                                 >
                                     <FontAwesomeIcon icon={faTrash}/>
                                 </button>
                             )}
                         </td>
-                        <td className="px-4 py-2 flex items-center justify-center">
+                        <td className="flex items-center justify-center px-4 py-2">
                             <button
-                                className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 border border-yellow-700 rounded"
+                                className="px-4 py-2 font-bold text-white bg-yellow-500 border border-yellow-700 rounded hover:bg-yellow-700"
                                 onClick={() => handleClearFormClick(index)}
                             >
                                 Clear Form

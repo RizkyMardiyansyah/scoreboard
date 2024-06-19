@@ -1,17 +1,12 @@
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import Back from "../../assets/caret-left.png";
 import axios from "axios";
-import Upload from "../../assets/UploadSimple.png";
-import Plus from "../../assets/PlusWhite.png";
 import SelectHomeTeam from "../../components/SelectHomeTeam";
-import SelectFormationHome from "../../components/SelectFormationHome";
 import Swal from "sweetalert2";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import DropdownButton from "../../components/Dropdown";
 import Control from "../../components/Sidebar Content/Control";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import Link from "next/link";
 import Forms from "../../components/Formation/Forms";
 
