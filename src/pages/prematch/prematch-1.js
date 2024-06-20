@@ -123,7 +123,7 @@ const Prematch1 = () => {
             // Clear the photo on the server if it exists
             if (player.photo) {
               const clearPhotoPromise = axios.put(
-                  `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${player._id}/photoDelete`
+                  `${process.env.NEXT_PUBLIC_DATABASE_URL}/player/${player._id}`
               );
               clearPhotoPromises.push(clearPhotoPromise);
             }
@@ -165,7 +165,7 @@ const Prematch1 = () => {
         const promises = playerHome.map(async ({ _id, name, no }) => {
           // Update player data
           await axios.put(
-              `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}`,
+              `${process.env.NEXT_PUBLIC_DATABASE_URL}/player/${_id}`,
               { name, no }
           );
         });
@@ -210,19 +210,21 @@ const Prematch1 = () => {
       }
 
       const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`,
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/player`,
           formData
       );
       const createdPlayer = response.data;
-
-      // Fetch the updated list of players
       const updatedResponse = await axios.get(
-          `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/player`
       );
-      const updatedPlayers = updatedResponse.data;
-
-      // Update state with the new list of players
-      setPlayerHome(updatedPlayers);
+      const homeResponse = await axios.get(
+          `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`
+      );
+      const data = updatedResponse.data;
+      setPlayerHome(
+          data.filter((player) => player.team === homeResponse.data[0].name)
+      );
+      // Fetch the updated list of players
     } catch (error) {
       console.error("Error creating player:", error);
     }
