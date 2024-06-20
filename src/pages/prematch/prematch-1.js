@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Forms from "../../components/Formation/Forms";
 
-
 const Prematch1 = () => {
   const [home, setHome] = useState([]);
   const [coach, setCoach] = useState(null);
@@ -48,6 +47,7 @@ const Prematch1 = () => {
       console.error("Error fetching data:", error);
     }
   };
+  const url = 'playerHome';
 
   useEffect(() => {
     // Fetch initial data when the component mounts
@@ -67,8 +67,10 @@ const Prematch1 = () => {
         const homeResponse = await axios.get(
             `${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`
         );
-        const data = response.data
-        setPlayerHome(data.filter((player) => player.team === homeResponse.data[0].name));
+        const data = response.data;
+        setPlayerHome(
+            data.filter((player) => player.team === homeResponse.data[0].name)
+        );
       } catch (error) {
         console.error("Error fetching player home data:", error);
       }
@@ -76,6 +78,12 @@ const Prematch1 = () => {
 
     fetchPlayerHome();
   }, []);
+  const newPlayer = {
+    name: "",
+    no: "",
+    Position: "",
+    team: home.name || "",
+  }
 
   const refetchImage = () => {
     setImageKey((prevKey) => prevKey + 1);
@@ -104,13 +112,6 @@ const Prematch1 = () => {
         });
   };
 
-  //  formation
-  const newPlayer = {
-    name: "",
-    no: "",
-
-    photo: null, // Assuming you want to upload a photo
-  };
   const handleClearAllForm = async () => {
     try {
       // Create an array to store all the promises for clearing photos
@@ -161,14 +162,12 @@ const Prematch1 = () => {
 
     if (result.isConfirmed) {
       try {
-        const promises = playerHome.map(async ({ _id, name, no, photo }) => {
+        const promises = playerHome.map(async ({ _id, name, no }) => {
           // Update player data
           await axios.put(
               `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${_id}`,
               { name, no }
           );
-
-          // Update player photo if it exists
         });
 
         await Promise.all(promises);
@@ -188,6 +187,7 @@ const Prematch1 = () => {
       }
     }
   };
+
   const createPlayer = async (newPlayer) => {
     try {
       if (!newPlayer) {
@@ -202,18 +202,17 @@ const Prematch1 = () => {
       formData.append("name", newPlayer.name);
       formData.append("no", newPlayer.no);
       formData.append("Position", newPlayer.Position || "");
+      formData.append("team", home.name || "");
 
       // If there's a photo, append it to FormData
       if (newPlayer.photo) {
         formData.append("file", newPlayer.photo);
       }
 
-      // Make a POST request using Axios
       const response = await axios.post(
           `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome`,
           formData
       );
-
       const createdPlayer = response.data;
 
       // Fetch the updated list of players
@@ -228,9 +227,9 @@ const Prematch1 = () => {
       console.error("Error creating player:", error);
     }
   };
+
   const handleFormationSelect = async (formation) => {
     setSelectedFormation(formation); // Update selected formation in state
-
     try {
       // Perform database update
       await axios.put(
@@ -290,7 +289,7 @@ const Prematch1 = () => {
       "4-3-3": ["GK", "LB", "CB", "CB", "RB", "DM", "CM", "CM", "LW", "RW", "CF", "S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8", "S9", "S10", "S11"]
     };
 
-    return Forms(formationMap[selectedFormation] || [], playerHome);
+    return Forms(formationMap[selectedFormation] || [], playerHome, setPlayerHome, url);
 
   };
 
