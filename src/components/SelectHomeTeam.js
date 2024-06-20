@@ -11,22 +11,12 @@ const DropdownComponent = () => {
     axios
       .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/team`)
       .then((response) => {
-        console.log(response.data);
         setTeamOptions(response.data);
       })
       .catch((error) => {
         console.error("Error fetching team dropdown options:", error);
       });
 
-    // Fetch home data from the API
-    axios
-      .get(`${process.env.NEXT_PUBLIC_DATABASE_URL}/homeTeam`)
-      .then((response) => {
-        setHomeData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching home data:", error);
-      });
   }, []);
 
   const handleSelectChange = async (e) => {
@@ -38,9 +28,16 @@ const DropdownComponent = () => {
     );
 
     if (selectedTeamData) {
+      let logoBase64 = selectedTeamData.logo;
+
+      // Check if logo is a buffer and convert to Base64 string
+      if (selectedTeamData.logo) {
+        const buffer = new Buffer.from(selectedTeamData.logo.data);
+        logoBase64 = `data:image/png;base64,${buffer.toString('base64')}`;
+      }
       const updatedHomeData = {
         name: selectedTeamData.name,
-        logo: selectedTeamData.logo,
+        logo: logoBase64,
       };
 
       // Update the homeData state

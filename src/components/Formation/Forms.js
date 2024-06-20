@@ -9,7 +9,6 @@ import React from "react";
 const Forms = (positions, playerHome, setPlayerHome, url) => {
 
     const getPlayerPosition = (index) => {
-
         return positions[index] || "";
     };
     const handleInputChange = (e, index) => {
@@ -47,7 +46,6 @@ const Forms = (positions, playerHome, setPlayerHome, url) => {
                     `${process.env.NEXT_PUBLIC_DATABASE_URL}/${url}/${playerId}`
                 );
 
-                // Update state to remove the deleted player
                 setPlayerHome(playerHome.filter((player) => player._id !== playerId));
 
                 // Show success message
@@ -73,8 +71,6 @@ const Forms = (positions, playerHome, setPlayerHome, url) => {
             const newPlayerHome = [...playerHome];
             const file = e.target.files[0];
 
-            // You may want to perform additional checks on the file, e.g., size, type, etc.
-
             // Update the corresponding player's photo property
             newPlayerHome[index].photo = file;
 
@@ -88,7 +84,7 @@ const Forms = (positions, playerHome, setPlayerHome, url) => {
 
             // Make a PUT request to update the player's photo on the server
             await axios.put(
-                `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${newPlayerHome[index]._id}/photo`,
+                `${process.env.NEXT_PUBLIC_DATABASE_URL}/${url}/${newPlayerHome[index]._id}/photo`,
                 formData,
                 {
                     headers: {
@@ -118,7 +114,7 @@ const Forms = (positions, playerHome, setPlayerHome, url) => {
         const playerId = playerHome[index]._id;
         axios
             .put(
-                `${process.env.NEXT_PUBLIC_DATABASE_URL}/playerHome/${playerId}/photoDelete`
+                `${process.env.NEXT_PUBLIC_DATABASE_URL}/${url}/${playerId}/photoDelete`
             )
             .then(() => {
                 console.log("Server photo deleted successfully!");
